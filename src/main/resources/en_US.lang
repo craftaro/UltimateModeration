@@ -9,3 +9,6 @@ command.togglechat.toggledOn = "&aChat was globally Unmuted..."
 command.togglechat.toggledOff = "&cChat was globally Muted..."
 command.togglechat.bypass = "&aYou were immune to the chat toggle because of your perms."
 command.togglechat.muted = "&cChat is currently disabled, try again later."
+
+command.vanish.toggledOn = "&7You are now visible."
+command.vanish.toggledOff = "&7You are now vanished."

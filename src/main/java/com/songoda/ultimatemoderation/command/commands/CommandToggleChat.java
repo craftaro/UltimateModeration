@@ -3,6 +3,7 @@ package com.songoda.ultimatemoderation.command.commands;
 import com.songoda.ultimatemoderation.Locale;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
+import com.songoda.ultimatemoderation.listeners.ChatListener;
 import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -31,7 +32,7 @@ public class CommandToggleChat extends AbstractCommand {
         String strToggledOff = locale.getMessage("command.togglechat.toggledOff");
         String messageToSend = prefix + Methods.formatText(toggled ? strToggledOn : strToggledOff);
 
-        instance.getChatListener().setChatToggled(toggled);
+        ChatListener.setChatToggled(toggled);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
 

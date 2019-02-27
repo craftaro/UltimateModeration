@@ -10,7 +10,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChatListener implements Listener {
 
     private UltimateModeration instance;
-    private boolean isChatToggled = true; // true means people can talk, false means muted
+    private static boolean isChatToggled = true; // true means people can talk, false means muted
 
     public ChatListener(UltimateModeration ultimateModeration) {
         this.instance = ultimateModeration;
@@ -25,8 +25,8 @@ public class ChatListener implements Listener {
         }
     }
 
-    public void setChatToggled(boolean toggled) {
-        this.isChatToggled = toggled;
+    public static void setChatToggled(boolean toggled) {
+        isChatToggled = toggled;
     }
 
 }

@@ -2,6 +2,7 @@ package com.songoda.ultimatemoderation;
 
 import com.songoda.ultimatemoderation.command.CommandManager;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
+import com.songoda.ultimatemoderation.listeners.LoginListener;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import org.bukkit.Bukkit;
@@ -16,7 +17,6 @@ public class UltimateModeration extends JavaPlugin {
     private SettingsManager settingsManager;
     private CommandManager commandManager;
     private Locale locale;
-    private ChatListener chatListener;
 
     public static UltimateModeration getInstance() {
         return INSTANCE;
@@ -63,9 +63,9 @@ public class UltimateModeration extends JavaPlugin {
 
         this.commandManager = new CommandManager(this);
 
-        this.chatListener = new ChatListener(this);
-
-        Bukkit.getPluginManager().registerEvents(this.chatListener, this);
+        // Register Listeners
+        Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new LoginListener(this), this);
 
     }
 
@@ -106,8 +106,5 @@ public class UltimateModeration extends JavaPlugin {
         return references;
     }
 
-    public ChatListener getChatListener() {
-        return chatListener;
-    }
 
 }

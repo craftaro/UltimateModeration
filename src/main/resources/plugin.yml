@@ -25,3 +25,8 @@ commands:
     default: false
     aliases: [rp]
     usage: /rp
+  Vanish:
+    description: Vanish
+    default: false
+    aliases: [v]
+    usage: /v
