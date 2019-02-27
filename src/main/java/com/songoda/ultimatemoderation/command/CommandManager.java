@@ -1,8 +1,10 @@
 package com.songoda.ultimatemoderation.command;
 
+import com.songoda.epicspawners.References;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.commands.*;
 import com.songoda.ultimatemoderation.utils.Methods;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -52,21 +54,19 @@ public class CommandManager implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         for (AbstractCommand abstractCommand : commands) {
-            if (abstractCommand.getCommand() == null)
-                continue;
-            if (!abstractCommand.getCommand().equalsIgnoreCase(command.getName())) return false;
-            
-            if (strings.length == 0) {
-                processRequirements(abstractCommand, commandSender, strings);
-                return true;
-            }
-
-            String cmd = strings[0];
-            String cmd2 = strings.length >= 2 ? String.join(" ", strings[0], strings[1]) : null;
-            for (String sub : abstractCommand.getSubCommand()) {
-                if (cmd.equalsIgnoreCase(sub) || (cmd2 != null && cmd2.equalsIgnoreCase(sub))) {
+            if (abstractCommand.getCommand() != null && abstractCommand.getCommand().equalsIgnoreCase(command.getName().toLowerCase())) {
+                if (strings.length == 0 || abstractCommand.hasArgs()) {
                     processRequirements(abstractCommand, commandSender, strings);
                     return true;
+                }
+            } else if (strings.length != 0 && abstractCommand.getParent() != null && abstractCommand.getParent().getCommand().equalsIgnoreCase(command.getName())) {
+                String cmd = strings[0];
+                String cmd2 = strings.length >= 2 ? String.join(" ", strings[0], strings[1]) : null;
+                for (String cmds : abstractCommand.getSubCommand()) {
+                    if (cmd.equalsIgnoreCase(cmds) || (cmd2 != null && cmd2.equalsIgnoreCase(cmds))) {
+                        processRequirements(abstractCommand, commandSender, strings);
+                        return true;
+                    }
                 }
             }
         }

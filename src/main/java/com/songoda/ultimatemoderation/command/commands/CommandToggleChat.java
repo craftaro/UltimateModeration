@@ -19,7 +19,7 @@ public class CommandToggleChat extends AbstractCommand {
     private boolean toggled = true;
 
     public CommandToggleChat() {
-        super(null, false, "togglechat");
+        super(false, false, "togglechat");
     }
 
     @Override

@@ -10,9 +10,7 @@ import java.util.List;
 public class CommandUltimateModeration extends AbstractCommand {
 
     public CommandUltimateModeration() {
-        super(null, false, "UltimateModeration");
-        addSubCommand("reload");
-        addSubCommand("settings");
+        super(false, false, "UltimateModeration");
     }
 
     @Override

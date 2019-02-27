@@ -12,7 +12,7 @@ import java.util.*;
 public class CommandRandomPlayer extends AbstractCommand {
 
     public CommandRandomPlayer() {
-        super(null, true, "RandomPlayer");
+        super(true, false,"RandomPlayer");
     }
 
     @Override

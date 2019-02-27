@@ -13,12 +13,15 @@ import java.util.List;
 public class CommandClearChat extends AbstractCommand {
 
     public CommandClearChat() {
-        super(null, true, "ClearChat");
-        addSubCommand("force");
+        super(true, true,"ClearChat");
     }
 
     @Override
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
+
+        if (args.length != 0 && !args[0].equalsIgnoreCase("force"))
+            return ReturnType.SYNTAX_ERROR;
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!player.hasPermission("um.clearchat.bypass") || isForced(args)) {
                 String[] toSend = new String[250];

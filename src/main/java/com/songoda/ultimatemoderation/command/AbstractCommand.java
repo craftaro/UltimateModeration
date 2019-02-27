@@ -9,8 +9,9 @@ import java.util.List;
 
 public abstract class AbstractCommand {
 
-    private final AbstractCommand parent;
+    private AbstractCommand parent = null;
     private final boolean noConsole;
+    private boolean hasArgs = false;
     private String command;
 
     private List<String> subCommand = new ArrayList<>();
@@ -22,6 +23,13 @@ public abstract class AbstractCommand {
             this.command = Arrays.asList(command).get(0);
         }
         this.parent = parent;
+        this.noConsole = noConsole;
+    }
+
+    protected AbstractCommand(boolean noConsole, boolean hasArgs, String... command) {
+        this.command = Arrays.asList(command).get(0);
+
+        this.hasArgs = hasArgs;
         this.noConsole = noConsole;
     }
 
@@ -50,6 +58,10 @@ public abstract class AbstractCommand {
     public abstract String getSyntax();
 
     public abstract String getDescription();
+
+    public boolean hasArgs() {
+        return hasArgs;
+    }
 
     public boolean isNoConsole() {
         return noConsole;

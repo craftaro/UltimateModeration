@@ -22,7 +22,7 @@ public class CommandVanish extends AbstractCommand {
     private static List<UUID> inVanish = new ArrayList<>();
 
     public CommandVanish() {
-        super(null, true, "Vanish");
+        super(true, false, "Vanish");
     }
 
     @Override
