@@ -54,19 +54,19 @@ public class CommandManager implements CommandExecutor {
         for (AbstractCommand abstractCommand : commands) {
             if (abstractCommand.getCommand() == null)
                 continue;
-            if (abstractCommand.getCommand().equalsIgnoreCase(command.getName())) {
-                if (strings.length == 0) {
+            if (!abstractCommand.getCommand().equalsIgnoreCase(command.getName())) return false;
+            
+            if (strings.length == 0) {
+                processRequirements(abstractCommand, commandSender, strings);
+                return true;
+            }
+
+            String cmd = strings[0];
+            String cmd2 = strings.length >= 2 ? String.join(" ", strings[0], strings[1]) : null;
+            for (String sub : abstractCommand.getSubCommand()) {
+                if (cmd.equalsIgnoreCase(sub) || (cmd2 != null && cmd2.equalsIgnoreCase(sub))) {
                     processRequirements(abstractCommand, commandSender, strings);
                     return true;
-                } else {
-                    String cmd = strings[0];
-                    String cmd2 = strings.length >= 2 ? String.join(" ", strings[0], strings[1]) : null;
-                    for (String sub : abstractCommand.getSubCommand()) {
-                        if (cmd.equalsIgnoreCase(sub) || (cmd2 != null && cmd2.equalsIgnoreCase(sub))) {
-                            processRequirements(abstractCommand, commandSender, strings);
-                            return true;
-                        }
-                    }
                 }
             }
         }
