@@ -11,7 +11,7 @@ import java.util.List;
 public class CommandInvSee extends AbstractCommand {
 
     public CommandInvSee() {
-        super(true, true,"Inv1See");
+        super(true, true,"InvSee");
     }
 
     @Override
@@ -35,10 +35,6 @@ public class CommandInvSee extends AbstractCommand {
         return null;
     }
 
-    private boolean isForced(String[] args) {
-        return args.length != 0 && args[0].equals("force");
-    }
-
     @Override
     public String getPermissionNode() {
         return "um.invsee";
@@ -51,6 +47,6 @@ public class CommandInvSee extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Allows you to see inside of a players inventory.\n";
+        return "Allows you to see inside of a players inventory.";
     }
 }

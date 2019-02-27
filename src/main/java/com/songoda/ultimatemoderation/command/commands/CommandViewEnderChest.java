@@ -38,10 +38,6 @@ public class CommandViewEnderChest extends AbstractCommand {
         return null;
     }
 
-    private boolean isForced(String[] args) {
-        return args.length != 0 && args[0].equals("force");
-    }
-
     @Override
     public String getPermissionNode() {
         return "um.viewenderchest";
@@ -54,6 +50,6 @@ public class CommandViewEnderChest extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Allows you to see inside of a players enderchest.\n";
+        return "Allows you to see inside of a players enderchest.";
     }
 }

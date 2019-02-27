@@ -47,6 +47,6 @@ public class CommandRandomPlayer extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Allows you to randomly teleport to  a player on the server.";
+        return "Allows you to randomly teleport to a player on the server.";
     }
 }

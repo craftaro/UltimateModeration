@@ -12,3 +12,9 @@ command.togglechat.muted = "&cChat is currently disabled, try again later."
 
 command.vanish.toggledOn = "&7You are now visible."
 command.vanish.toggledOff = "&7You are now vanished."
+
+command.freeze.add = "&7You have frozen &6%player%&7 successfully.";
+command.freeze.remove = "&7You have unfrozen &6%player%&7 successfully.";
+command.freeze.alertadd = "&7You have been frozen.";
+command.freeze.alertremove = "&7You have been unfrozen.";
+command.freeze.nope = "&cYou cannot do that because you are currently frozen...";
