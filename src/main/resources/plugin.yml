@@ -35,3 +35,8 @@ commands:
     default: false
     aliases: [vec]
     usage: /vec
+    usage: /v
+  InvSee:
+    description: InvSee
+    default: false
+    usage: /invsee
