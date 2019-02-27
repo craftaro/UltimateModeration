@@ -30,3 +30,8 @@ commands:
     default: false
     aliases: [v]
     usage: /v
+  ViewEnderChest:
+    description: ViewEnderChest
+    default: false
+    aliases: [vec]
+    usage: /vec

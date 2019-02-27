@@ -30,12 +30,14 @@ public class CommandManager implements CommandExecutor {
         instance.getCommand("ToggleChat").setExecutor(this);
         instance.getCommand("RandomPlayer").setExecutor(this);
         instance.getCommand("Vanish").setExecutor(this);
+        instance.getCommand("ViewEnderChest").setExecutor(this);
 
         AbstractCommand commandUltimateModeration = addCommand(new CommandUltimateModeration());
         addCommand(new CommandClearChat());
         addCommand(new CommandToggleChat());
         addCommand(new CommandRandomPlayer());
         addCommand(new CommandVanish());
+        addCommand(new CommandViewEnderChest());
 
         addCommand(new CommandSettings(commandUltimateModeration));
         addCommand(new CommandReload(commandUltimateModeration));
