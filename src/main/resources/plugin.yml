@@ -1,0 +1,27 @@
+name: UltimateModeration
+description: UltimateModeration
+main: com.songoda.ultimatemoderation.UltimateModeration
+version: 1
+author: Songoda
+api-version: 1.13
+commands:
+  UltimateModeration:
+    description: View information on this plugin.
+    default: true
+    aliases: [um]
+    usage: /um
+  ClearChat:
+    description: Clear the chat
+    default: false
+    aliases: [cc]
+    usage: /cc
+  ToggleChat:
+    description: Toggle chat
+    default: false
+    aliases: [tc]
+    usage: /tc
+  RandomPlayer:
+    description: Random Player
+    default: false
+    aliases: [rp]
+    usage: /rp

@@ -1,0 +1,11 @@
+#General Messages
+
+general.nametag.prefix = "&7[&6UltimateModeration&7]"
+
+command.clearchat.cleared = "&6%player% &7cleared the chat!"
+command.clearchat.immune = "&aYou were immune to the clear chat because of your perms."
+
+command.togglechat.toggledOn = "&aChat was globally Unmuted..."
+command.togglechat.toggledOff = "&cChat was globally Muted..."
+command.togglechat.bypass = "&aYou were immune to the chat toggle because of your perms."
+command.togglechat.muted = "&cChat is currently disabled, try again later."
