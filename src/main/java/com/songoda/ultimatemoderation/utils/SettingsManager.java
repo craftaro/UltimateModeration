@@ -173,6 +173,8 @@ public class SettingsManager implements Listener {
         VANISH_BATS("Main.Release Bats On Vanish", true),
         VANISH_PARTICLE("Main.Vanish Particle", "EXPLOSION_NORMAL"),
 
+        BLOCKED_COMMANDS("Main.Blocked Commands", Arrays.asList("Fly", "Op", "Plugins", "Pl")),
+
         GLASS_TYPE_1("Interfaces.Glass Type 1", 7),
         GLASS_TYPE_2("Interfaces.Glass Type 2", 11),
         GLASS_TYPE_3("Interfaces.Glass Type 3", 3),

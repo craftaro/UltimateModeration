@@ -42,7 +42,6 @@ public class CommandToggleChat extends AbstractCommand {
                 continue;
 
             player.sendMessage(Methods.formatText(locale.getMessage("command.togglechat.bypass")));
-
         }
 
         if (!(sender instanceof Player))
