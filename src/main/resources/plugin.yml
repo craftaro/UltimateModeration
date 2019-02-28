@@ -48,3 +48,7 @@ commands:
     description: Revive
     default: false
     usage: /revive
+  Spy:
+    description: Spy
+    default: false
+    usage: /spy

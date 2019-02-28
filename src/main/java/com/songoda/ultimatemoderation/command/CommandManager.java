@@ -34,6 +34,7 @@ public class CommandManager implements CommandExecutor {
         instance.getCommand("InvSee").setExecutor(this);
         instance.getCommand("Freeze").setExecutor(this);
         instance.getCommand("Revive").setExecutor(this);
+        instance.getCommand("Spy").setExecutor(this);
 
         AbstractCommand commandUltimateModeration = addCommand(new CommandUltimateModeration());
         addCommand(new CommandClearChat());
@@ -44,6 +45,7 @@ public class CommandManager implements CommandExecutor {
         addCommand(new CommandInvSee());
         addCommand(new CommandFreeze());
         addCommand(new CommandRevive());
+        addCommand(new CommandSpy());
 
         addCommand(new CommandSettings(commandUltimateModeration));
         addCommand(new CommandReload(commandUltimateModeration));

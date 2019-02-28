@@ -10,8 +10,8 @@ command.togglechat.toggledOff = "&cChat was globally Muted..."
 command.togglechat.bypass = "&aYou were immune to the chat toggle because of your perms."
 command.togglechat.muted = "&cChat is currently disabled, try again later."
 
-command.vanish.toggledOn = "&7You are now visible."
-command.vanish.toggledOff = "&7You are now vanished."
+command.vanish.toggledOn = "&7You are now vanished."
+command.vanish.toggledOff = "&7You are now visible."
 
 command.freeze.add = "&7You have frozen &6%player%&7 successfully.";
 command.freeze.remove = "&7You have unfrozen &6%player%&7 successfully.";
@@ -22,3 +22,6 @@ command.freeze.nope = "&cYou cannot do that because you are currently frozen..."
 command.revive.noloot = "&cNo loot could be found to revive the player with."
 command.revive.success = "&7You have revived &6%player% &7successfully."
 command.revive.revived = "&7You have been revived."
+
+command.spy.returned = "&7You were returned to your previous location"
+command.spy.success = "&7You are now spying on &6%player%&7. Use the command &6/spy &7to return to your previous location&7"

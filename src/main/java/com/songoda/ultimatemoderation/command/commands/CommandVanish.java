@@ -28,15 +28,39 @@ public class CommandVanish extends AbstractCommand {
     @Override
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
         Player player = ((Player)sender);
+        vanish(player);
+        return ReturnType.SUCCESS;
+    }
+
+    @Override
+    protected List<String> onTab(UltimateModeration instance, CommandSender sender, String... args) {
+        return null;
+    }
+
+    public static void registerVanishedPlayers(Player player) {
+        for (UUID uuid : inVanish) {
+            Player vanished = Bukkit.getPlayer(uuid);
+            if (vanished == null) continue;
+            if(player.hasPermission("um.vanish.bypass")) {
+                player.showPlayer(vanished);
+            } else {
+                player.hidePlayer(vanished);
+            }
+        }
+    }
+
+    public static void vanish(Player player) {
         UUID uuid = player.getUniqueId();
+
+        UltimateModeration instance = UltimateModeration.getInstance();
+
         if (inVanish.contains(uuid)) {
             inVanish.remove(uuid);
-            sender.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOff")));
+            player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOff")));
         } else {
             inVanish.add(uuid);
-            sender.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOn")));
+            player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOn")));
         }
-
         if (SettingsManager.Setting.VANISH_EFFECTS.getBoolean()) {
             player.getWorld().playSound(player.getLocation(), Sound.valueOf(SettingsManager.Setting.VANISH_SOUND.getString()), 1L, 1L);
 
@@ -64,24 +88,10 @@ public class CommandVanish extends AbstractCommand {
             else
                 p.showPlayer(player);
         }
-        return ReturnType.SUCCESS;
     }
 
-    @Override
-    protected List<String> onTab(UltimateModeration instance, CommandSender sender, String... args) {
-        return null;
-    }
-
-    public static void registerVanishedPlayers(Player player) {
-        for (UUID uuid : inVanish) {
-            Player vanished = Bukkit.getPlayer(uuid);
-            if (vanished == null) continue;
-            if(player.hasPermission("um.vanish.bypass")) {
-                player.showPlayer(vanished);
-            } else {
-                player.hidePlayer(vanished);
-            }
-        }
+    public static boolean isVanished(Player player) {
+        return inVanish.contains(player.getUniqueId());
     }
 
     @Override
