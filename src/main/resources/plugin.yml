@@ -52,3 +52,7 @@ commands:
     description: Spy
     default: false
     usage: /spy
+  CommandSpy:
+    description: CommandSpy
+    default: false
+    usage: /commandspy

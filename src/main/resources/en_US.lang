@@ -26,4 +26,11 @@ command.revive.revived = "&7You have been revived."
 command.spy.returned = "&7You were returned to your previous location"
 command.spy.success = "&7You are now spying on &6%player%&7. Use the command &6/spy &7to return to your previous location&7"
 
-command.blocked = "&cYou cannot use that command..."
+command.commandspy.deny = "&6%player%&7: %command%&7."
+command.commandspy.toggleOn = "&7Command spy on";
+command.commandspy.toggleOff = "&7Command spy off";
+
+#Event Messages
+
+event.general.nopermission = "&cYou do not have permission to do that."
+event.command.blocked = "&cYou cannot use that command..."

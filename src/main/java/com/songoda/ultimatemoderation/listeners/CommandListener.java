@@ -1,6 +1,7 @@
 package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
+import com.songoda.ultimatemoderation.command.commands.CommandCommandSpy;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import org.bukkit.Bukkit;
@@ -25,14 +26,24 @@ public class CommandListener implements Listener {
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
 
+        String command = event.getMessage();
+
         List<String> blockedCommands = SettingsManager.Setting.BLOCKED_COMMANDS.getStringList();
 
         for (String cmd : blockedCommands) {
-            if (event.getMessage().toUpperCase().startsWith("/" + cmd.toUpperCase())
+            if (command.toUpperCase().startsWith("/" + cmd.toUpperCase())
+                    && (command.toUpperCase().endsWith(cmd.toUpperCase()) || (command.contains(" ") && command.split(" ")[0].toUpperCase().endsWith(cmd.toUpperCase())))
                     && !player.hasPermission("um.commandblock.bypass")) {
                 event.setCancelled(true);
                 event.setMessage("-");
-                player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.blocked"));
+                player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.command.blocked"));
+            }
+        }
+
+        if (!player.hasPermission("um.commandspy.immune")) {
+            for (Player pl : Bukkit.getOnlinePlayers()) {
+                if (pl.hasPermission("um.commandspy") && CommandCommandSpy.isSpying(pl))
+                    pl.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.commandspy.deny", player.getName(), command));
             }
         }
     }
