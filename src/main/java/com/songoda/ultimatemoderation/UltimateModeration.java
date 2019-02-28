@@ -63,6 +63,7 @@ public class UltimateModeration extends JavaPlugin {
         this.commandManager = new CommandManager(this);
 
         // Register Listeners
+        Bukkit.getPluginManager().registerEvents(new DeathListener(this), this);
         Bukkit.getPluginManager().registerEvents(new MoveListener(this), this);
         Bukkit.getPluginManager().registerEvents(new DropListener(this), this);
         Bukkit.getPluginManager().registerEvents(new InventoryListener(this), this);

@@ -18,3 +18,7 @@ command.freeze.remove = "&7You have unfrozen &6%player%&7 successfully.";
 command.freeze.alertadd = "&7You have been frozen.";
 command.freeze.alertremove = "&7You have been unfrozen.";
 command.freeze.nope = "&cYou cannot do that because you are currently frozen...";
+
+command.revive.noloot = "&cNo loot could be found to revive the player with."
+command.revive.success = "&7You have revived &6%player% &7successfully."
+command.revive.revived = "&7You have been revived."

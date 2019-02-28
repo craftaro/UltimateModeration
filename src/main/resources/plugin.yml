@@ -44,3 +44,7 @@ commands:
     description: Freeze
     default: false
     usage: /freeze
+  Revive:
+    description: Revive
+    default: false
+    usage: /revive
