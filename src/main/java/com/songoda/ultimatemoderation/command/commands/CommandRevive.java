@@ -49,7 +49,7 @@ public class CommandRevive extends AbstractCommand {
             player.getWorld().dropItemNaturally(player.getLocation(), item);
         }
 
-        player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.noloot"));
+        player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.revived"));
         sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.success", player.getName()));
         return ReturnType.SUCCESS;
     }
