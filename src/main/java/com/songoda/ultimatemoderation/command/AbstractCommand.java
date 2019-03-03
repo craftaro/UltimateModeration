@@ -9,8 +9,8 @@ import java.util.List;
 
 public abstract class AbstractCommand {
 
-    private AbstractCommand parent = null;
     private final boolean noConsole;
+    private AbstractCommand parent = null;
     private boolean hasArgs = false;
     private String command;
 

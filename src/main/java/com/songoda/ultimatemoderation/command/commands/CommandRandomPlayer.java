@@ -7,12 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandRandomPlayer extends AbstractCommand {
 
     public CommandRandomPlayer() {
-        super(true, false,"RandomPlayer");
+        super(true, false, "RandomPlayer");
     }
 
     @Override
@@ -26,7 +28,7 @@ public class CommandRandomPlayer extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        ((Player)sender).teleport(players.get(0).getLocation());
+        ((Player) sender).teleport(players.get(0).getLocation());
         return ReturnType.SUCCESS;
     }
 

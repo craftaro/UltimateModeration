@@ -14,12 +14,16 @@ public class CommandCommandSpy extends AbstractCommand {
     private static List<UUID> inSpy = new ArrayList<>();
 
     public CommandCommandSpy() {
-        super(true, false,"CommandSpy");
+        super(true, false, "CommandSpy");
+    }
+
+    public static boolean isSpying(Player player) {
+        return !inSpy.contains(player.getUniqueId());
     }
 
     @Override
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
-        Player player = ((Player)sender);
+        Player player = ((Player) sender);
 
         if (inSpy.contains(player.getUniqueId())) {
             inSpy.remove(player.getUniqueId());
@@ -34,10 +38,6 @@ public class CommandCommandSpy extends AbstractCommand {
     @Override
     protected List<String> onTab(UltimateModeration instance, CommandSender sender, String... args) {
         return null;
-    }
-
-    public static boolean isSpying(Player player) {
-        return !inSpy.contains(player.getUniqueId());
     }
 
     @Override

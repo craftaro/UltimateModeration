@@ -2,16 +2,13 @@ package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.commands.CommandCommandSpy;
-import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommandListener implements Listener {

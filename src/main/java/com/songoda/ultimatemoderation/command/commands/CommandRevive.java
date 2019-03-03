@@ -18,7 +18,7 @@ public class CommandRevive extends AbstractCommand {
     private static List<UUID> frozen = new ArrayList<>();
 
     public CommandRevive() {
-        super(true, true,"Revive");
+        super(true, true, "Revive");
     }
 
     @Override

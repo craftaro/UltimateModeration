@@ -2,7 +2,6 @@ package com.songoda.ultimatemoderation.command.commands;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,7 +15,24 @@ public class CommandFreeze extends AbstractCommand {
     private static List<UUID> frozen = new ArrayList<>();
 
     public CommandFreeze() {
-        super(true, true,"Freeze");
+        super(true, true, "Freeze");
+    }
+
+    public static void freeze(Player player, Player sender) {
+        UltimateModeration instance = UltimateModeration.getInstance();
+        if (frozen.contains(player.getUniqueId())) {
+            frozen.remove(player.getUniqueId());
+            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.remove", player.getDisplayName()));
+            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertremove"));
+        } else {
+            frozen.add(player.getUniqueId());
+            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.add", player.getDisplayName()));
+            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertadd"));
+        }
+    }
+
+    public static boolean isFrozen(Player player) {
+        return frozen.contains(player.getUniqueId());
     }
 
     @Override
@@ -31,21 +47,9 @@ public class CommandFreeze extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        if (frozen.contains(player.getUniqueId())) {
-            frozen.remove(player.getUniqueId());
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.remove", player.getDisplayName()));
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertremove"));
-        } else {
-            frozen.add(player.getUniqueId());
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.add", player.getDisplayName()));
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertadd"));
-        }
+        freeze(player, (Player) sender);
 
         return ReturnType.SUCCESS;
-    }
-
-    public static boolean isFrozen(Player player) {
-        return frozen.contains(player.getUniqueId());
     }
 
     @Override

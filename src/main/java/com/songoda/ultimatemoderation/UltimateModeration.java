@@ -1,7 +1,10 @@
 package com.songoda.ultimatemoderation;
 
+import com.songoda.epicspawners.utils.gui.AbstractGUI;
 import com.songoda.ultimatemoderation.command.CommandManager;
 import com.songoda.ultimatemoderation.listeners.*;
+import com.songoda.ultimatemoderation.punish.player.PunishmentManager;
+import com.songoda.ultimatemoderation.punish.template.TemplateManager;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import org.bukkit.Bukkit;
@@ -13,8 +16,12 @@ public class UltimateModeration extends JavaPlugin {
     private static CommandSender console = Bukkit.getConsoleSender();
     private static UltimateModeration INSTANCE;
     private References references;
+
+    private TemplateManager templateManager;
     private SettingsManager settingsManager;
     private CommandManager commandManager;
+    private PunishmentManager punishmentManager;
+
     private Locale locale;
 
     public static UltimateModeration getInstance() {
@@ -60,7 +67,12 @@ public class UltimateModeration extends JavaPlugin {
 
         this.references = new References();
 
+        //Setup Managers
+        this.templateManager = new TemplateManager();
         this.commandManager = new CommandManager(this);
+        this.punishmentManager = new PunishmentManager();
+
+        AbstractGUI.initializeListeners(this);
 
         // Register Listeners
         Bukkit.getPluginManager().registerEvents(new CommandListener(this), this);
@@ -110,5 +122,11 @@ public class UltimateModeration extends JavaPlugin {
         return references;
     }
 
+    public TemplateManager getTemplateManager() {
+        return templateManager;
+    }
 
+    public PunishmentManager getPunishmentManager() {
+        return punishmentManager;
+    }
 }

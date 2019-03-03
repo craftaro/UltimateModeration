@@ -56,3 +56,31 @@ commands:
     description: CommandSpy
     default: false
     usage: /commandspy
+  Ban:
+    description: Ban
+    default: false
+    usage: /ban
+  Unban:
+    description: Unban
+    default: false
+    usage: /unban
+  Kick:
+    description: Kick
+    default: false
+    usage: /kick
+  Mute:
+    description: Mute
+    default: false
+    usage: /mute
+  Unmute:
+    description: Unmute
+    default: false
+    usage: /unmute
+  Warn:
+    description: Warn
+    default: false
+    usage: /warn
+  RunTemplate:
+    description: RunTemplate
+    defaullt: false
+    usage: /runtemplate

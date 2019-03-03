@@ -2,18 +2,16 @@ package com.songoda.ultimatemoderation.command.commands;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class CommandViewEnderChest extends AbstractCommand {
 
     public CommandViewEnderChest() {
-        super(true, true,"ViewEnderChest");
+        super(true, true, "ViewEnderChest");
     }
 
     @Override
@@ -29,7 +27,7 @@ public class CommandViewEnderChest extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        ((Player)sender).openInventory(player.getEnderChest());
+        ((Player) sender).openInventory(player.getEnderChest());
         return ReturnType.SUCCESS;
     }
 

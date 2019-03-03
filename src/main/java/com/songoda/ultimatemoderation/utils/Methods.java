@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.concurrent.TimeUnit;
+
 public class Methods {
 
     public static ItemStack getGlass() {
@@ -47,5 +49,44 @@ public class Methods {
         if (cap)
             text = text.substring(0, 1).toUpperCase() + text.substring(1);
         return ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    public static String makeReadable(Long time) {
+        if (time == null)
+            return "";
+        return String.format("%dd %dh %dm",
+                TimeUnit.MILLISECONDS.toDays(time),
+                TimeUnit.MILLISECONDS.toHours(time) - TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(time)),
+                TimeUnit.MILLISECONDS.toMinutes(time) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(time)));
+    }
+
+
+    public static long parseTime(String input) {
+        long result = 0;
+        String number = "";
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (Character.isDigit(c)) {
+                number += c;
+            } else if (Character.isLetter(c) && !number.isEmpty()) {
+                result += convert(Integer.parseInt(number), c);
+                number = "";
+            }
+        }
+        return result;
+    }
+
+    private static long convert(int value, char unit) {
+        switch (unit) {
+            case 'd':
+                return value * 1000 * 60 * 60 * 24;
+            case 'h':
+                return value * 1000 * 60 * 60;
+            case 'm':
+                return value * 1000 * 60;
+            case 's':
+                return value * 1000;
+        }
+        return 0;
     }
 }

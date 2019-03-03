@@ -13,7 +13,7 @@ import java.util.List;
 public class CommandClearChat extends AbstractCommand {
 
     public CommandClearChat() {
-        super(true, true,"ClearChat");
+        super(true, true, "ClearChat");
     }
 
     @Override

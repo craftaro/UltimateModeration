@@ -1,10 +1,8 @@
 package com.songoda.ultimatemoderation.command;
 
-import com.songoda.epicspawners.References;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.commands.*;
 import com.songoda.ultimatemoderation.utils.Methods;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,6 +34,13 @@ public class CommandManager implements CommandExecutor {
         instance.getCommand("Revive").setExecutor(this);
         instance.getCommand("Spy").setExecutor(this);
         instance.getCommand("CommandSpy").setExecutor(this);
+        instance.getCommand("Ban").setExecutor(this);
+        instance.getCommand("UnBan").setExecutor(this);
+        instance.getCommand("Kick").setExecutor(this);
+        instance.getCommand("Mute").setExecutor(this);
+        instance.getCommand("UnMute").setExecutor(this);
+        instance.getCommand("Warn").setExecutor(this);
+        instance.getCommand("RunTemplate").setExecutor(this);
 
         AbstractCommand commandUltimateModeration = addCommand(new CommandUltimateModeration());
         addCommand(new CommandClearChat());
@@ -48,8 +53,16 @@ public class CommandManager implements CommandExecutor {
         addCommand(new CommandRevive());
         addCommand(new CommandSpy());
         addCommand(new CommandCommandSpy());
+        addCommand(new CommandBan());
+        addCommand(new CommandUnBan());
+        addCommand(new CommandKick());
+        addCommand(new CommandMute());
+        addCommand(new CommandUnMute());
+        addCommand(new CommandWarn());
+        addCommand(new CommandRunTemplate());
 
         addCommand(new CommandSettings(commandUltimateModeration));
+        addCommand(new CommandHelp(commandUltimateModeration));
         addCommand(new CommandReload(commandUltimateModeration));
 
         for (AbstractCommand abstractCommand : commands) {

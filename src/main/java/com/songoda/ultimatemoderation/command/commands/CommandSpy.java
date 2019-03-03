@@ -2,21 +2,36 @@ package com.songoda.ultimatemoderation.command.commands;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
-import com.songoda.ultimatemoderation.listeners.DeathListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class CommandSpy extends AbstractCommand {
 
     private static Map<UUID, Spy> spying = new HashMap<>();
 
     public CommandSpy() {
-        super(true, true,"Spy");
+        super(true, true, "Spy");
+    }
+
+    public static void spy(Player player, Player senderP) {
+        UltimateModeration instance = UltimateModeration.getInstance();
+        boolean didVanish = false;
+        if (!CommandVanish.isVanished(senderP)) {
+            didVanish = true;
+            CommandVanish.vanish(senderP);
+        }
+
+        spying.put(senderP.getUniqueId(), new Spy(senderP.getLocation(), didVanish));
+        player.addPassenger(senderP);
+
+        senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.success", player.getName()));
     }
 
     @Override
@@ -24,7 +39,7 @@ public class CommandSpy extends AbstractCommand {
         if (args.length > 1)
             return ReturnType.SYNTAX_ERROR;
 
-        Player senderP = ((Player)sender);
+        Player senderP = ((Player) sender);
 
         if (args.length == 0) {
             if (!spying.containsKey(senderP.getUniqueId()))
@@ -50,16 +65,8 @@ public class CommandSpy extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        boolean didVanish = false;
-        if (!CommandVanish.isVanished(senderP)) {
-            didVanish = true;
-            CommandVanish.vanish(senderP);
-        }
+        spy(player, senderP);
 
-        spying.put(senderP.getUniqueId(), new Spy(senderP.getLocation(), didVanish));
-        player.addPassenger(senderP);
-
-        senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.success", player.getName()));
         return ReturnType.SUCCESS;
     }
 
@@ -83,7 +90,7 @@ public class CommandSpy extends AbstractCommand {
         return "Allows you to spy on a player.";
     }
 
-    public class Spy {
+    public static class Spy {
         private Location lastLocation;
         private boolean vanishApplied;
 
