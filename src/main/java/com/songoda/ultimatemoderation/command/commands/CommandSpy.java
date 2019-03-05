@@ -4,6 +4,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,7 +21,7 @@ public class CommandSpy extends AbstractCommand {
         super(true, true, "Spy");
     }
 
-    public static void spy(Player player, Player senderP) {
+    public static void spy(OfflinePlayer player, Player senderP) {
         UltimateModeration instance = UltimateModeration.getInstance();
         boolean didVanish = false;
         if (!CommandVanish.isVanished(senderP)) {
@@ -29,7 +30,7 @@ public class CommandSpy extends AbstractCommand {
         }
 
         spying.put(senderP.getUniqueId(), new Spy(senderP.getLocation(), didVanish));
-        player.addPassenger(senderP);
+        player.getPlayer().addPassenger(senderP);
 
         senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.success", player.getName()));
     }

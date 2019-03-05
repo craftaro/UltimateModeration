@@ -7,28 +7,42 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class Punishment {
+
+    private final UUID uuid;
 
     private final PunishmentType punishmentType;
     private final long duration;
     private final String reason;
 
+    public Punishment(PunishmentType punishmentType, long duration, String reason, UUID uuid) {
+        this.punishmentType = punishmentType;
+        this.duration = duration;
+        this.reason = reason;
+        this.uuid = uuid;
+    }
+
     public Punishment(PunishmentType punishmentType, long duration, String reason) {
         this.punishmentType = punishmentType;
         this.duration = duration;
         this.reason = reason;
+        this.uuid = UUID.randomUUID();
     }
 
     public Punishment(PunishmentType punishmentType, String reason) {
         this.punishmentType = punishmentType;
         this.duration = -1;
         this.reason = reason;
+        this.uuid = UUID.randomUUID();
     }
 
     protected Punishment(Punishment punishment) {
         this.punishmentType = punishment.getPunishmentType();
         this.duration = punishment.getDuration();
         this.reason = punishment.getReason();
+        this.uuid = punishment.getUUID();
     }
 
     public void execute(CommandSender punisher, OfflinePlayer victim) {
@@ -92,6 +106,10 @@ public class Punishment {
             punishSuccess += plugin.getLocale().getMessage("event.punish.yourduration", Methods.makeReadable(duration));
 
         victim.sendMessage(punishSuccess + Methods.formatText("&7."));
+    }
+
+    public UUID getUUID() {
+        return uuid;
     }
 
     public PunishmentType getPunishmentType() {

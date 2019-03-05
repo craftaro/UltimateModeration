@@ -3,6 +3,7 @@ package com.songoda.ultimatemoderation.gui;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -11,9 +12,9 @@ public class GUIPlayer extends AbstractGUI {
 
     private final UltimateModeration plugin;
 
-    private final Player toModerate;
+    private final OfflinePlayer toModerate;
 
-    public GUIPlayer(UltimateModeration plugin, Player toModerate, Player player) {
+    public GUIPlayer(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
         this.plugin = plugin;
         this.toModerate = toModerate;
@@ -35,7 +36,7 @@ public class GUIPlayer extends AbstractGUI {
         createButton(28, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish"));
         createButton(30, Material.DIAMOND_CHESTPLATE, plugin.getLocale().getMessage("gui.player.moderate"));
         createButton(32, Material.DIAMOND_SWORD, plugin.getLocale().getMessage("gui.player.punishments"));
-        createButton(34, Material.STONE, "BUTT");
+        createButton(34, Material.MAP, plugin.getLocale().getMessage("gui.player.notes"));
     }
 
     @Override
@@ -54,6 +55,10 @@ public class GUIPlayer extends AbstractGUI {
 
         registerClickable(32, ((player1, inventory1, cursor, slot, type) -> {
             new GUIPunishments(plugin, toModerate, player1);
+        }));
+
+        registerClickable(34, ((player1, inventory1, cursor, slot, type) -> {
+            new GUINotesManager(plugin, toModerate, player1);
         }));
     }
 

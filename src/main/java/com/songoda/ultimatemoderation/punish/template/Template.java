@@ -17,6 +17,12 @@ public class Template extends Punishment {
         this.templateName = templateName;
     }
 
+    public Template(PunishmentType punishmentType, long duration, String reason, UUID creator, String templateName, UUID uuid) {
+        super(punishmentType, duration, reason, uuid);
+        this.creator = creator;
+        this.templateName = templateName;
+    }
+
     public Template(PunishmentType punishmentType, long duration, String reason, UUID creator, String templateName) {
         super(punishmentType, duration, reason);
         this.creator = creator;

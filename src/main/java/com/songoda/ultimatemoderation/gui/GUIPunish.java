@@ -9,6 +9,7 @@ import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class GUIPunish extends AbstractGUI {
 
     private final UltimateModeration plugin;
-    private final Player toModerate;
+    private final OfflinePlayer toModerate;
 
     private Template template;
     private boolean justSaved = false;
@@ -33,7 +34,7 @@ public class GUIPunish extends AbstractGUI {
 
     private int task;
 
-    public GUIPunish(UltimateModeration plugin, Player toModerate, Template template, Player player) {
+    public GUIPunish(UltimateModeration plugin, OfflinePlayer toModerate, Template template, Player player) {
         super(player);
         this.plugin = plugin;
         this.toModerate = toModerate;
@@ -258,7 +259,7 @@ public class GUIPunish extends AbstractGUI {
 
     private void updateTemplate() {
         Template template = new Template(this.type, this.duration, this.reason, this.template.getCreator(), this.templateName);
-        plugin.getTemplateManager().updateTemplate(template);
+        plugin.getTemplateManager().updateTemplate(this.template.getUUID(), template);
         justSaved = true;
         if (toModerate == null)
             new GUITemplateManager(plugin, player);

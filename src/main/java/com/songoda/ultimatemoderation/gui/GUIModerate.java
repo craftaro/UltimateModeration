@@ -5,6 +5,7 @@ import com.songoda.ultimatemoderation.command.commands.CommandFreeze;
 import com.songoda.ultimatemoderation.command.commands.CommandSpy;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -13,9 +14,9 @@ public class GUIModerate extends AbstractGUI {
 
     private final UltimateModeration plugin;
 
-    private final Player toModerate;
+    private final OfflinePlayer toModerate;
 
-    public GUIModerate(UltimateModeration plugin, Player toModerate, Player player) {
+    public GUIModerate(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
         this.plugin = plugin;
         this.toModerate = toModerate;

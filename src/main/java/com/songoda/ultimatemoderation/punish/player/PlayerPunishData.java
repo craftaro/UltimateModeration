@@ -1,5 +1,6 @@
 package com.songoda.ultimatemoderation.punish.player;
 
+import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 
@@ -15,6 +16,8 @@ public class PlayerPunishData {
 
     private final List<AppliedPunishment> activePunishments = new ArrayList<>();
     private final List<AppliedPunishment> expiredPunishments = new ArrayList<>();
+
+    private final List<PunishmentNote> punishmentNotes = new ArrayList<>();
 
     public PlayerPunishData(UUID player) {
         this.player = player;
@@ -64,7 +67,21 @@ public class PlayerPunishData {
         return appliedPunishments;
     }
 
-    private void audit() {
+    public List<PunishmentNote> getNotes() {
+        return new ArrayList<>(punishmentNotes);
+    }
+
+    public PunishmentNote[] addNotes(PunishmentNote... notes) {
+        this.punishmentNotes.addAll(Arrays.asList(notes));
+        return notes;
+    }
+
+    public PunishmentNote[] removeNote(PunishmentNote... notes) {
+        this.punishmentNotes.removeAll(Arrays.asList(notes));
+        return notes;
+    }
+
+    public void audit() {
         audit(false, PunishmentType.ALL);
     }
 

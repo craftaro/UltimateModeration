@@ -3,6 +3,7 @@ package com.songoda.ultimatemoderation.command.commands;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,20 +19,20 @@ public class CommandFreeze extends AbstractCommand {
         super(true, true, "Freeze");
     }
 
-    public static void freeze(Player player, Player sender) {
+    public static void freeze(OfflinePlayer player, Player sender) {
         UltimateModeration instance = UltimateModeration.getInstance();
         if (frozen.contains(player.getUniqueId())) {
             frozen.remove(player.getUniqueId());
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.remove", player.getDisplayName()));
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertremove"));
+            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.remove", player.getPlayer().getDisplayName()));
+            player.getPlayer().sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertremove"));
         } else {
             frozen.add(player.getUniqueId());
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.add", player.getDisplayName()));
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertadd"));
+            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.add", player.getPlayer().getDisplayName()));
+            player.getPlayer().sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertadd"));
         }
     }
 
-    public static boolean isFrozen(Player player) {
+    public static boolean isFrozen(OfflinePlayer player) {
         return frozen.contains(player.getUniqueId());
     }
 

@@ -78,8 +78,10 @@ gui.templateselector.click = "&7Click to select this template."
 
 gui.templatemanager.title = "&8Templates"
 gui.templatemanager.create = "&6&lCreate Template"
-gui.templatemanager.leftclick = "&7Left-Click to"
+gui.templatemanager.leftclick = "&7Left-Click to edit."
 gui.templatemanager.rightclick = "&7Right-Click to destroy."
+
+gui.notes.title = "&8%toModerate% > Notes"
 
 gui.punishments.title = "&8%toModerate% > Punish"
 gui.punishments.reason = "&6Reason"
@@ -126,5 +128,11 @@ gui.player.title = "&8Players > %toModerate%"
 gui.player.punish = "&6&lPunish"
 gui.player.moderate = "&b&lModerate"
 gui.player.punishments = "&c&lPunishments"
+gui.player.notes = "&a&lNotes"
 
 gui.moderate.title = "&8%toModerate% > Moderate"
+gui.moderate.create = "&6Create Note"
+gui.moderate.remove = "&cClick to remove"
+gui.moderate.type = "Type in your note."
+gui.moderate.createdon = "&7Created on &6%time%&7."
+gui.moderate.createdby = "&7Created by &6%player%&7."

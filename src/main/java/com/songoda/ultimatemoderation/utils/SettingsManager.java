@@ -175,9 +175,19 @@ public class SettingsManager implements Listener {
 
         BLOCKED_COMMANDS("Main.Blocked Commands", Arrays.asList("Fly", "Op", "Plugins", "Pl")),
 
+        AUTOSAVE("Main.Auto Save Interval In Seconds", 15),
+
         GLASS_TYPE_1("Interfaces.Glass Type 1", 7),
         GLASS_TYPE_2("Interfaces.Glass Type 2", 11),
         GLASS_TYPE_3("Interfaces.Glass Type 3", 3),
+
+        DATABASE_SUPPORT("Database.Activate Mysql Support", false),
+        DATABASE_IP("Database.IP", "127.0.0.1"),
+        DATABASE_PORT("Database.Port", 3306),
+        DATABASE_NAME("Database.Database Name", "UltimateModeration"),
+        DATABASE_PREFIX("Database.Prefix", "UM-"),
+        DATABASE_USERNAME("Database.Username", "PUT_USERNAME_HERE"),
+        DATABASE_PASSWORD("Database.Password", "PUT_PASSWORD_HERE"),
 
         DOWNLOAD_FILES("System.Download Needed Data Files", true),
         LANGUGE_MODE("System.Language Mode", "en_US");

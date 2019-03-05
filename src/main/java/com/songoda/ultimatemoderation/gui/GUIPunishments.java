@@ -8,6 +8,7 @@ import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -18,12 +19,12 @@ import java.util.UUID;
 public class GUIPunishments extends AbstractGUI {
 
     private final UltimateModeration plugin;
-    private final Player toModerate;
+    private final OfflinePlayer toModerate;
 
     private Activity currentActivity = Activity.BOTH;
     private PunishmentType punishmentType = PunishmentType.ALL;
 
-    public GUIPunishments(UltimateModeration plugin, Player toModerate, Player player) {
+    public GUIPunishments(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
         this.plugin = plugin;
         this.toModerate = toModerate;

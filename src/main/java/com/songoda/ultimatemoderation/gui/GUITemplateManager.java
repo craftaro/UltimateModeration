@@ -42,7 +42,8 @@ public class GUITemplateManager extends AbstractGUI {
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
 
         ArrayList<Template> templates = new ArrayList<>(plugin.getTemplateManager().getTemplates().values());
-        templates.removeIf(template -> template.getPunishmentType() != punishmentType);
+        if (punishmentType != PunishmentType.ALL)
+            templates.removeIf(template -> template.getPunishmentType() != punishmentType);
         for (int i = 0; i < templates.size(); i++) {
             Template template = templates.get(i);
             createButton(18 + i, Material.MAP, "&6&l" + template.getTemplateName(),
@@ -53,7 +54,7 @@ public class GUITemplateManager extends AbstractGUI {
                 if (type == ClickType.LEFT) {
                     new GUIPunish(plugin, null, template, player);
                 } else if (type == ClickType.RIGHT) {
-                    plugin.getTemplateManager().removeTemplate(template.getTemplateName());
+                    plugin.getTemplateManager().removeTemplate(template.getUUID());
                     constructGUI();
                 }
             }));
