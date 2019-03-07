@@ -5,9 +5,13 @@ import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.punish.template.Template;
+import com.songoda.ultimatemoderation.tickets.Ticket;
+import com.songoda.ultimatemoderation.tickets.TicketResponse;
+import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.ConfigWrapper;
 
 import java.util.List;
+import java.util.UUID;
 
 public abstract class Storage {
 
@@ -59,6 +63,20 @@ public abstract class Storage {
                         new StorageItem("author", note.getAuthor().toString()),
                         new StorageItem("subject", note.getSubject().toString()),
                         new StorageItem("creation", note.getCreationDate()));
+            }
+        }
+
+        for (Ticket ticket : instance.getTicketManager().getTickets()) {
+            prepareSaveItem("tickets", new StorageItem("id", ticket.getTicketId()),
+                    new StorageItem("player", ticket.getVictim().toString()),
+                    new StorageItem("subject", ticket.getSubject()),
+                    new StorageItem("status", ticket.getStatus().toString()));
+
+            for (TicketResponse ticketResponse : ticket.getResponses()) {
+                prepareSaveItem("ticketresponses", new StorageItem("posted", ticketResponse.getPostedDate()),
+                        new StorageItem("ticketid", ticket.getTicketId()),
+                        new StorageItem("author", ticketResponse.getAuthor().toString()),
+                        new StorageItem("message", ticketResponse.getMessage()));
             }
         }
     }

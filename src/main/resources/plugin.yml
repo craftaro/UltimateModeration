@@ -84,3 +84,7 @@ commands:
     description: RunTemplate
     defaullt: false
     usage: /runtemplate
+  Ticket:
+    description: Ticket
+    defaullt: false
+    usage: /ticket

@@ -81,8 +81,6 @@ gui.templatemanager.create = "&6&lCreate Template"
 gui.templatemanager.leftclick = "&7Left-Click to edit."
 gui.templatemanager.rightclick = "&7Right-Click to destroy."
 
-gui.notes.title = "&8%toModerate% > Notes"
-
 gui.punishments.title = "&8%toModerate% > Punish"
 gui.punishments.reason = "&6Reason"
 gui.punishments.duration = "&6Initial Duration"
@@ -129,10 +127,29 @@ gui.player.punish = "&6&lPunish"
 gui.player.moderate = "&b&lModerate"
 gui.player.punishments = "&c&lPunishments"
 gui.player.notes = "&a&lNotes"
+gui.player.tickets = "&7&lTickets"
 
 gui.moderate.title = "&8%toModerate% > Moderate"
-gui.moderate.create = "&6Create Note"
-gui.moderate.remove = "&cClick to remove"
-gui.moderate.type = "Type in your note."
-gui.moderate.createdon = "&7Created on &6%time%&7."
-gui.moderate.createdby = "&7Created by &6%player%&7."
+
+gui.notes.title = "&8%tonotes% > Notes"
+gui.notes.create = "&6Create Note"
+gui.notes.remove = "&cClick to remove"
+gui.notes.type = "Type in your note."
+gui.notes.createdon = "&7Created on &6%time%&7."
+gui.notes.createdby = "&7Created by &6%player%&7."
+
+
+gui.tickets.title = "&8Tickets"
+gui.tickets.titlesingle = "&8%toModerate% > Tickets"
+gui.tickets.create = "&6Create a ticket"
+gui.tickets.click = "&6Click to Manage."
+gui.tickets.player = "&7Player &6%player%&7."
+gui.tickets.what = "&6What would you like to say in your first ticket post?"
+gui.tickets.subject = "Ticket Subject"
+
+gui.ticket.title = "&8Tickets > %id%";
+gui.ticket.createdon = "&7Created on &6%time%&7."
+gui.ticket.respond = "&6Respond"
+gui.ticket.status = "&7Status &6%status%&7."
+gui.ticket.postedby = "&7Posted by &6%player%&7."
+gui.ticket.what = "&6What would you like to say?"

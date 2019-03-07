@@ -59,7 +59,6 @@ public class GUITemplateManager extends AbstractGUI {
                 }
             }));
         }
-
     }
 
     @Override

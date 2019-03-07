@@ -58,7 +58,7 @@ public class StorageYaml extends Storage {
     public void prepareSaveItem(String group, StorageItem... items) {
         for (StorageItem item : items) {
             if (item == null || item.asObject() == null) continue;
-            toSave.put("data." + group + "." + items[0].asString() + "." + item.getKey(), item.asObject());
+            toSave.put("data." + group + "." + items[0].asObject()+ "." + item.getKey(), item.asObject());
         }
     }
 

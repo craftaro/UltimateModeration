@@ -72,6 +72,7 @@ public class GUIPlayers extends AbstractGUI {
         createButton(48, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
 
 
+        createButton(51, Material.CHEST, "&7Tickets");
         createButton(52, Material.MAP, plugin.getLocale().getMessage("gui.players.button.templatemanager"));
     }
 
@@ -81,8 +82,11 @@ public class GUIPlayers extends AbstractGUI {
 
     @Override
     protected void registerClickables() {
-        registerClickable(52, ((player1, inventory1, cursor, slot, type) ->
-                new GUITemplateManager(plugin, player)));
+        registerClickable(51, (player1, inventory1, cursor, slot, type) ->
+                new GUITicketManager(plugin, null, player));
+
+        registerClickable(52, (player1, inventory1, cursor, slot, type) ->
+                new GUITemplateManager(plugin, player));
     }
 
     @Override

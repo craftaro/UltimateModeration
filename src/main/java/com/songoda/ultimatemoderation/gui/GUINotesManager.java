@@ -41,7 +41,7 @@ public class GUINotesManager extends AbstractGUI {
 
         createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
 
-        createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.moderate.create"));
+        createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create"));
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
@@ -75,9 +75,9 @@ public class GUINotesManager extends AbstractGUI {
 
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
-            lore.add(plugin.getLocale().getMessage("gui.moderate.createdby", Bukkit.getOfflinePlayer(note.getAuthor()).getName()));
-            lore.add(plugin.getLocale().getMessage("gui.moderate.createdon", format.format(new Date(note.getCreationDate()))));
-            lore.add(plugin.getLocale().getMessage("gui.moderate.remove"));
+            lore.add(plugin.getLocale().getMessage("gui.notes.createdby", Bukkit.getOfflinePlayer(note.getAuthor()).getName()));
+            lore.add(plugin.getLocale().getMessage("gui.notes.createdon", format.format(new Date(note.getCreationDate()))));
+            lore.add(plugin.getLocale().getMessage("gui.notes.remove"));
 
             createButton(18 + i, Material.MAP, name, lore);
 
@@ -94,15 +94,18 @@ public class GUINotesManager extends AbstractGUI {
     @Override
     protected void registerClickables() {
         registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
-                new GUIPlayers(plugin, player)));
+                new GUIPlayer(plugin, toModerate, player1)));
 
         registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
-            player.sendMessage(plugin.getLocale().getMessage("gui.moderate.type"));
-            new AbstractChatConfirm(player, event -> {
+            player.sendMessage(plugin.getLocale().getMessage("gui.notes.type"));
+            AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event -> {
                 plugin.getPunishmentManager().getPlayer(toModerate).addNotes(new PunishmentNote(event.getMessage(),
                         player.getUniqueId(), toModerate.getUniqueId(), System.currentTimeMillis()));
                 constructGUI();
             });
+
+            abstractChatConfirm.setOnClose(() ->
+                    init(inventory.getTitle(), inventory.getSize()));
         }));
     }
 

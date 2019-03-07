@@ -13,6 +13,10 @@ import com.songoda.ultimatemoderation.storage.Storage;
 import com.songoda.ultimatemoderation.storage.StorageRow;
 import com.songoda.ultimatemoderation.storage.types.StorageMysql;
 import com.songoda.ultimatemoderation.storage.types.StorageYaml;
+import com.songoda.ultimatemoderation.tickets.Ticket;
+import com.songoda.ultimatemoderation.tickets.TicketManager;
+import com.songoda.ultimatemoderation.tickets.TicketResponse;
+import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
@@ -28,6 +32,7 @@ public class UltimateModeration extends JavaPlugin {
     private static UltimateModeration INSTANCE;
     private References references;
 
+    private TicketManager ticketManager;
     private TemplateManager templateManager;
     private SettingsManager settingsManager;
     private CommandManager commandManager;
@@ -80,6 +85,7 @@ public class UltimateModeration extends JavaPlugin {
         this.references = new References();
 
         // Setup Managers
+        this.ticketManager = new TicketManager();
         this.templateManager = new TemplateManager();
         this.commandManager = new CommandManager(this);
         this.punishmentManager = new PunishmentManager();
@@ -87,7 +93,6 @@ public class UltimateModeration extends JavaPlugin {
         // Load data
         this.checkStorage();
         this.loadFromFile();
-
 
         // Register Listeners
         AbstractGUI.initializeListeners(this);
@@ -162,6 +167,32 @@ public class UltimateModeration extends JavaPlugin {
                 playerPunishData.addNotes(note);
             }
         }
+
+        if (storage.containsGroup("tickets")) {
+            for (StorageRow row : storage.getRowsByGroup("tickets")) {
+
+                int id = row.get("id").asInt();
+                Ticket ticket = new Ticket(
+                        UUID.fromString(row.get("player").asString()),
+                        row.get("subject").asString());
+                ticket.setTicketId(id);
+                ticket.setStatus(TicketStatus.valueOf(row.get("status").asString()));
+                ticketManager.addTicket(ticket, id);
+            }
+        }
+
+        if (storage.containsGroup("ticketresponses")) {
+            for (StorageRow row : storage.getRowsByGroup("ticketresponses")) {
+                int id = row.get("ticketid").asInt();
+                TicketResponse ticketResponse = new TicketResponse(
+                        UUID.fromString(row.get("author").asString()),
+                                row.get("message").asString(),
+                                row.get("posted").asLong());
+                ticketResponse.setTicketId(id);
+                ticketManager.getTicket(id).addResponse(ticketResponse);
+
+            }
+        }
         storage.doSave();
     }
 
@@ -200,5 +231,9 @@ public class UltimateModeration extends JavaPlugin {
 
     public PunishmentManager getPunishmentManager() {
         return punishmentManager;
+    }
+
+    public TicketManager getTicketManager() {
+        return ticketManager;
     }
 }
