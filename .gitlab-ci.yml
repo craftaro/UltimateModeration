@@ -2,7 +2,7 @@ stages:
 - build
 
 variables:
-    name: "UltimateModeration"
+    name: "ultimatemoderation"
     path: "/builds/Songoda/$name"
     version: "1"
 
