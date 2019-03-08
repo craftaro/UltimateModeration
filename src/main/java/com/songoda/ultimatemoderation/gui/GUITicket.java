@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GUITicket extends AbstractGUI {
 
@@ -26,6 +27,7 @@ public class GUITicket extends AbstractGUI {
     private final Ticket ticket;
 
     private final OfflinePlayer toModerate;
+    private int page = 0;
 
     public GUITicket(UltimateModeration plugin, Ticket ticket, OfflinePlayer toModerate, Player player) {
         super(player);
@@ -42,11 +44,29 @@ public class GUITicket extends AbstractGUI {
         resetClickables();
         registerClickables();
 
-        createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+        int numNotes = ticket.getResponses().size();
+        int maxPage = (int) Math.ceil(numNotes / 36.0);
+
+        List<TicketResponse> responses = ticket.getResponses().stream().skip(page * 36).limit(36)
+                .collect(Collectors.toList());
+
+        if (page != 0) {
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
+                page --;
+                constructGUI();
+            }));
+        }
+
+        if (page != maxPage) {
+            createButton(8, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            registerClickable(8, ((player1, inventory1, cursor, slot, type) -> {
+                page ++;
+                constructGUI();
+            }));
+        }
 
         createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
-
-        createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
 
         if (player.hasPermission("um.ticket.openclose"))
             createButton(5, Material.REDSTONE, "&6" + ticket.getStatus().getStatus());
@@ -55,8 +75,6 @@ public class GUITicket extends AbstractGUI {
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
-
-        List<TicketResponse> responses = ticket.getResponses();
 
         for (int i = 0; i < responses.size(); i++) {
             TicketResponse ticketResponse = responses.get(i);

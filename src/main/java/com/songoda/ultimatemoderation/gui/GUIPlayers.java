@@ -1,6 +1,7 @@
 package com.songoda.ultimatemoderation.gui;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
+import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
@@ -11,12 +12,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GUIPlayers extends AbstractGUI {
 
     private final UltimateModeration plugin;
 
     private int task;
+    private int page = 0;
 
     public GUIPlayers(UltimateModeration plugin, Player player) {
         super(player);
@@ -31,7 +35,30 @@ public class GUIPlayers extends AbstractGUI {
         inventory.clear();
         resetClickables();
         registerClickables();
-        ArrayList<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers()).stream()
+                .skip(page * 36).collect(Collectors.toList());
+
+        int sizeLeft = players.size();
+
+        players = players.stream().limit(36).collect(Collectors.toList());
+
+        if (page != 0) {
+            createButton(46, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            registerClickable(46, ((player1, inventory1, cursor, slot, type) -> {
+                page --;
+                constructGUI();
+            }));
+        }
+
+        if (sizeLeft >= 36) {
+            createButton(48, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            registerClickable(48, ((player1, inventory1, cursor, slot, type) -> {
+                page ++;
+                constructGUI();
+            }));
+        }
+
         for (int i = 0; i < players.size(); i++) {
             Player pl = players.get(i);
 
@@ -66,11 +93,6 @@ public class GUIPlayers extends AbstractGUI {
 
         for (int i = 0; i < 9; i++)
             createButton(36 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
-
-
-        createButton(46, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
-        createButton(48, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
-
 
         createButton(51, Material.CHEST, "&7Tickets");
         createButton(52, Material.MAP, plugin.getLocale().getMessage("gui.players.button.templatemanager"));

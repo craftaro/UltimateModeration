@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GUITicketManager extends AbstractGUI {
 
@@ -28,6 +29,8 @@ public class GUITicketManager extends AbstractGUI {
     private final OfflinePlayer toModerate;
 
     private TicketStatus status = TicketStatus.OPEN;
+
+    private int page = 0;
 
     public GUITicketManager(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
@@ -43,11 +46,30 @@ public class GUITicketManager extends AbstractGUI {
         resetClickables();
         registerClickables();
 
-        createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+        List<Ticket> tickets = toModerate != null ? plugin.getTicketManager().getTicketsAbout(toModerate, status) : plugin.getTicketManager().getTickets(status);
+
+        int numTickets = tickets.size();
+        int maxPage = (int) Math.ceil(numTickets / 36.0);
+
+        tickets = tickets.stream().skip(page * 36).limit(36).collect(Collectors.toList());
+
+        if (page != 0) {
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
+                page --;
+                constructGUI();
+            }));
+        }
+
+        if (maxPage >= 36) {
+            createButton(5, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
+                page ++;
+                constructGUI();
+            }));
+        }
 
         createButton(3 ,Material.DIAMOND_SWORD, Methods.formatText("&6" + status.getStatus()));
-
-        createButton(5, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
 
         if (toModerate != null)
         createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.tickets.create"));
@@ -57,8 +79,6 @@ public class GUITicketManager extends AbstractGUI {
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
-
-        List<Ticket> tickets = toModerate != null ? plugin.getTicketManager().getTicketsAbout(toModerate, status) : plugin.getTicketManager().getTickets(status);
 
         for (int i = 0; i < tickets.size(); i++) {
             Ticket ticket = tickets.get(i);
@@ -115,6 +135,7 @@ public class GUITicketManager extends AbstractGUI {
 
         registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
             this.status = status == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN;
+            this.page = 0;
             constructGUI();
         }));
 

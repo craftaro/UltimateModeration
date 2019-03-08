@@ -16,12 +16,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GUINotesManager extends AbstractGUI {
 
     private final UltimateModeration plugin;
 
     private final OfflinePlayer toModerate;
+
+    private int page = 0;
 
     public GUINotesManager(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
@@ -34,19 +37,37 @@ public class GUINotesManager extends AbstractGUI {
     @Override
     protected void constructGUI() {
         inventory.clear();
-
-        createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
-
-        createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
-
-        createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
-
-        createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create"));
+        resetClickables();
+        registerClickables();
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
 
-        List<PunishmentNote> notes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes();
+        int numNotes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().size();
+        int maxPage = (int) Math.ceil(numNotes / 36.0);
+
+        List<PunishmentNote> notes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().stream()
+                .skip(page * 36).limit(36).collect(Collectors.toList());
+
+        if (page != 0) {
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
+                page --;
+                constructGUI();
+            }));
+        }
+
+        if (page != maxPage) {
+            createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
+                page ++;
+                constructGUI();
+            }));
+        }
+
+        createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
+
+        createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create"));
 
         for (int i = 0; i < notes.size(); i++) {
             PunishmentNote note = notes.get(i);

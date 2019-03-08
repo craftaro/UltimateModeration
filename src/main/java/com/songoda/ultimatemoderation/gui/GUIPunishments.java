@@ -2,19 +2,20 @@ package com.songoda.ultimatemoderation.gui;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
+import com.songoda.ultimatemoderation.punish.Punishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
+import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.omg.PortableInterceptor.ACTIVE;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GUIPunishments extends AbstractGUI {
 
@@ -23,6 +24,8 @@ public class GUIPunishments extends AbstractGUI {
 
     private Activity currentActivity = Activity.BOTH;
     private PunishmentType punishmentType = PunishmentType.ALL;
+
+    private int page = 0;
 
     public GUIPunishments(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
@@ -38,6 +41,52 @@ public class GUIPunishments extends AbstractGUI {
         resetClickables();
         registerClickables();
 
+        PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(toModerate);
+
+        List<PunishmentHolder> punishments = new ArrayList<>();
+
+        if (currentActivity == Activity.ACTIVE || currentActivity == Activity.BOTH) {
+            for (AppliedPunishment punishment : playerPunishData.getActivePunishments()) {
+                if (punishmentType != PunishmentType.ALL) {
+                    if (punishment.getPunishmentType() != punishmentType)
+                        continue;
+                }
+                punishments.add(new PunishmentHolder(Activity.ACTIVE, punishment));
+            }
+        }
+
+        if (currentActivity == Activity.EXPIRED || currentActivity == Activity.BOTH) {
+            for (AppliedPunishment punishment : playerPunishData.getExpiredPunishments()) {
+                if (punishmentType != PunishmentType.ALL) {
+                    if (punishment.getPunishmentType() != punishmentType)
+                        continue;
+                }
+                punishments.add(new PunishmentHolder(Activity.EXPIRED, punishment));
+            }
+        }
+
+        int numNotes = punishments.size();
+        int maxPage = (int) Math.ceil(numNotes / 36.0);
+
+        punishments = punishments.stream().skip(page * 36).limit(36)
+                .collect(Collectors.toList());
+
+        if (page != 0) {
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
+                page --;
+                constructGUI();
+            }));
+        }
+
+        if (page != maxPage) {
+            createButton(8, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            registerClickable(8, ((player1, inventory1, cursor, slot, type) -> {
+                page ++;
+                constructGUI();
+            }));
+        }
+
         createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
 
         createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
@@ -50,34 +99,10 @@ public class GUIPunishments extends AbstractGUI {
         for (int i = 0; i < 9; i++)
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
 
-        PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(toModerate);
-
-        Map<AppliedPunishment, Activity> punishments = new HashMap<>();
-
-        if (currentActivity == Activity.ACTIVE || currentActivity == Activity.BOTH) {
-            for (AppliedPunishment punishment : playerPunishData.getActivePunishments()) {
-                if (punishmentType != PunishmentType.ALL) {
-                    if (punishment.getPunishmentType() != punishmentType)
-                        continue;
-                }
-                punishments.put(punishment, Activity.ACTIVE);
-            }
-        }
-
-        if (currentActivity == Activity.EXPIRED || currentActivity == Activity.BOTH) {
-            for (AppliedPunishment punishment : playerPunishData.getExpiredPunishments()) {
-                if (punishmentType != PunishmentType.ALL) {
-                    if (punishment.getPunishmentType() != punishmentType)
-                        continue;
-                }
-                punishments.put(punishment, Activity.EXPIRED);
-            }
-        }
-
         int currentSlot = 18;
-        for (Map.Entry<AppliedPunishment, Activity> entry : punishments.entrySet()) {
-            AppliedPunishment appliedPunishment = entry.getKey();
-            Activity activity = entry.getValue();
+        for (PunishmentHolder punishmentHolder : punishments) {
+            AppliedPunishment appliedPunishment = punishmentHolder.appliedPunishment;
+            Activity activity = punishmentHolder.getActivity();
 
             ArrayList<String> lore = new ArrayList<>();
             lore.add("");
@@ -119,17 +144,38 @@ public class GUIPunishments extends AbstractGUI {
 
         registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
             this.currentActivity = currentActivity.next();
+            this.page = 0;
             constructGUI();
         }));
 
         registerClickable(4, ((player1, inventory1, cursor, slot, type) -> {
             this.punishmentType = punishmentType.nextFilter();
+            this.page = 0;
             constructGUI();
         }));
     }
 
     @Override
     protected void registerOnCloses() {
+    }
+
+    private class PunishmentHolder {
+
+        private final Activity activity;
+        private final AppliedPunishment appliedPunishment;
+
+        public PunishmentHolder(Activity activity, AppliedPunishment appliedPunishment) {
+            this.activity = activity;
+            this.appliedPunishment = appliedPunishment;
+        }
+
+        public Activity getActivity() {
+            return activity;
+        }
+
+        public AppliedPunishment getAppliedPunishment() {
+            return appliedPunishment;
+        }
     }
 
     private enum Activity {
