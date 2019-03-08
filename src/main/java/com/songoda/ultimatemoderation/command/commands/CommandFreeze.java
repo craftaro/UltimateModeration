@@ -7,9 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CommandFreeze extends AbstractCommand {
 
@@ -55,6 +53,13 @@ public class CommandFreeze extends AbstractCommand {
 
     @Override
     protected List<String> onTab(UltimateModeration instance, CommandSender sender, String... args) {
+        if (args.length == 1) {
+            List<String> players = new ArrayList<>();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                players.add(player.getName());
+            }
+            return players;
+        }
         return null;
     }
 

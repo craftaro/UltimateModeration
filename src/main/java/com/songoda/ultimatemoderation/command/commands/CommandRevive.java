@@ -8,10 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CommandRevive extends AbstractCommand {
 
@@ -56,6 +53,13 @@ public class CommandRevive extends AbstractCommand {
 
     @Override
     protected List<String> onTab(UltimateModeration instance, CommandSender sender, String... args) {
+        if (args.length == 1) {
+            List<String> players = new ArrayList<>();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                players.add(player.getName());
+            }
+            return players;
+        }
         return null;
     }
 

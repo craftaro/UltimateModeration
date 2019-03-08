@@ -7,7 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandClearChat extends AbstractCommand {
@@ -40,6 +42,9 @@ public class CommandClearChat extends AbstractCommand {
 
     @Override
     protected List<String> onTab(UltimateModeration instance, CommandSender sender, String... args) {
+        if (args.length == 1) {
+            return Collections.singletonList("force");
+        }
         return null;
     }
 

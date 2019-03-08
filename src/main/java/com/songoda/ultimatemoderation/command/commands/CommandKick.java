@@ -8,7 +8,11 @@ import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandKick extends AbstractCommand {
@@ -47,6 +51,15 @@ public class CommandKick extends AbstractCommand {
 
     @Override
     protected List<String> onTab(UltimateModeration instance, CommandSender sender, String... args) {
+        if (args.length == 1) {
+            List<String> players = new ArrayList<>();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                players.add(player.getName());
+            }
+            return players;
+        } else if (args.length == 2) {
+            return Collections.singletonList("For being bad");
+        }
         return null;
     }
 

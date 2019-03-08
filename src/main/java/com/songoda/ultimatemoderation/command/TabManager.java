@@ -19,7 +19,7 @@ public class TabManager implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] strings) {
         for (AbstractCommand abstractCommand : commandManager.getCommands()) {
-            if (abstractCommand.getCommand() != null && abstractCommand.getCommand().equalsIgnoreCase(command.getName().toLowerCase())) {
+            if (abstractCommand.getCommand() != null && abstractCommand.getCommand().equalsIgnoreCase(command.getName()) && !abstractCommand.hasArgs()) {
                 if (strings.length == 1) {
                     List<String> subs = new ArrayList<>();
                     for (AbstractCommand ac : commandManager.getCommands()) {
@@ -29,24 +29,35 @@ public class TabManager implements TabCompleter {
                     subs.removeIf(s -> !s.toLowerCase().startsWith(strings[0].toLowerCase()));
                     return subs;
                 }
-            } else if (strings.length != 0 && abstractCommand.getParent() != null && abstractCommand.getParent().getCommand().equalsIgnoreCase(command.getName().toLowerCase())) {
+            } else if (strings.length != 0
+                    && abstractCommand.getCommand() != null
+                    && abstractCommand.getCommand().equalsIgnoreCase(command.getName().toLowerCase())) {
                 String cmd = strings[0];
                 String cmd2 = strings.length >= 2 ? String.join(" ", strings[0], strings[1]) : null;
-                for (String cmds : abstractCommand.getSubCommand()) {
-                    if (cmd.equalsIgnoreCase(cmds) || (cmd2 != null && cmd2.equalsIgnoreCase(cmds))) {
-                        List<String> list = abstractCommand.onTab(UltimateModeration.getInstance(), sender, strings);
-                        String str = strings[strings.length - 1];
-                        if (list != null && str != null && str.length() >= 1) {
-                            try {
-                                list.removeIf(s -> !s.toLowerCase().startsWith(str.toLowerCase()));
-                            } catch (UnsupportedOperationException ignored) {
-                            }
+                if (abstractCommand.hasArgs()) {
+                    return onCommand(abstractCommand, strings, sender);
+                } else {
+                    for (String cmds : abstractCommand.getSubCommand()) {
+                        if (cmd.equalsIgnoreCase(cmds) || (cmd2 != null && cmd2.equalsIgnoreCase(cmds))) {
+                            return onCommand(abstractCommand, strings, sender);
                         }
-                        return list;
                     }
                 }
             }
         }
         return null;
+    }
+
+
+    private List<String> onCommand(AbstractCommand abstractCommand, String[] strings, CommandSender sender) {
+        List<String> list = abstractCommand.onTab(UltimateModeration.getInstance(), sender, strings);
+        String str = strings[strings.length - 1];
+        if (list != null && str != null && str.length() >= 1) {
+            try {
+                list.removeIf(s -> !s.toLowerCase().startsWith(str.toLowerCase()));
+            } catch (UnsupportedOperationException ignored) {
+            }
+        }
+        return list;
     }
 }
