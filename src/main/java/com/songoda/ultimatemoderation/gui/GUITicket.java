@@ -59,17 +59,17 @@ public class GUITicket extends AbstractGUI {
         }
 
         if (page != maxPage) {
-            createButton(8, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
-            registerClickable(8, ((player1, inventory1, cursor, slot, type) -> {
+            createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
             }));
         }
 
-        createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
-
         if (player.hasPermission("um.ticket.openclose"))
             createButton(5, Material.REDSTONE, "&6" + ticket.getStatus().getStatus());
+
+        createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
 
         createButton(6, Material.REDSTONE,  plugin.getLocale().getMessage("gui.ticket.respond"));
 

@@ -80,8 +80,8 @@ public class GUIPunishments extends AbstractGUI {
         }
 
         if (page != maxPage) {
-            createButton(8, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
-            registerClickable(8, ((player1, inventory1, cursor, slot, type) -> {
+            createButton(6, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
             }));
@@ -89,12 +89,8 @@ public class GUIPunishments extends AbstractGUI {
 
         createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
 
-        createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
-
         createButton(3, Material.APPLE, Methods.formatText("&6" + currentActivity.getTranslation()));
         createButton(4, Material.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name()));
-
-        createButton(6, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");

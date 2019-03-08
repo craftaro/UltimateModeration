@@ -81,7 +81,7 @@ gui.templatemanager.create = "&6&lCreate Template"
 gui.templatemanager.leftclick = "&7Left-Click to edit."
 gui.templatemanager.rightclick = "&7Right-Click to destroy."
 
-gui.punishments.title = "&8%toModerate% > Punish"
+gui.punishments.title = "&8%toModerate% > Punishments"
 gui.punishments.reason = "&6Reason"
 gui.punishments.duration = "&6Initial Duration"
 gui.punishments.punisher = "&6Punisher"
@@ -139,7 +139,7 @@ gui.notes.createdon = "&7Created on &6%time%&7."
 gui.notes.createdby = "&7Created by &6%player%&7."
 
 
-gui.tickets.title = "&8Tickets"
+gui.tickets.title = "&8&lTickets"
 gui.tickets.titlesingle = "&8%toModerate% > Tickets"
 gui.tickets.create = "&6Create a ticket"
 gui.tickets.click = "&6Click to Manage."

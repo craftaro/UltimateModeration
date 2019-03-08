@@ -33,10 +33,10 @@ public class GUIPlayer extends AbstractGUI {
 
         createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
 
-        createButton(28, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish"));
+        createButton(38, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish"));
         createButton(30, Material.CHEST, plugin.getLocale().getMessage("gui.player.tickets"));
         createButton(32, Material.DIAMOND_SWORD, plugin.getLocale().getMessage("gui.player.punishments"));
-        createButton(34, Material.MAP, plugin.getLocale().getMessage("gui.player.notes"));
+        createButton(42, Material.MAP, plugin.getLocale().getMessage("gui.player.notes"));
         createButton(40, Material.DIAMOND_CHESTPLATE, plugin.getLocale().getMessage("gui.player.moderate"));
     }
 
@@ -45,7 +45,7 @@ public class GUIPlayer extends AbstractGUI {
         registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
                 new GUIPlayers(plugin, player1)));
 
-        registerClickable(28, ((player1, inventory1, cursor, slot, type) ->
+        registerClickable(38, ((player1, inventory1, cursor, slot, type) ->
                 new GUIPunish(plugin, toModerate, null, player1)));
 
         registerClickable(30, ((player1, inventory1, cursor, slot, type) ->
@@ -54,7 +54,7 @@ public class GUIPlayer extends AbstractGUI {
         registerClickable(32, ((player1, inventory1, cursor, slot, type) ->
                 new GUIPunishments(plugin, toModerate, player1)));
 
-        registerClickable(34, ((player1, inventory1, cursor, slot, type) ->
+        registerClickable(42, ((player1, inventory1, cursor, slot, type) ->
                 new GUINotesManager(plugin, toModerate, player1)));
 
         registerClickable(40, ((player1, inventory1, cursor, slot, type) ->
