@@ -3,13 +3,17 @@ package com.songoda.ultimatemoderation.listeners;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
+import com.songoda.ultimatemoderation.staffchat.StaffChannel;
 import com.songoda.ultimatemoderation.utils.Methods;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ChatListener implements Listener {
 
@@ -27,6 +31,20 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+
+        for (Map.Entry<String, StaffChannel> entry : instance.getStaffChatManager().getChats().entrySet()) {
+            String channel = entry.getKey();
+            StaffChannel members = entry.getValue();
+            if (!members.listMembers().contains(player.getUniqueId())) continue;
+
+            event.setCancelled(true);
+            for (UUID uuid : members.listMembers()) {
+                Player p = Bukkit.getPlayer(uuid);
+                if (p == null) continue;
+                p.sendMessage(Methods.formatText(channel + " " + player.getDisplayName() + "&" + members.getChatChar() + ": " + event.getMessage()));
+            }
+        }
+
         if (!isChatToggled && !player.hasPermission("um.togglechat.bypass")) {
             event.setCancelled(true);
             player.sendMessage(instance.getReferences().getPrefix() + Methods.formatText(instance.getLocale().getMessage("command.togglechat.muted")));

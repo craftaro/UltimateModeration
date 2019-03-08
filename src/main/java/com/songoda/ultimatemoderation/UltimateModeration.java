@@ -9,6 +9,7 @@ import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.punish.player.PunishmentManager;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.punish.template.TemplateManager;
+import com.songoda.ultimatemoderation.staffchat.StaffChatManager;
 import com.songoda.ultimatemoderation.storage.Storage;
 import com.songoda.ultimatemoderation.storage.StorageRow;
 import com.songoda.ultimatemoderation.storage.types.StorageMysql;
@@ -37,6 +38,7 @@ public class UltimateModeration extends JavaPlugin {
     private SettingsManager settingsManager;
     private CommandManager commandManager;
     private PunishmentManager punishmentManager;
+    private StaffChatManager staffChatManager;
 
     private Locale locale;
     private Storage storage;
@@ -89,6 +91,7 @@ public class UltimateModeration extends JavaPlugin {
         this.templateManager = new TemplateManager();
         this.commandManager = new CommandManager(this);
         this.punishmentManager = new PunishmentManager();
+        this.staffChatManager = new StaffChatManager();
 
         // Load data
         this.checkStorage();
@@ -235,5 +238,9 @@ public class UltimateModeration extends JavaPlugin {
 
     public TicketManager getTicketManager() {
         return ticketManager;
+    }
+
+    public StaffChatManager getStaffChatManager() {
+        return staffChatManager;
     }
 }

@@ -88,3 +88,8 @@ commands:
     description: Ticket
     defaullt: false
     usage: /ticket
+  StaffChat:
+    description: StaffChat
+    defaullt: false
+    aliases: [sc]
+    usage: /staffchat

@@ -42,6 +42,7 @@ public class CommandManager implements CommandExecutor {
         instance.getCommand("Warn").setExecutor(this);
         instance.getCommand("RunTemplate").setExecutor(this);
         instance.getCommand("Ticket").setExecutor(this);
+        instance.getCommand("StaffChat").setExecutor(this);
 
         AbstractCommand commandUltimateModeration = addCommand(new CommandUltimateModeration());
         addCommand(new CommandClearChat());
@@ -62,6 +63,7 @@ public class CommandManager implements CommandExecutor {
         addCommand(new CommandWarn());
         addCommand(new CommandRunTemplate());
         addCommand(new CommandTicket());
+        addCommand(new CommandStaffChat());
 
         addCommand(new CommandSettings(commandUltimateModeration));
         addCommand(new CommandHelp(commandUltimateModeration));
