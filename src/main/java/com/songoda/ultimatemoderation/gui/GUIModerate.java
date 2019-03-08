@@ -2,6 +2,7 @@ package com.songoda.ultimatemoderation.gui;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.commands.CommandFreeze;
+import com.songoda.ultimatemoderation.command.commands.CommandRevive;
 import com.songoda.ultimatemoderation.command.commands.CommandSpy;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Material;
@@ -26,44 +27,40 @@ public class GUIModerate extends AbstractGUI {
 
     @Override
     protected void constructGUI() {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = ((SkullMeta) head.getItemMeta());
-        meta.setOwningPlayer(toModerate);
-        head.setItemMeta(meta);
-
-        createButton(13, head, "&7&l" + toModerate.getName());
 
         createButton(8, Material.OAK_DOOR, "Back");
 
-        createButton(28, Material.BLUE_ICE, "&6&lFreeze", "&7Stop a player from moving.", "", "&7Currently:&6 " + (CommandFreeze.isFrozen(toModerate) ? "Frozen" : "Unfrozen"));
-        createButton(30, Material.SADDLE, "&6&lSpy", "&7Spy on a player");
-        createButton(32, Material.CHEST, "&c&lInventory", "&7Access this users Inventory.");
-        createButton(34, Material.ENDER_CHEST, "&a&lEnderchest", "&7Access this users Enderchest");
+        createButton(10, Material.BLUE_ICE, "&6&lFreeze", "&7Stop this player from moving.", "", "&7Currently:&6 " + (CommandFreeze.isFrozen(toModerate) ? "Frozen" : "Unfrozen"));
+        createButton(12, Material.SADDLE, "&6&lSpy", "&7Spy on this player");
+        createButton(14, Material.CHEST, "&c&lInventory", "&7Access this players Inventory.");
+        createButton(16, Material.ENDER_CHEST, "&a&lEnderchest", "&7Access this players Enderchest");
+
+        createButton(28, Material.SPLASH_POTION, "&c&lRevive", "&7Freeze this player.");
     }
 
     @Override
     protected void registerClickables() {
-        registerClickable(8, ((player1, inventory1, cursor, slot, type) -> {
-            new GUIPlayer(plugin, toModerate, player1);
-        }));
+        registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
+                new GUIPlayer(plugin, toModerate, player1)));
 
-        registerClickable(28, ((player1, inventory1, cursor, slot, type) -> {
+        registerClickable(10, ((player1, inventory1, cursor, slot, type) -> {
             CommandFreeze.freeze(toModerate, player);
             constructGUI();
         }));
 
-        registerClickable(30, ((player1, inventory1, cursor, slot, type) -> {
+        registerClickable(12, ((player1, inventory1, cursor, slot, type) -> {
             CommandSpy.spy(toModerate, player);
             player.closeInventory();
         }));
 
-        registerClickable(32, ((player1, inventory1, cursor, slot, type) -> {
-            player.openInventory(player.getInventory());
-        }));
+        registerClickable(14, ((player1, inventory1, cursor, slot, type) ->
+                player.openInventory(toModerate.getPlayer().getInventory())));
 
-        registerClickable(34, ((player1, inventory1, cursor, slot, type) -> {
-            player.openInventory(player.getEnderChest());
-        }));
+        registerClickable(16, ((player1, inventory1, cursor, slot, type) ->
+                player.openInventory(toModerate.getPlayer().getEnderChest())));
+
+        registerClickable(28, ((player1, inventory1, cursor, slot, type) ->
+                CommandRevive.revive(toModerate.getPlayer(), player)));
     }
 
     @Override

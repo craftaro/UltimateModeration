@@ -4,6 +4,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
 import com.songoda.ultimatemoderation.listeners.DeathListener;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -11,8 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class CommandRevive extends AbstractCommand {
-
-    private static List<UUID> frozen = new ArrayList<>();
 
     public CommandRevive() {
         super(true, true, "Revive");
@@ -30,21 +29,7 @@ public class CommandRevive extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        List<ItemStack> drops = DeathListener.getLastDrop(player);
-
-        if (drops == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.noloot"));
-            return ReturnType.FAILURE;
-        }
-
-        ItemStack[] dropArr = new ItemStack[drops.size()];
-        dropArr = drops.toArray(dropArr);
-
-        HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(dropArr);
-
-        for (ItemStack item : leftOver.values()) {
-            player.getWorld().dropItemNaturally(player.getLocation(), item);
-        }
+        if (!(revive(player, sender))) return ReturnType.FAILURE;
 
         player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.revived"));
         sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.success", player.getName()));
@@ -61,6 +46,26 @@ public class CommandRevive extends AbstractCommand {
             return players;
         }
         return null;
+    }
+
+    public static boolean revive(Player player, CommandSender sender) {
+        UltimateModeration instance = UltimateModeration.getInstance();
+        List<ItemStack> drops = DeathListener.getLastDrop(player);
+
+        if (drops == null) {
+            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.noloot"));
+            return false;
+        }
+
+        ItemStack[] dropArr = new ItemStack[drops.size()];
+        dropArr = drops.toArray(dropArr);
+
+        HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(dropArr);
+
+        for (ItemStack item : leftOver.values()) {
+            player.getWorld().dropItemNaturally(player.getLocation(), item);
+        }
+        return true;
     }
 
     @Override

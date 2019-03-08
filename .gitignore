@@ -248,3 +248,5 @@ target/classes/com/songoda/ultimatemoderation/utils/gui/Range\.class
 target/classes/com/songoda/ultimatemoderation/utils/MySQLDatabase\.class
 
 target/classes/com/songoda/ultimatemoderation/utils/version/NMSUtil\.class
+
+target/classes/com/songoda/ultimatemoderation/gui/GUIPunishments\$PunishmentHolder\.class
