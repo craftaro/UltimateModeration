@@ -107,7 +107,9 @@ public class GUIPunishments extends AbstractGUI {
             if (appliedPunishment.getPunishmentType() != PunishmentType.KICK) {
                 lore.add("");
                 lore.add(plugin.getLocale().getMessage("gui.punishments.duration"));
-                lore.add("&7" + (appliedPunishment.getDuration() != -1 ? Methods.makeReadable(appliedPunishment.getDuration()) : plugin.getLocale().getMessage("gui.general.permanent")));
+                lore.add("&7" + (appliedPunishment.getDuration() != -1
+                        ? Methods.makeReadable(appliedPunishment.getDuration())
+                        : plugin.getLocale().getMessage("gui.general.permanent")));
                 lore.add("");
                 lore.add(plugin.getLocale().getMessage("gui.punishments.punisher"));
                 lore.add("&7" + (appliedPunishment.getPunisher() == null ? "Console" : Bukkit.getOfflinePlayer(appliedPunishment.getPunisher()).getName()));
