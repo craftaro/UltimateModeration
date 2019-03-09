@@ -95,7 +95,7 @@ public class UltimateModeration extends JavaPlugin {
 
         // Load data
         this.checkStorage();
-        this.loadFromFile();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::loadFromFile, 1L);
 
         // Register Listeners
         AbstractGUI.initializeListeners(this);
