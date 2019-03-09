@@ -27,7 +27,7 @@ public class GUIPunish extends AbstractGUI {
     private boolean justSaved = false;
 
     private PunishmentType type = PunishmentType.BAN;
-    private long duration = Long.MAX_VALUE;
+    private long duration = -1;
     private String reason = null;
 
     private String templateName = null;
