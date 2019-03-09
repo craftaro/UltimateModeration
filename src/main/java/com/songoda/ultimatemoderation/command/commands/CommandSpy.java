@@ -32,7 +32,7 @@ public class CommandSpy extends AbstractCommand {
             senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.cant"));
             return;
         }
-        
+
         boolean didVanish = false;
         if (!CommandVanish.isVanished(senderP)) {
             didVanish = true;
@@ -63,6 +63,13 @@ public class CommandSpy extends AbstractCommand {
             spying.remove(senderP.getUniqueId());
             senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.returned"));
             return ReturnType.SUCCESS;
+        }
+
+        Player player = Bukkit.getPlayer(args[0]);
+
+        if (player == null) {
+            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
+            return ReturnType.FAILURE;
         }
 
         spy(player, senderP);
