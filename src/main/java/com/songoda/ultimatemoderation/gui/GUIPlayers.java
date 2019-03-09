@@ -73,7 +73,16 @@ public class GUIPlayers extends AbstractGUI {
             lore.add(plugin.getLocale().getMessage("gui.players.click"));
             lore.add("");
 
-            lore.add(plugin.getLocale().getMessage("gui.players.noreports"));
+            int ticketAmt = plugin.getTicketManager().getTicketsAbout(pl).size();
+
+            if (ticketAmt == 0)
+                lore.add(plugin.getLocale().getMessage("gui.players.notickets"));
+            else {
+                if (ticketAmt == 1)
+                    lore.add(plugin.getLocale().getMessage("gui.players.ticketssone"));
+                else
+                    lore.add(plugin.getLocale().getMessage("gui.players.tickets",ticketAmt));
+            }
 
             int warningAmt = playerPunishData.getActivePunishments(PunishmentType.WARNING).size();
 

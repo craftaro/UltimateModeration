@@ -1,6 +1,7 @@
 package com.songoda.ultimatemoderation.tickets;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,6 +31,15 @@ public class TicketManager {
 
     public List<Ticket> getTickets(TicketStatus status) {
         return registeredTickets.values().stream().filter(ticket -> ticket.getStatus() == status).collect(Collectors.toList());
+    }
+
+    public List<Ticket> getTicketsAbout(Player player) {
+        return getTicketsAbout(player.getUniqueId());
+    }
+
+    public List<Ticket> getTicketsAbout(UUID player) {
+        return registeredTickets.values().stream()
+                .filter(ticket -> ticket.getVictim().equals(player)).collect(Collectors.toList());
     }
 
     public List<Ticket> getTicketsAbout(OfflinePlayer player, TicketStatus status) {
