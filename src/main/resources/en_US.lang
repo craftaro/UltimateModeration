@@ -25,7 +25,7 @@ command.revive.revived = "&7You have been revived."
 
 command.spy.returned = "&7You were returned to your previous location"
 command.spy.success = "&7You are now spying on &6%player%&7. Use the command &6/spy &7to return to your previous location&7"
-
+command.spy.cant = "You cannot spy on yourself."
 command.commandspy.deny = "&6%player%&7: %command%&7."
 command.commandspy.toggleOn = "&7Command spy on";
 command.commandspy.toggleOff = "&7Command spy off";

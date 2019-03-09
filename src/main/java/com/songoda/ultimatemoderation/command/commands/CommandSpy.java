@@ -19,11 +19,9 @@ public class CommandSpy extends AbstractCommand {
     }
 
     public static void spy(OfflinePlayer player, Player senderP) {
-
-
         UltimateModeration instance = UltimateModeration.getInstance();
         if (player == senderP) {
-            senderP.sendMessage(instance.getReferences().getPrefix() + "You cannot spy on yourself.");
+            senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.cant"));
             return;
         }
         boolean didVanish = false;
