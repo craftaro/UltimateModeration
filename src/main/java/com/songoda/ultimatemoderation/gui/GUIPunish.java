@@ -91,7 +91,7 @@ public class GUIPunish extends AbstractGUI {
                     plugin.getLocale().getMessage("gui.punish.type.duration.rightclick"),
                     "",
                     plugin.getLocale().getMessage("gui.punish.type.duration.current"),
-                    "&6" + (duration == Long.MAX_VALUE ? plugin.getLocale().getMessage("gui.general.permanent") : Methods.makeReadable(duration)));
+                    "&6" + (duration == -1 ? plugin.getLocale().getMessage("gui.general.permanent") : Methods.makeReadable(duration)));
         }
 
         createButton(34, Material.PAPER, plugin.getLocale().getMessage("gui.punish.type.reason"),
@@ -176,13 +176,13 @@ public class GUIPunish extends AbstractGUI {
                 ItemStack item = new ItemStack(Material.PAPER);
                 ItemMeta meta = item.getItemMeta();
 
-                meta.setDisplayName(duration == Long.MAX_VALUE || duration == 0 ? "1d 1h 1m" : Methods.makeReadable(duration));
+                meta.setDisplayName(duration == -1 || duration == 0 ? "1d 1h 1m" : Methods.makeReadable(duration));
                 item.setItemMeta(meta);
 
                 gui.setSlot(AbstractAnvilGUI.AnvilSlot.INPUT_LEFT, item);
                 gui.open();
             } else {
-                duration = Long.MAX_VALUE;
+                duration = -1;
                 constructGUI();
             }
         }));

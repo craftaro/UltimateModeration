@@ -42,7 +42,7 @@ public class AppliedPunishment extends Punishment {
     }
 
     public void expire() {
-        this.expiration = System.currentTimeMillis();
+        this.expiration = -1;
     }
 
     public long getTimeRemaining() {

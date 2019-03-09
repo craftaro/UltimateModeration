@@ -87,7 +87,7 @@ public class PlayerPunishData {
 
     private void audit(boolean forced, PunishmentType punishmentType) {
         List<AppliedPunishment> expired = activePunishments.stream().filter(appliedPunishment ->
-                (appliedPunishment.getDuration() != -1 || forced)
+                (appliedPunishment.getDuration() != -1 || forced || appliedPunishment.getExpiration() == -1)
                         && (appliedPunishment.getPunishmentType() == punishmentType || punishmentType == PunishmentType.ALL)
                         && appliedPunishment.getExpiration() <= System.currentTimeMillis()).collect(Collectors.toList());
 
@@ -102,6 +102,6 @@ public class PlayerPunishData {
             appliedPunishment.expire();
             toAudit.add(appliedPunishment);
         });
-        toAudit.stream().forEach(appliedPunishment -> this.audit(true, type));
+        toAudit.forEach(appliedPunishment -> this.audit(true, type));
     }
 }

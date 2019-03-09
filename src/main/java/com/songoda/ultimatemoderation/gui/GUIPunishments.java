@@ -107,15 +107,17 @@ public class GUIPunishments extends AbstractGUI {
             if (appliedPunishment.getPunishmentType() != PunishmentType.KICK) {
                 lore.add("");
                 lore.add(plugin.getLocale().getMessage("gui.punishments.duration"));
-                lore.add("&7" + Methods.makeReadable(appliedPunishment.getDuration()));
+                lore.add("&7" + (appliedPunishment.getDuration() != -1 ? Methods.makeReadable(appliedPunishment.getDuration()) : plugin.getLocale().getMessage("gui.general.permanent")));
                 lore.add("");
                 lore.add(plugin.getLocale().getMessage("gui.punishments.punisher"));
                 lore.add("&7" + (appliedPunishment.getPunisher() == null ? "Console" : Bukkit.getOfflinePlayer(appliedPunishment.getPunisher()).getName()));
                 if (activity == Activity.ACTIVE) {
                     lore.add("");
-                    lore.add(plugin.getLocale().getMessage("gui.punishments.remaining"));
-                    lore.add("&7" + Methods.makeReadable(appliedPunishment.getTimeRemaining()));
-                    lore.add("");
+                    if (appliedPunishment.getDuration() != -1) {
+                        lore.add(plugin.getLocale().getMessage("gui.punishments.remaining"));
+                        lore.add("&7" + Methods.makeReadable(appliedPunishment.getTimeRemaining()));
+                        lore.add("");
+                    }
                     lore.add(plugin.getLocale().getMessage("gui.punishments.click"));
 
                     registerClickable(currentSlot, ((player1, inventory1, cursor, slot, type) -> {
