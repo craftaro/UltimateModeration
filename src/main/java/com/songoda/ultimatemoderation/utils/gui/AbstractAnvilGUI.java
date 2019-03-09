@@ -67,11 +67,11 @@ public class AbstractAnvilGUI {
 
                 AnvilClickEvent clickEvent = new AnvilClickEvent(AnvilSlot.bySlot(slot), name);
 
-                handler.onAnvilClick(clickEvent);
-
                 if (clickEvent.getWillClose()) {
                     event.getWhoClicked().closeInventory();
                 }
+
+                handler.onAnvilClick(clickEvent);
 
                 if (clickEvent.getWillDestroy()) {
                     destroy();

@@ -32,17 +32,10 @@ public class ChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        for (Map.Entry<String, StaffChannel> entry : instance.getStaffChatManager().getChats().entrySet()) {
-            String channel = entry.getKey();
-            StaffChannel members = entry.getValue();
-            if (!members.listMembers().contains(player.getUniqueId())) continue;
-
+        for (StaffChannel channel : instance.getStaffChatManager().getChats().values()) {
+            if (!channel.listMembers().contains(player.getUniqueId())) continue;
             event.setCancelled(true);
-            for (UUID uuid : members.listMembers()) {
-                Player p = Bukkit.getPlayer(uuid);
-                if (p == null) continue;
-                p.sendMessage(Methods.formatText(channel + " " + player.getDisplayName() + "&" + members.getChatChar() + ": " + event.getMessage()));
-            }
+            channel.processMessage(event.getMessage(), player);
         }
 
         if (!isChatToggled && !player.hasPermission("um.togglechat.bypass")) {

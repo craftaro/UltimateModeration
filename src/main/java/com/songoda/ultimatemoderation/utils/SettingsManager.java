@@ -24,7 +24,7 @@ public class SettingsManager implements Listener {
 
     private static final Pattern SETTINGS_PATTERN = Pattern.compile("(.{1,28}(?:\\s|$))|(.{0,28})", Pattern.DOTALL);
     private final UltimateModeration instance;
-    private String pluginName = "EpicHoppers";
+    private String pluginName = "UltimateModeration";
     private Map<Player, String> cat = new HashMap<>();
     private Map<Player, String> current = new HashMap<>();
 
@@ -177,6 +177,9 @@ public class SettingsManager implements Listener {
 
         AUTOSAVE("Main.Auto Save Interval In Seconds", 15),
 
+        STAFFCHAT_COLOR_CODE("Main.Staff Chat Color Code", 'b'),
+        TICKET_TYPES("Main.Ticket Types", Arrays.asList("Grief", "Player Report", "Bug Report", "Suggestion", "Other")),
+
         GLASS_TYPE_1("Interfaces.Glass Type 1", 7),
         GLASS_TYPE_2("Interfaces.Glass Type 2", 11),
         GLASS_TYPE_3("Interfaces.Glass Type 3", 3),
@@ -215,6 +218,8 @@ public class SettingsManager implements Listener {
         public String getString() {
             return UltimateModeration.getInstance().getConfig().getString(setting);
         }
+
+        public char getChar() { return UltimateModeration.getInstance().getConfig().getString(setting).charAt(0); }
 
     }
 }

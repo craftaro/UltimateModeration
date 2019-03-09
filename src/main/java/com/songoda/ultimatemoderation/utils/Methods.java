@@ -1,14 +1,20 @@
 package com.songoda.ultimatemoderation.utils;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Methods {
+
+    private static Map<String, Location> serializeCache = new HashMap<>();
 
     public static ItemStack getGlass() {
         UltimateModeration instance = UltimateModeration.getInstance();
@@ -89,4 +95,67 @@ public class Methods {
         }
         return 0;
     }
+
+
+    public static String convertToInvisibleString(String s) {
+        if (s == null || s.equals(""))
+            return "";
+        StringBuilder hidden = new StringBuilder();
+        for (char c : s.toCharArray()) hidden.append(ChatColor.COLOR_CHAR + "").append(c);
+        return hidden.toString();
+    }
+
+    /**
+     * Serializes the location of the block specified.
+     *
+     * @param b The block whose location is to be saved.
+     * @return The serialized data.
+     */
+    public static String serializeLocation(Block b) {
+        if (b == null)
+            return "";
+        return serializeLocation(b.getLocation());
+    }
+
+    /**
+     * Serializes the location specified.
+     *
+     * @param location The location that is to be saved.
+     * @return The serialized data.
+     */
+    public static String serializeLocation(Location location) {
+        if (location == null)
+            return "";
+        String w = location.getWorld().getName();
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
+        String str = w + ":" + x + ":" + y + ":" + z;
+        str = str.replace(".0", "").replace("/", "");
+        return str;
+    }
+
+    /**
+     * Deserializes a location from the string.
+     *
+     * @param str The string to parse.
+     * @return The location that was serialized in the string.
+     */
+    public static Location unserializeLocation(String str) {
+        if (str == null || str.equals(""))
+            return null;
+        if (serializeCache.containsKey(str)) {
+            return serializeCache.get(str).clone();
+        }
+        String cacheKey = str;
+        str = str.replace("y:", ":").replace("z:", ":").replace("w:", "").replace("x:", ":").replace("/", ".");
+        List<String> args = Arrays.asList(str.split("\\s*:\\s*"));
+
+        World world = Bukkit.getWorld(args.get(0));
+        double x = Double.parseDouble(args.get(1)), y = Double.parseDouble(args.get(2)), z = Double.parseDouble(args.get(3));
+        Location location = new Location(world, x, y, z, 0, 0);
+        serializeCache.put(cacheKey, location.clone());
+        return location;
+    }
+
 }

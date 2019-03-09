@@ -250,3 +250,15 @@ target/classes/com/songoda/ultimatemoderation/utils/MySQLDatabase\.class
 target/classes/com/songoda/ultimatemoderation/utils/version/NMSUtil\.class
 
 target/classes/com/songoda/ultimatemoderation/gui/GUIPunishments\$PunishmentHolder\.class
+
+\.idea/\.name
+
+\.idea/encodings\.xml
+
+target/classes/com/songoda/ultimatemoderation/command/commands/CommandStaffChat\.class
+
+target/classes/com/songoda/ultimatemoderation/staffchat/StaffChannel\.class
+
+target/classes/com/songoda/ultimatemoderation/staffchat/StaffChatManager\.class
+
+target/classes/com/songoda/ultimatemoderation/gui/GUITicketType\.class

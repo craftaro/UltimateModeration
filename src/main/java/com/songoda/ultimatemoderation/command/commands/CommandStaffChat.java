@@ -28,10 +28,10 @@ public class CommandStaffChat extends AbstractCommand {
             for (StaffChannel channel : instance.getStaffChatManager().getChats().values()) {
                 if (!channel.listMembers().contains(player.getUniqueId())) continue;
                 channel.removeMember(player);
-                player.sendMessage("You left " + channel.getChannelName() + " successfully.");
+                player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.staffchat.leave", channel.getChannelName()));
                 return ReturnType.SUCCESS;
             }
-            player.sendMessage("You are not in any channels.");
+            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.staffchat.nochannels"));
             return ReturnType.FAILURE;
         }
 

@@ -9,6 +9,7 @@ import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.ConfigWrapper;
+import com.songoda.ultimatemoderation.utils.Methods;
 
 import java.util.List;
 import java.util.UUID;
@@ -70,6 +71,8 @@ public abstract class Storage {
             prepareSaveItem("tickets", new StorageItem("id", ticket.getTicketId()),
                     new StorageItem("player", ticket.getVictim().toString()),
                     new StorageItem("subject", ticket.getSubject()),
+                    new StorageItem("type", ticket.getType()),
+                    new StorageItem("location", Methods.serializeLocation(ticket.getLocation())),
                     new StorageItem("status", ticket.getStatus().toString()));
 
             for (TicketResponse ticketResponse : ticket.getResponses()) {

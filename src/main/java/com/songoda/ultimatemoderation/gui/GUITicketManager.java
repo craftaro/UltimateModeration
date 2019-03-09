@@ -111,6 +111,7 @@ public class GUITicketManager extends AbstractGUI {
 
             if (toModerate != null)
                 lore.add(plugin.getLocale().getMessage("gui.tickets.player", Bukkit.getOfflinePlayer(ticket.getVictim()).getName()));
+            lore.add(plugin.getLocale().getMessage("gui.ticket.type", ticket.getType()));
             lore.add(plugin.getLocale().getMessage("gui.ticket.createdon", format.format(new Date(ticket.getCreationDate()))));
             lore.add(plugin.getLocale().getMessage("gui.tickets.click"));
 
@@ -124,7 +125,7 @@ public class GUITicketManager extends AbstractGUI {
 
     @Override
     protected void registerClickables() {
-        if (player.hasPermission("um.ticket")) {
+        if (player.hasPermission("um.moderate")) {
             registerClickable(8, ((player1, inventory1, cursor, slot, type) -> {
                 if (toModerate == null)
                     new GUIPlayers(plugin, player);
@@ -148,19 +149,8 @@ public class GUITicketManager extends AbstractGUI {
     public static void createNew(Player player, OfflinePlayer toModerate) {
         UltimateModeration plugin = UltimateModeration.getInstance();
 
-        AbstractAnvilGUI gui = new AbstractAnvilGUI(player, event -> {
-            Ticket ticket = new Ticket(toModerate, event.getName());
-
-            player.sendMessage(plugin.getLocale().getMessage("gui.tickets.what"));
-            AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
-                plugin.getTicketManager().addTicket(ticket);
-
-                ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
-            });
-
-            abstractChatConfirm.setOnClose(() ->
-                    new GUITicket(plugin, ticket, toModerate, player));
-        });
+        AbstractAnvilGUI gui = new AbstractAnvilGUI(player, event ->
+                new GUITicketType(plugin, toModerate, player, event.getName()));
 
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();

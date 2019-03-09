@@ -1,5 +1,6 @@
 package com.songoda.ultimatemoderation.tickets;
 
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
@@ -11,30 +12,37 @@ public class Ticket {
     private int ticketId;
 
     private TicketStatus status = TicketStatus.OPEN;
+    private Location location = null;
+
+    private String type;
 
     private final List<TicketResponse> tickets = new ArrayList<>();
     private final UUID victim;
     private final String subject;
 
-    public Ticket(OfflinePlayer victim, String subject) {
+    public Ticket(OfflinePlayer victim, String subject, String type) {
         this.victim = victim.getUniqueId();
         this.subject = subject;
+        this.type = type;
     }
 
-    public Ticket(UUID victim, String subject) {
+    public Ticket(UUID victim, String subject, String type) {
         this.victim = victim;
         this.subject = subject;
+        this.type = type;
     }
 
-    public Ticket(OfflinePlayer victim, String subject, TicketResponse response) {
+    public Ticket(OfflinePlayer victim, String subject, String type, TicketResponse response) {
         this.victim = victim.getUniqueId();
         this.subject = subject;
+        this.type = type;
         this.tickets.add(response);
     }
 
-    public Ticket(UUID victim, String subject, TicketResponse response) {
+    public Ticket(UUID victim, String subject, String type, TicketResponse response) {
         this.victim = victim;
         this.subject = subject;
+        this.type = type;
         this.tickets.add(response);
     }
 
@@ -79,5 +87,17 @@ public class Ticket {
 
     public void setStatus(TicketStatus status) {
         this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

@@ -2,18 +2,22 @@ package com.songoda.ultimatemoderation.staffchat;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.SettingsManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class StaffChannel {
 
     private final String channelName;
-    private char chatChar = 'b';
+    private char chatChar = SettingsManager.Setting.STAFFCHAT_COLOR_CODE.getChar();
     private final List<UUID> members = new ArrayList<>();
+    private final List<String> chatLog = new ArrayList<>();
 
     public StaffChannel(String channelName) {
         this.channelName = channelName;
@@ -30,19 +34,27 @@ public class StaffChannel {
             }
         });
         members.add(player.getUniqueId());
-        for (UUID uuid : members) {
-            Player p = Bukkit.getPlayer(uuid);
-            if (p == null) continue;
-            p.sendMessage(Methods.formatText(channelName + " " + player.getDisplayName() + "&" + chatChar + " has just entered the channel."));
+        if (chatLog.size() > 5) {
+            chatLog.stream().skip(chatLog.size() - 3).forEach(message -> player.sendMessage(Methods.formatText(message)));
         }
+        messageAll(UltimateModeration.getInstance().getLocale().getMessage("event.staffchat.format.join", chatChar, channelName, player.getDisplayName()));
     }
 
     public void removeMember(Player player) {
         members.remove(player.getUniqueId());
+        messageAll(UltimateModeration.getInstance().getLocale().getMessage("event.staffchat.format.leave", chatChar, channelName, player.getDisplayName()));
+    }
+
+    public void processMessage(String message, Player player) {
+        messageAll(UltimateModeration.getInstance().getLocale().getMessage("event.staffchat.format", chatChar, channelName, player.getDisplayName(), chatChar, message));
+    }
+
+    private void messageAll(String message) {
+        chatLog.add(message);
         for (UUID uuid : members) {
-            Player p = Bukkit.getPlayer(uuid);
-            if (p == null) continue;
-            p.sendMessage(Methods.formatText(channelName + " " + player.getDisplayName() + "&" + chatChar + " has just left the channel."));
+            Player player = Bukkit.getPlayer(uuid);
+            if (player == null) continue;
+            player.sendMessage(Methods.formatText(message));
         }
     }
 

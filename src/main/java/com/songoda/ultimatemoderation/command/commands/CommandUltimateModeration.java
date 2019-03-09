@@ -17,7 +17,6 @@ public class CommandUltimateModeration extends AbstractCommand {
     @Override
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
         new GUIPlayers(instance, (Player) sender);
-
         return ReturnType.SUCCESS;
     }
 

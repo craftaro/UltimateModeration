@@ -71,6 +71,9 @@ public class GUITicket extends AbstractGUI {
 
         createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
 
+        if (player.hasPermission("um.ticket.clicktotele") && ticket.getLocation() != null)
+            createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.ticket.clicktotele"));
+
         createButton(6, Material.REDSTONE,  plugin.getLocale().getMessage("gui.ticket.respond"));
 
         for (int i = 0; i < 9; i++)
@@ -113,15 +116,20 @@ public class GUITicket extends AbstractGUI {
 
     @Override
     protected void registerClickables() {
-        if (player.hasPermission("um.ticket.openclose")) {
-            registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
-                    new GUITicketManager(plugin, toModerate, player)));
+        registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
+                new GUITicketManager(plugin, toModerate, player)));
+
+        if (player.hasPermission("um.ticket.clicktotele") && ticket.getLocation() != null) {
+            registerClickable(7, ((player1, inventory1, cursor, slot, type) ->
+                    player.teleport(ticket.getLocation())));
         }
 
-        registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
-                ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
-                constructGUI();
-        }));
+        if (player.hasPermission("um.ticket.openclose")) {
+            registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
+                    ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
+                    constructGUI();
+            }));
+        }
 
         registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
             player.sendMessage(plugin.getLocale().getMessage("gui.ticket.what"));

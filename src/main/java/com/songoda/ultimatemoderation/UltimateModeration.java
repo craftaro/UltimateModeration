@@ -177,8 +177,10 @@ public class UltimateModeration extends JavaPlugin {
                 int id = row.get("id").asInt();
                 Ticket ticket = new Ticket(
                         UUID.fromString(row.get("player").asString()),
-                        row.get("subject").asString());
+                        row.get("subject").asString(),
+                        row.get("type").asString());
                 ticket.setTicketId(id);
+                ticket.setLocation(Methods.unserializeLocation(row.get("location").asString()));
                 ticket.setStatus(TicketStatus.valueOf(row.get("status").asString()));
                 ticketManager.addTicket(ticket, id);
             }

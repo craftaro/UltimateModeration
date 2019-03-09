@@ -55,6 +55,12 @@ event.kick.message = "&7You have been kicked"
 event.warning.success = "&7You have warned &6%player%"
 event.warning.message = "&7You have been warned"
 
+event.staffchat.leave = "&7You left &6%channel% &7successfully."
+event.staffchat.nochannels = "&cYou are not in any channels."
+event.staffchat.format.join = "&%color%[%channel%] %player% has just joined the channel."
+event.staffchat.format.leave = "&%color%[%channel%] %player% has just left the channel."
+event.staffchat.format = "&%color%[%channel%] %player%&%color%: %message%"
+
 #GUI Messages
 
 gui.general.previous = "&6Previous Page"
@@ -148,6 +154,9 @@ gui.tickets.what = "&6What would you like to say in your first ticket post?"
 gui.tickets.subject = "Ticket Subject"
 
 gui.ticket.title = "&8Tickets > %id%";
+gui.ticket.type = "&7Type &6%type%&7."
+gui.ticket.picktype = "&8Pick a ticket type.";
+gui.ticket.clicktotele = "&6Teleport to ticket location.";
 gui.ticket.createdon = "&7Created on &6%time%&7."
 gui.ticket.respond = "&6Respond"
 gui.ticket.status = "&7Status &6%status%&7."
