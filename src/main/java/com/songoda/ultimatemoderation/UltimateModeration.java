@@ -19,6 +19,7 @@ import com.songoda.ultimatemoderation.tickets.TicketManager;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.Metrics;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
@@ -106,6 +107,9 @@ public class UltimateModeration extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new LoginListener(this), this);
+
+        // Starting Metrics
+        new Metrics(this);
 
         int timeout = SettingsManager.Setting.AUTOSAVE.getInt() * 60 * 20;
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> storage.doSave(), timeout, timeout);
