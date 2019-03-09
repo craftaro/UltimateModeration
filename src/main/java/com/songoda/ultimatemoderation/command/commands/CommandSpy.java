@@ -18,17 +18,27 @@ public class CommandSpy extends AbstractCommand {
         super(true, true, "Spy");
     }
 
-    public static void spy(OfflinePlayer player, Player senderP) {
+    public static void spy(OfflinePlayer oPlayer, Player senderP) {
         UltimateModeration instance = UltimateModeration.getInstance();
+
+        Player player = oPlayer.getPlayer();
+
+        if (player == null) {
+            senderP.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
+            return;
+        }
+
         if (player == senderP) {
             senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.cant"));
             return;
         }
+        
         boolean didVanish = false;
         if (!CommandVanish.isVanished(senderP)) {
             didVanish = true;
             CommandVanish.vanish(senderP);
         }
+        senderP.teleport(player.getPlayer().getLocation());
 
         spying.put(senderP.getUniqueId(), new Spy(senderP.getLocation(), didVanish));
         player.getPlayer().addPassenger(senderP);
@@ -53,13 +63,6 @@ public class CommandSpy extends AbstractCommand {
             spying.remove(senderP.getUniqueId());
             senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.returned"));
             return ReturnType.SUCCESS;
-        }
-
-        Player player = Bukkit.getPlayer(args[0]);
-
-        if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
-            return ReturnType.FAILURE;
         }
 
         spy(player, senderP);
