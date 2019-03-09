@@ -37,7 +37,7 @@ public class CommandUnBan extends AbstractCommand {
 
         playerPunishData.expirePunishments(PunishmentType.BAN);
 
-        sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.unban.success"));
+        sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.unban.success", player.getName()));
         return ReturnType.SUCCESS;
     }
 

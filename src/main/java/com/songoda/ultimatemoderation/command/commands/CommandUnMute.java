@@ -36,7 +36,7 @@ public class CommandUnMute extends AbstractCommand {
 
         playerPunishData.expirePunishments(PunishmentType.MUTE);
 
-        sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.unmute.success"));
+        sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.unmute.success", player.getName()));
         return ReturnType.SUCCESS;
     }
 
