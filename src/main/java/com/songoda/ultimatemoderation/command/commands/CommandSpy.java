@@ -19,7 +19,13 @@ public class CommandSpy extends AbstractCommand {
     }
 
     public static void spy(OfflinePlayer player, Player senderP) {
+
+
         UltimateModeration instance = UltimateModeration.getInstance();
+        if (player == senderP) {
+            senderP.sendMessage(instance.getReferences().getPrefix() + "You cannot spy on yourself.");
+            return;
+        }
         boolean didVanish = false;
         if (!CommandVanish.isVanished(senderP)) {
             didVanish = true;
@@ -55,11 +61,6 @@ public class CommandSpy extends AbstractCommand {
 
         if (player == null) {
             sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
-            return ReturnType.FAILURE;
-        }
-
-        if (player == senderP) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "You cannot spy on yourself.");
             return ReturnType.FAILURE;
         }
 
