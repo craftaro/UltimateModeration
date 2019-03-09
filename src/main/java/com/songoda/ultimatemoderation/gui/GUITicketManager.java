@@ -49,7 +49,7 @@ public class GUITicketManager extends AbstractGUI {
         List<Ticket> tickets = toModerate != null ? plugin.getTicketManager().getTicketsAbout(toModerate, status) : plugin.getTicketManager().getTickets(status);
 
         int numTickets = tickets.size();
-        int maxPage = (int) Math.ceil(numTickets / 36.0);
+        int maxPage = (int) Math.floor(numTickets / 36.0);
 
         tickets = tickets.stream().skip(page * 36).limit(36).collect(Collectors.toList());
 

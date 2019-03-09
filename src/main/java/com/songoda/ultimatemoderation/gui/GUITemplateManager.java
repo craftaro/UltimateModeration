@@ -36,7 +36,7 @@ public class GUITemplateManager extends AbstractGUI {
         registerClickables();
 
         int numTemplates = plugin.getTemplateManager().getTemplates().size();
-        int maxPage = (int) Math.ceil(numTemplates / 36.0);
+        int maxPage = (int) Math.floor(numTemplates / 36.0);
 
         List<Template> templates = plugin.getTemplateManager().getTemplates().values().stream().skip(page * 36).limit(36)
                 .collect(Collectors.toList());

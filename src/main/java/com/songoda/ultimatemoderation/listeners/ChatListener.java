@@ -45,8 +45,7 @@ public class ChatListener implements Listener {
 
         List<AppliedPunishment> appliedPunishments = instance.getPunishmentManager().getPlayer(player).getActivePunishments(PunishmentType.MUTE);
         if (!appliedPunishments.isEmpty()) {
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.mute.message",
-                    appliedPunishments.get(0).getReason(), Methods.makeReadable(appliedPunishments.get(0).getTimeRemaining())));
+            appliedPunishments.get(0).sendMessage(player);
             event.setCancelled(true);
         }
     }

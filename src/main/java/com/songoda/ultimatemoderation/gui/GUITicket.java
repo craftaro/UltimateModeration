@@ -45,7 +45,7 @@ public class GUITicket extends AbstractGUI {
         registerClickables();
 
         int numNotes = ticket.getResponses().size();
-        int maxPage = (int) Math.ceil(numNotes / 36.0);
+        int maxPage = (int) Math.floor(numNotes / 36.0);
 
         List<TicketResponse> responses = ticket.getResponses().stream().skip(page * 36).limit(36)
                 .collect(Collectors.toList());

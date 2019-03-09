@@ -37,12 +37,12 @@ public class GUIPlayers extends AbstractGUI {
         resetClickables();
         registerClickables();
 
+
+        int numNotes = Bukkit.getOnlinePlayers().size();
+        int maxPage = (int) Math.floor(numNotes / 36.0);
+
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers()).stream()
-                .skip(page * 36).collect(Collectors.toList());
-
-        int sizeLeft = players.size();
-
-        players = players.stream().limit(36).collect(Collectors.toList());
+                .skip(page * 36).limit(36).collect(Collectors.toList());
 
         if (page != 0) {
             createButton(46, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
@@ -52,7 +52,7 @@ public class GUIPlayers extends AbstractGUI {
             }));
         }
 
-        if (sizeLeft >= 36) {
+        if (maxPage != page) {
             createButton(48, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
             registerClickable(48, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;

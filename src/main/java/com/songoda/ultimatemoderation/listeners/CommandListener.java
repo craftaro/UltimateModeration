@@ -2,6 +2,8 @@ package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.commands.CommandCommandSpy;
+import com.songoda.ultimatemoderation.punish.AppliedPunishment;
+import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandListener implements Listener {
 
@@ -24,6 +27,14 @@ public class CommandListener implements Listener {
         Player player = event.getPlayer();
 
         String command = event.getMessage();
+
+        List<AppliedPunishment> appliedPunishments = instance.getPunishmentManager().getPlayer(player).getActivePunishments(PunishmentType.MUTE);
+        if (!appliedPunishments.isEmpty()) {
+            if (SettingsManager.Setting.MUTE_DISABLED_COMMANDS.getStringList().stream()
+                    .anyMatch(s -> command.toUpperCase().startsWith("/" + s.toUpperCase())))
+                event.setCancelled(true);
+
+        }
 
         List<String> blockedCommands = SettingsManager.Setting.BLOCKED_COMMANDS.getStringList();
 

@@ -180,6 +180,8 @@ public class SettingsManager implements Listener {
         STAFFCHAT_COLOR_CODE("Main.Staff Chat Color Code", 'b'),
         TICKET_TYPES("Main.Ticket Types", Arrays.asList("Grief", "Player Report", "Bug Report", "Suggestion", "Other")),
 
+        MUTE_DISABLED_COMMANDS("Main.Mute Disabled Commands", Arrays.asList("minecraft:me", "minecraft:tell")),
+
         GLASS_TYPE_1("Interfaces.Glass Type 1", 7),
         GLASS_TYPE_2("Interfaces.Glass Type 2", 11),
         GLASS_TYPE_3("Interfaces.Glass Type 3", 3),

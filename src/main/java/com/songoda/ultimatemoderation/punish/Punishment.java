@@ -73,10 +73,7 @@ public class Punishment {
                             + plugin.getLocale().getMessage("event.mute.already"));
                     return;
                 }
-                if (victim.isOnline()) {
-                    victim.getPlayer().sendMessage(plugin.getReferences().getPrefix() + plugin.getLocale().getMessage("event.mute.message",
-                            reason, Methods.makeReadable(duration)));
-                }
+                sendMessage(victim);
                 break;
             case KICK:
             case WARNING:
@@ -98,7 +95,7 @@ public class Punishment {
         playerPunishData.addPunishment(apply(victim, punisher));
     }
 
-    private void sendMessage(OfflinePlayer offlineVictim) {
+    public void sendMessage(OfflinePlayer offlineVictim) {
         if (!offlineVictim.isOnline()) return;
         Player victim = offlineVictim.getPlayer();
         UltimateModeration plugin = UltimateModeration.getInstance();

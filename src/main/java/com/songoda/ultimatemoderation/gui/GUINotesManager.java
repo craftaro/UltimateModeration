@@ -44,7 +44,7 @@ public class GUINotesManager extends AbstractGUI {
             createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
 
         int numNotes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().size();
-        int maxPage = (int) Math.ceil(numNotes / 36.0);
+        int maxPage = (int) Math.floor(numNotes / 36.0);
 
         List<PunishmentNote> notes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().stream()
                 .skip(page * 36).limit(36).collect(Collectors.toList());

@@ -66,7 +66,7 @@ public class GUIPunishments extends AbstractGUI {
         }
 
         int numNotes = punishments.size();
-        int maxPage = (int) Math.ceil(numNotes / 36.0);
+        int maxPage = (int) Math.floor(numNotes / 36.0);
 
         punishments = punishments.stream().skip(page * 36).limit(36)
                 .collect(Collectors.toList());
@@ -97,7 +97,7 @@ public class GUIPunishments extends AbstractGUI {
 
         int currentSlot = 18;
         for (PunishmentHolder punishmentHolder : punishments) {
-            AppliedPunishment appliedPunishment = punishmentHolder.appliedPunishment;
+            AppliedPunishment appliedPunishment = punishmentHolder.getAppliedPunishment();
             Activity activity = punishmentHolder.getActivity();
 
             ArrayList<String> lore = new ArrayList<>();
