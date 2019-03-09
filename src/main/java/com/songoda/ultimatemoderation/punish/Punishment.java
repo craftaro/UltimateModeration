@@ -61,7 +61,11 @@ public class Punishment {
                             + plugin.getLocale().getMessage("event.ban.already"));
                     return;
                 }
-                sendMessage(victim);
+                if (victim.isOnline()) {
+                    victim.getPlayer().kickPlayer(plugin.getLocale().getMessage("event.ban.message",
+                            reason == null ? "" : reason,
+                            Methods.makeReadable(duration)));
+                }
                 break;
             case MUTE:
                 if (!playerPunishData.getActivePunishments(PunishmentType.MUTE).isEmpty()) {
@@ -69,7 +73,10 @@ public class Punishment {
                             + plugin.getLocale().getMessage("event.mute.already"));
                     return;
                 }
-                sendMessage(victim);
+                if (victim.isOnline()) {
+                    victim.getPlayer().sendMessage(plugin.getReferences().getPrefix() + plugin.getLocale().getMessage("event.mute.message",
+                            reason, Methods.makeReadable(duration)));
+                }
                 break;
             case KICK:
             case WARNING:

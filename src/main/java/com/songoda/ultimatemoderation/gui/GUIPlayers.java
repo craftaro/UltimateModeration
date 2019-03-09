@@ -4,6 +4,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
+import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -73,7 +74,8 @@ public class GUIPlayers extends AbstractGUI {
             lore.add(plugin.getLocale().getMessage("gui.players.click"));
             lore.add("");
 
-            int ticketAmt = plugin.getTicketManager().getTicketsAbout(pl).size();
+            int ticketAmt = plugin.getTicketManager().getTicketsAbout(pl).stream()
+                    .filter(t -> t.getStatus() == TicketStatus.OPEN).collect(Collectors.toList()).size();
 
             if (ticketAmt == 0)
                 lore.add(plugin.getLocale().getMessage("gui.players.notickets"));
