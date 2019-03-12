@@ -35,7 +35,7 @@ public class GUIModerate extends AbstractGUI {
         createButton(14, Material.CHEST, "&c&lInventory", "&7Access this players Inventory.");
         createButton(16, Material.ENDER_CHEST, "&a&lEnderchest", "&7Access this players Enderchest");
 
-        createButton(28, Material.SPLASH_POTION, "&c&lRevive", "&7Freeze this player.");
+        createButton(28, Material.SPLASH_POTION, "&c&lRevive", "&7Revive this player.");
     }
 
     @Override
