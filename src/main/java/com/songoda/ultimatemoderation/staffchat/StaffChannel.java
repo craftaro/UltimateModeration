@@ -28,6 +28,7 @@ public class StaffChannel {
     }
 
     public void addMember(Player player) {
+        if (members.contains(player.getUniqueId())) return;
         UltimateModeration.getInstance().getStaffChatManager().getChats().values().stream().forEach(members1 -> {
             if (members1.listMembers().contains(player.getUniqueId())) {
                 members1.removeMember(player);
