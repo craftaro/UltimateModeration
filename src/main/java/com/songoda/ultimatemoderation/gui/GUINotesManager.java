@@ -105,8 +105,6 @@ public class GUINotesManager extends AbstractGUI {
             registerClickable(18 + i, ((player1, inventory1, cursor, slot, type) -> {
                 plugin.getPunishmentManager().getPlayer(toModerate).removeNote(note);
                 constructGUI();
-                resetClickables();
-                registerClickables();
             }));
         }
 
