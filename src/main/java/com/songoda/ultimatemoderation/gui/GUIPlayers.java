@@ -81,7 +81,7 @@ public class GUIPlayers extends AbstractGUI {
                 lore.add(plugin.getLocale().getMessage("gui.players.notickets"));
             else {
                 if (ticketAmt == 1)
-                    lore.add(plugin.getLocale().getMessage("gui.players.ticketssone"));
+                    lore.add(plugin.getLocale().getMessage("gui.players.ticketsone"));
                 else
                     lore.add(plugin.getLocale().getMessage("gui.players.tickets",ticketAmt));
             }
