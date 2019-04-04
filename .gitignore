@@ -284,3 +284,9 @@ target/classes/com/songoda/ultimatemoderation/utils/Metrics\$SimpleBarChart\.cla
 target/classes/com/songoda/ultimatemoderation/utils/Metrics\$SimplePie\.class
 
 target/classes/com/songoda/ultimatemoderation/utils/Metrics\$SingleLineChart\.class
+
+target/classes/com/songoda/ultimatemoderation/command/commands/CommandSlowMode\.class
+
+target/classes/com/songoda/ultimatemoderation/listeners/ChatListener\$Log\.class
+
+target/classes/com/songoda/ultimatemoderation/tasks/SlowModeTask\.class

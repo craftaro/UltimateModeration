@@ -61,6 +61,10 @@ event.staffchat.format.join = "&%color%[%channel%] %player% has just joined the 
 event.staffchat.format.leave = "&%color%[%channel%] %player% has just left the channel."
 event.staffchat.format = "&%color%[%channel%] %player%&%color%: %message%"
 
+event.slowmode.wait = "&7Slow mode &6%delay% &7seconds left."
+event.slowmode.done = "&7Slow mode time out."
+event.slowmode.enabled = "&7Slow mode has been enabled with the delay &6%delay% &7seconds."
+
 #GUI Messages
 
 gui.general.previous = "&6Previous Page"
@@ -143,7 +147,7 @@ gui.notes.title = "&8%tonotes% > Notes"
 gui.notes.create = "&6Create Note"
 gui.notes.remove = "&cClick to remove"
 gui.notes.type = "Type in your note."
-gui.notes.createdon = "&7Created on &6%time%&7."
+gui.notes.createdon = "&7Created on &6%sent%&7."
 gui.notes.createdby = "&7Created by &6%player%&7."
 
 
@@ -159,7 +163,7 @@ gui.ticket.title = "&8Tickets > %id%";
 gui.ticket.type = "&7Type &6%type%&7."
 gui.ticket.picktype = "&8Pick a ticket type.";
 gui.ticket.clicktotele = "&6Teleport to ticket location.";
-gui.ticket.createdon = "&7Created on &6%time%&7."
+gui.ticket.createdon = "&7Created on &6%sent%&7."
 gui.ticket.respond = "&6Respond"
 gui.ticket.status = "&7Status &6%status%&7."
 gui.ticket.postedby = "&7Posted by &6%player%&7."

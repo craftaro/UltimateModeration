@@ -14,6 +14,7 @@ import com.songoda.ultimatemoderation.storage.Storage;
 import com.songoda.ultimatemoderation.storage.StorageRow;
 import com.songoda.ultimatemoderation.storage.types.StorageMysql;
 import com.songoda.ultimatemoderation.storage.types.StorageYaml;
+import com.songoda.ultimatemoderation.tasks.SlowModeTask;
 import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketManager;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
@@ -107,6 +108,9 @@ public class UltimateModeration extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(this), this);
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new LoginListener(this), this);
+
+        // Start tasks
+        SlowModeTask.startTask(this);
 
         // Starting Metrics
         new Metrics(this);

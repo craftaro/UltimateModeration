@@ -92,3 +92,8 @@ commands:
     defaullt: false
     aliases: [sc]
     usage: /staffchat
+  SlowMode:
+    description: SlowMode
+    default: false
+    aliases: [sm]
+    ussage: /slowmode

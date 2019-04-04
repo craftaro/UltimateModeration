@@ -172,6 +172,7 @@ public class SettingsManager implements Listener {
         VANISH_SOUND("Main.Vanish Sound", "ENTITY_GENERIC_EXPLODE"),
         VANISH_BATS("Main.Release Bats On Vanish", true),
         VANISH_PARTICLE("Main.Vanish Particle", "EXPLOSION_NORMAL"),
+        SLOW_MODE("Main.SLOW_MODE", "0s"),
 
         BLOCKED_COMMANDS("Main.Blocked Commands", Arrays.asList("Fly", "Op", "Plugins", "Pl")),
 
