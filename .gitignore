@@ -262,3 +262,25 @@ target/classes/com/songoda/ultimatemoderation/staffchat/StaffChannel\.class
 target/classes/com/songoda/ultimatemoderation/staffchat/StaffChatManager\.class
 
 target/classes/com/songoda/ultimatemoderation/gui/GUITicketType\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$1\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$2\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$AdvancedBarChart\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$AdvancedPie\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$CustomChart\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$DrilldownPie\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$MultiLineChart\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$SimpleBarChart\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$SimplePie\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/Metrics\$SingleLineChart\.class

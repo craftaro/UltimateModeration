@@ -77,7 +77,7 @@ public class Punishment {
                 break;
             case KICK:
                 if (victim.isOnline()) {
-                    victim.getPlayer().kickPlayer(plugin.getLocale().getMessage("event.ban.message",
+                    victim.getPlayer().kickPlayer(plugin.getLocale().getMessage("event.kick.message",
                             reason == null ? "" : reason,
                             Methods.makeReadable(duration)));
                 }
