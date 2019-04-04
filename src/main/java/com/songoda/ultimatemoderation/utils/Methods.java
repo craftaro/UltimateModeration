@@ -82,7 +82,7 @@ public class Methods {
         return result;
     }
 
-    private static long convert(int value, char unit) {
+    private static long convert(long value, char unit) {
         switch (unit) {
             case 'd':
                 return value * 1000 * 60 * 60 * 24;
