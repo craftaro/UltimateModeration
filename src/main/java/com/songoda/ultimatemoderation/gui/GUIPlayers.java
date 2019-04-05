@@ -4,6 +4,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -64,9 +65,12 @@ public class GUIPlayers extends AbstractGUI {
 
             PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(pl);
 
-            ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+            ItemStack head = new ItemStack(plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.PLAYER_HEAD : Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
             SkullMeta meta = ((SkullMeta) head.getItemMeta());
-            meta.setOwningPlayer(pl);
+            if (plugin.isServerVersionAtLeast(ServerVersion.V1_13))
+                meta.setOwningPlayer(pl);
+            else
+                meta.setOwner(pl.getName());
             head.setItemMeta(meta);
 
             ArrayList<String> lore = new ArrayList<>();
@@ -102,7 +106,7 @@ public class GUIPlayers extends AbstractGUI {
         }
 
         for (int i = 0; i < 9; i++)
-            createButton(36 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
+            createButton(36 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         createButton(51, Material.CHEST, "&7Tickets");
         createButton(52, Material.MAP, plugin.getLocale().getMessage("gui.players.button.templatemanager"));

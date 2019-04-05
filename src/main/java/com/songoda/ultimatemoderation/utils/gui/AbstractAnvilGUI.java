@@ -1,6 +1,7 @@
 package com.songoda.ultimatemoderation.utils.gui;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.version.NMSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -37,7 +38,7 @@ public class AbstractAnvilGUI {
     private Inventory inv;
     private Listener listener;
 
-    private Sound closeSound = Sound.ENTITY_PLAYER_LEVELUP;
+    private Sound closeSound = UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_13) ? Sound.ENTITY_PLAYER_LEVELUP : Sound.valueOf("LEVEL_UP");
 
     public AbstractAnvilGUI(final Player player, final AnvilClickEventHandler handler) {
         loadClasses();

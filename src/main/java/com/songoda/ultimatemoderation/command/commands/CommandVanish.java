@@ -3,6 +3,7 @@ package com.songoda.ultimatemoderation.command.commands;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
@@ -64,7 +65,8 @@ public class CommandVanish extends AbstractCommand {
             float xx = (float) (0 + (Math.random() * 1));
             float yy = (float) (0 + (Math.random() * 2));
             float zz = (float) (0 + (Math.random() * 1));
-            player.getWorld().spawnParticle(Particle.valueOf(SettingsManager.Setting.VANISH_PARTICLE.getString()), player.getLocation().add(0, 1, 0), 35, xx, yy, zz, 0);
+            if (instance.isServerVersionAtLeast(ServerVersion.V1_12))
+                player.getWorld().spawnParticle(Particle.valueOf(SettingsManager.Setting.VANISH_PARTICLE.getString()), player.getLocation().add(0, 1, 0), 35, xx, yy, zz, 0);
         }
 
         for (Player p : Bukkit.getOnlinePlayers()) {

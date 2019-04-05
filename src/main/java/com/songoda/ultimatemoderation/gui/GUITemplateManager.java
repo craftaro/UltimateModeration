@@ -5,10 +5,12 @@ import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +61,12 @@ public class GUITemplateManager extends AbstractGUI {
 
         createButton(3 ,Material.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name()));
 
-        createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
 
         createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.templatemanager.create"));
 
         for (int i = 0; i < 9; i++)
-            createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
+            createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         if (punishmentType != PunishmentType.ALL)
             templates.removeIf(template -> template.getPunishmentType() != punishmentType);

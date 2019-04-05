@@ -2,6 +2,7 @@ package com.songoda.ultimatemoderation.command.commands;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -20,6 +21,11 @@ public class CommandSpy extends AbstractCommand {
 
     public static void spy(OfflinePlayer oPlayer, Player senderP) {
         UltimateModeration instance = UltimateModeration.getInstance();
+
+        if (!UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_12)) {
+            senderP.sendMessage(instance.getReferences().getPrefix() + "This feature is not compatible with this version of spigot.");
+            return;
+        }
 
         Player player = oPlayer.getPlayer();
 

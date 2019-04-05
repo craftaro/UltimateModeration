@@ -3,6 +3,7 @@ package com.songoda.ultimatemoderation.tasks;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -48,6 +49,7 @@ public class SlowModeTask extends BukkitRunnable {
 
             if ((System.currentTimeMillis() - last.getSent()) < (slowmode + 1000)) {
                 int remaining = (int)((slowmode / 1000) - (System.currentTimeMillis() - last.getSent()) / 1000);
+                if (plugin.isServerVersionAtLeast(ServerVersion.V1_9))
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(remaining == 0 ? plugin.getLocale().getMessage("event.slowmode.done") : plugin.getLocale().getMessage("event.slowmode.wait", remaining)));
             }
 

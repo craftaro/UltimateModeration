@@ -33,9 +33,11 @@ public class Methods {
         int randomNum = 1 + (int) (Math.random() * 6);
         ItemStack glass;
         if (rainbow) {
-            glass = new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (short) randomNum);
+            glass = new ItemStack(UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_13) ?
+                    Material.LEGACY_STAINED_GLASS_PANE :  Material.valueOf("STAINED_GLASS_PANE"), 1, (short) randomNum);
         } else {
-            glass = new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (short) type);
+            glass = new ItemStack(UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_13) ?
+                    Material.LEGACY_STAINED_GLASS_PANE :  Material.valueOf("STAINED_GLASS_PANE"), 1, (short) type);
         }
         ItemMeta glassmeta = glass.getItemMeta();
         glassmeta.setDisplayName("§l");

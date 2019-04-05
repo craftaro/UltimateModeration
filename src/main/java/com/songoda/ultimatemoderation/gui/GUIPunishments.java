@@ -7,11 +7,13 @@ import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.omg.PortableInterceptor.ACTIVE;
 
 import java.util.*;
@@ -87,13 +89,13 @@ public class GUIPunishments extends AbstractGUI {
             }));
         }
 
-        createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
 
         createButton(3, Material.APPLE, Methods.formatText("&6" + currentActivity.getTranslation()));
         createButton(4, Material.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name()));
 
         for (int i = 0; i < 9; i++)
-            createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
+            createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         int currentSlot = 18;
         for (PunishmentHolder punishmentHolder : punishments) {

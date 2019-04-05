@@ -21,8 +21,10 @@ import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.Metrics;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -34,6 +36,8 @@ public class UltimateModeration extends JavaPlugin {
     private static CommandSender console = Bukkit.getConsoleSender();
     private static UltimateModeration INSTANCE;
     private References references;
+
+    private ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
 
     private TicketManager ticketManager;
     private TemplateManager templateManager;
@@ -49,28 +53,9 @@ public class UltimateModeration extends JavaPlugin {
         return INSTANCE;
     }
 
-    private boolean checkVersion() {
-        int workingVersion = 13;
-        int currentVersion = Integer.parseInt(Bukkit.getServer().getClass()
-                .getPackage().getName().split("\\.")[3].split("_")[1]);
-
-        if (currentVersion < workingVersion) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
-                Bukkit.getConsoleSender().sendMessage("");
-                Bukkit.getConsoleSender().sendMessage(String.format("%sYou installed the 1.%s only version of %s on a 1.%s server. Since you are on the wrong version we disabled the plugin for you. Please install correct version to continue using %s.", ChatColor.RED, workingVersion, this.getDescription().getName(), currentVersion, this.getDescription().getName()));
-                Bukkit.getConsoleSender().sendMessage("");
-            }, 20L);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public void onEnable() {
         INSTANCE = this;
-
-        // Check to make sure the Bukkit version is compatible.
-        if (!checkVersion()) return;
 
         console.sendMessage(Methods.formatText("&a============================="));
         console.sendMessage(Methods.formatText("&7UltimateModeration " + this.getDescription().getVersion() + " by &5Songoda <3!"));
@@ -207,6 +192,21 @@ public class UltimateModeration extends JavaPlugin {
             }
         }
         storage.doSave();
+    }
+
+    public ServerVersion getServerVersion() {
+        return serverVersion;
+    }
+
+    public boolean isServerVersion(ServerVersion version) {
+        return serverVersion == version;
+    }
+    public boolean isServerVersion(ServerVersion... versions) {
+        return ArrayUtils.contains(versions, serverVersion);
+    }
+
+    public boolean isServerVersionAtLeast(ServerVersion version) {
+        return serverVersion.ordinal() >= version.ordinal();
     }
 
     private void setupConfig() {

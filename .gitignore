@@ -290,3 +290,5 @@ target/classes/com/songoda/ultimatemoderation/command/commands/CommandSlowMode\.
 target/classes/com/songoda/ultimatemoderation/listeners/ChatListener\$Log\.class
 
 target/classes/com/songoda/ultimatemoderation/tasks/SlowModeTask\.class
+
+target/classes/com/songoda/ultimatemoderation/utils/ServerVersion\.class

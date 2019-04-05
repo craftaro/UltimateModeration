@@ -3,6 +3,7 @@ package com.songoda.ultimatemoderation.gui;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.utils.AbstractChatConfirm;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
@@ -41,7 +42,7 @@ public class GUINotesManager extends AbstractGUI {
         registerClickables();
 
         for (int i = 0; i < 9; i++)
-            createButton(9 + i, Material.GRAY_STAINED_GLASS_PANE, "&1");
+            createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         int numNotes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().size();
         int maxPage = (int) Math.floor(numNotes / 36.0);
@@ -65,7 +66,7 @@ public class GUINotesManager extends AbstractGUI {
             }));
         }
 
-        createButton(8, Material.OAK_DOOR, plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
 
         createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create"));
 

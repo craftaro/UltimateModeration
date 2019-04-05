@@ -4,6 +4,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.commands.CommandFreeze;
 import com.songoda.ultimatemoderation.command.commands.CommandRevive;
 import com.songoda.ultimatemoderation.command.commands.CommandSpy;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -28,14 +29,14 @@ public class GUIModerate extends AbstractGUI {
     @Override
     protected void constructGUI() {
 
-        createButton(8, Material.OAK_DOOR, "Back");
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), "Back");
 
-        createButton(10, Material.BLUE_ICE, "&6&lFreeze", "&7Stop this player from moving.", "", "&7Currently:&6 " + (CommandFreeze.isFrozen(toModerate) ? "Frozen" : "Unfrozen"));
+        createButton(10, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.BLUE_ICE : Material.valueOf("PACKED_ICE"), "&6&lFreeze", "&7Stop this player from moving.", "", "&7Currently:&6 " + (CommandFreeze.isFrozen(toModerate) ? "Frozen" : "Unfrozen"));
         createButton(12, Material.SADDLE, "&6&lSpy", "&7Spy on this player");
         createButton(14, Material.CHEST, "&c&lInventory", "&7Access this players Inventory.");
         createButton(16, Material.ENDER_CHEST, "&a&lEnderchest", "&7Access this players Enderchest");
 
-        createButton(28, Material.SPLASH_POTION, "&c&lRevive", "&7Revive this player.");
+        createButton(28, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.SPLASH_POTION : Material.valueOf("POTION"), "&c&lRevive", "&7Revive this player.");
     }
 
     @Override

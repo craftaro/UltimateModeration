@@ -163,6 +163,13 @@ public abstract class AbstractGUI implements Listener {
         return createButton(slot, inventory, item, name, lore);
     }
 
+    protected ItemStack createButton(int slot, Object item, String name, String... lore) {
+        if (item instanceof ItemStack)
+            return createButton(slot, inventory, (ItemStack)item, name, lore);
+        else
+            return createButton(slot, inventory, (Material)item, name, lore);
+    }
+
     protected ItemStack createButton(int slot, Inventory inventory, Material material, String name, String... lore) {
         return createButton(slot, inventory, new ItemStack(material), name, lore);
     }
