@@ -38,7 +38,7 @@ public class AbstractAnvilGUI {
     private Inventory inv;
     private Listener listener;
 
-    private Sound closeSound = UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_13) ? Sound.ENTITY_PLAYER_LEVELUP : Sound.valueOf("LEVEL_UP");
+    private Sound closeSound = UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_12) ? Sound.ENTITY_PLAYER_LEVELUP : Sound.valueOf("LEVEL_UP");
 
     public AbstractAnvilGUI(final Player player, final AnvilClickEventHandler handler) {
         loadClasses();
