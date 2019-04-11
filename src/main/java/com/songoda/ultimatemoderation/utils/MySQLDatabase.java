@@ -41,7 +41,7 @@ public class MySQLDatabase {
                     "\t`uuid` TEXT NULL,\n" +
                     "\t`type` TEXT NULL,\n" +
                     "\t`duration` BIGINT NULL,\n" +
-                    "\t`reason` TEXT NULL\n" +
+                    "\t`reason` TEXT NULL,\n" +
                     "\t`name` TEXT NULL,\n" +
                     "\t`creator` TEXT NULL\n" +
                     ")");
@@ -50,7 +50,7 @@ public class MySQLDatabase {
                     "\t`uuid` TEXT NULL,\n" +
                     "\t`type` TEXT NULL,\n" +
                     "\t`duration` BIGINT NULL,\n" +
-                    "\t`reason` TEXT NULL\n" +
+                    "\t`reason` TEXT NULL,\n" +
                     "\t`victim` TEXT NULL,\n" +
                     "\t`punisher` TEXT NULL,\n" +
                     "\t`expiration` BIGINT NULL\n" +
