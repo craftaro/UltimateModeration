@@ -2,7 +2,7 @@ stages:
 - build
 
 variables:
-    name: "ultimatemoderation"
+    name: "UltimateModeration"
     path: "/builds/$CI_PROJECT_PATH"
     version: "1.0.1"
 
