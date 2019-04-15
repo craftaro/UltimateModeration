@@ -33,7 +33,7 @@ public class TicketManager {
         return registeredTickets.values().stream().filter(ticket -> ticket.getStatus() == status).collect(Collectors.toList());
     }
 
-    public List<Ticket> getTicketsAbout(Player player) {
+    public List<Ticket> getTicketsAbout(OfflinePlayer player) {
         return getTicketsAbout(player.getUniqueId());
     }
 

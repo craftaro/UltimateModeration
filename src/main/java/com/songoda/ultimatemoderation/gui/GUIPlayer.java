@@ -33,13 +33,15 @@ public class GUIPlayer extends AbstractGUI {
             meta.setOwner(toModerate.getName());
         head.setItemMeta(meta);
 
-        createButton(13, head, "&7&l" + toModerate.getName());
+        createButton(13, head, "&7&l" + toModerate.getName(),
+                player.isOnline() ? "&a" + plugin.getLocale().getMessage("gui.players.online.online") : "&c" + plugin.getLocale().getMessage("gui.players.online.offline"));
 
         createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
 
         createButton(38, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish"));
         createButton(30, Material.CHEST, plugin.getLocale().getMessage("gui.player.tickets"));
-        createButton(32, Material.DIAMOND_SWORD, plugin.getLocale().getMessage("gui.player.punishments"));
+        if (player.isOnline())
+            createButton(32, Material.DIAMOND_SWORD, plugin.getLocale().getMessage("gui.player.punishments"));
         createButton(42, Material.MAP, plugin.getLocale().getMessage("gui.player.notes"));
         createButton(40, Material.DIAMOND_CHESTPLATE, plugin.getLocale().getMessage("gui.player.moderate"));
     }

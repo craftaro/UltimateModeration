@@ -41,8 +41,8 @@ public class CommandSpy extends AbstractCommand {
 
         boolean didVanish = false;
         if (!CommandVanish.isVanished(senderP)) {
-            didVanish = true;
             CommandVanish.vanish(senderP);
+            senderP.setCanPickupItems(false);
         }
         senderP.teleport(player.getPlayer().getLocation());
 

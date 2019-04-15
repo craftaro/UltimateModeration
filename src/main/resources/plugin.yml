@@ -8,7 +8,7 @@ commands:
   UltimateModeration:
     description: View information on this plugin.
     default: true
-    aliases: [um]
+    aliases: [um, p]
     usage: /um
   ClearChat:
     description: Clear the chat
