@@ -90,7 +90,7 @@ gui.players.button.tickets = "&7Tickets"
 gui.players.button.templatemanager = "&6&lTemplate Manager"
 gui.players.name = "Player Name"
 gui.players.search = "&7Search for player"
-gui.players.nonefound = "No players found."
+gui.players.nonefound = "&cNo players found."
 
 gui.templateselector.title = "&8Select a Template"
 gui.templateselector.click = "&7Click to select this template."
