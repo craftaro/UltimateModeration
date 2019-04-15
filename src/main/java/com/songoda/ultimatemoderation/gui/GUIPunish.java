@@ -55,16 +55,18 @@ public class GUIPunish extends AbstractGUI {
     @Override
     protected void constructGUI() {
         inventory.clear();
-        ItemStack head = new ItemStack(plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.PLAYER_HEAD : Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
-        SkullMeta meta = ((SkullMeta) head.getItemMeta());
-        if (plugin.isServerVersionAtLeast(ServerVersion.V1_13))
-            meta.setOwningPlayer(toModerate);
-        else
-            meta.setOwner(toModerate.getName());
-        head.setItemMeta(meta);
 
-        if (toModerate != null)
+        if (toModerate != null) {
+            ItemStack head = new ItemStack(plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.PLAYER_HEAD : Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
+            SkullMeta meta = ((SkullMeta) head.getItemMeta());
+            if (plugin.isServerVersionAtLeast(ServerVersion.V1_13))
+                meta.setOwningPlayer(toModerate);
+            else
+                meta.setOwner(toModerate.getName());
+            head.setItemMeta(meta);
+
             createButton(13, head, "&7&l" + toModerate.getName());
+        }
 
         createButton(22, Material.EMERALD_BLOCK, plugin.getLocale().getMessage("gui.punish.submit"));
 
