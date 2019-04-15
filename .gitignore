@@ -292,3 +292,5 @@ target/classes/com/songoda/ultimatemoderation/listeners/ChatListener\$Log\.class
 target/classes/com/songoda/ultimatemoderation/tasks/SlowModeTask\.class
 
 target/classes/com/songoda/ultimatemoderation/utils/ServerVersion\.class
+
+target/classes/com/songoda/ultimatemoderation/gui/GUIPlayers\$Online\.class
