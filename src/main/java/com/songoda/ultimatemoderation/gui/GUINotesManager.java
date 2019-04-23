@@ -125,7 +125,7 @@ public class GUINotesManager extends AbstractGUI {
             });
 
             abstractChatConfirm.setOnClose(() ->
-                    init(inventory.getTitle(), inventory.getSize()));
+                    init(setTitle, inventory.getSize()));
         }));
     }
 

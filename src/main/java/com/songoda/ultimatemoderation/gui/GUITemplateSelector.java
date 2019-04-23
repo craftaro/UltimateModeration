@@ -42,7 +42,7 @@ public class GUITemplateSelector extends AbstractGUI {
                 punish.setDuration(template.getDuration());
                 punish.setReason(template.getReason());
                 punish.setTemplate(template);
-                punish.init(punish.getInventory().getTitle(), punish.getInventory().getSize());
+                punish.init(setTitle, punish.getInventory().getSize());
                 punish.runTask();
             }));
         }
@@ -52,7 +52,7 @@ public class GUITemplateSelector extends AbstractGUI {
     @Override
     protected void registerClickables() {
         registerClickable(8, ((player1, inventory1, cursor, slot, type) -> {
-            punish.init(punish.getInventory().getTitle(), punish.getInventory().getSize());
+            punish.init(punish.getSetTitle(), punish.getInventory().getSize());
             punish.runTask();
         }));
     }

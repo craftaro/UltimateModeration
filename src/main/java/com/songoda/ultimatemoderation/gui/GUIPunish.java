@@ -177,7 +177,7 @@ public class GUIPunish extends AbstractGUI {
                     justSaved = false;
                 });
 
-                gui.setOnClose((player2, inventory3) -> init(inventory.getTitle(), inventory.getSize()));
+                gui.setOnClose((player2, inventory3) -> init(setTitle, inventory.getSize()));
 
                 ItemStack item = new ItemStack(Material.PAPER);
                 ItemMeta meta = item.getItemMeta();
@@ -200,7 +200,7 @@ public class GUIPunish extends AbstractGUI {
                 justSaved = false;
             });
 
-            gui.setOnClose((player2, inventory3) -> init(inventory.getTitle(), inventory.getSize()));
+            gui.setOnClose((player2, inventory3) -> init(setTitle, inventory.getSize()));
 
             ItemStack item = new ItemStack(Material.PAPER);
             ItemMeta meta = item.getItemMeta();
@@ -252,7 +252,7 @@ public class GUIPunish extends AbstractGUI {
         });
 
         gui.setOnClose((player2, inventory3) ->
-                init(inventory.getTitle(), inventory.getSize()));
+                init(setTitle, inventory.getSize()));
 
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
