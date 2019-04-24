@@ -49,7 +49,8 @@ public class AbstractChatConfirm implements Listener {
                 handler.onChat(chatConfirmEvent);
 
                 if (onClose != null) {
-                    onClose.onClose();
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateModeration.getInstance(), () ->
+                            onClose.onClose(), 0L);
                 }
                 HandlerList.unregisterAll(listener);
             }
