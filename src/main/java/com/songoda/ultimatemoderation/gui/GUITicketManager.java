@@ -38,7 +38,7 @@ public class GUITicketManager extends AbstractGUI {
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage(toModerate != null ? "gui.tickets.titlesingle" : "gui.tickets.title", player.getName()), 54);
+        init(plugin.getLocale().getMessage(toModerate != null ? "gui.tickets.titlesingle" : "gui.tickets.title", toModerate.getName()), 54);
     }
 
     @Override
