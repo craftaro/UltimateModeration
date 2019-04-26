@@ -1,7 +1,7 @@
 name: UltimateModeration
 description: UltimateModeration
 main: com.songoda.ultimatemoderation.UltimateModeration
-version: 1
+version: maven-version-number
 author: Songoda
 api-version: 1.13
 commands:

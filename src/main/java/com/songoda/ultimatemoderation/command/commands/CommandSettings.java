@@ -15,8 +15,8 @@ public class CommandSettings extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
-        Player p = (Player) sender;
-        instance.getSettingsManager().openSettingsManager(p);
+        Player player = (Player) sender;
+        instance.getSettingsManager().openSettingsManager(player);
         return ReturnType.SUCCESS;
     }
 

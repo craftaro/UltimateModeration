@@ -24,9 +24,11 @@ import com.songoda.ultimatemoderation.utils.Metrics;
 import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.SettingsManager;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
+import com.songoda.ultimatemoderation.utils.updateModules.LocaleModule;
+import com.songoda.update.Plugin;
+import com.songoda.update.SongodaUpdate;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -60,7 +62,6 @@ public class UltimateModeration extends JavaPlugin {
         console.sendMessage(Methods.formatText("&a============================="));
         console.sendMessage(Methods.formatText("&7UltimateModeration " + this.getDescription().getVersion() + " by &5Songoda <3!"));
         console.sendMessage(Methods.formatText("&7Action: &aEnabling&7..."));
-        console.sendMessage(Methods.formatText("&a============================="));
 
         this.settingsManager = new SettingsManager(this);
         this.setupConfig();
@@ -70,6 +71,11 @@ public class UltimateModeration extends JavaPlugin {
         Locale.init(this);
         Locale.saveDefaultLocale("en_US");
         this.locale = Locale.getLocale(getConfig().getString("System.Language Mode", langMode));
+
+        //Running Songoda Updater
+        Plugin plugin = new Plugin(this, 29);
+        plugin.addModule(new LocaleModule());
+        SongodaUpdate.load(plugin);
 
         this.references = new References();
 
@@ -102,6 +108,7 @@ public class UltimateModeration extends JavaPlugin {
 
         int timeout = SettingsManager.Setting.AUTOSAVE.getInt() * 60 * 20;
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> storage.doSave(), timeout, timeout);
+        console.sendMessage(Methods.formatText("&a============================="));
     }
 
     @Override
