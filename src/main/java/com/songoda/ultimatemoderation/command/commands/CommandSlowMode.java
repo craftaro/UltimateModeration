@@ -19,13 +19,13 @@ public class CommandSlowMode extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
-        if (args.length != 1)
+        if (args.length == 0) {
+            ChatListener.setSlowModeOverride(0);
+            sender.sendMessage(instance.getLocale().getMessage("event.slowmode.disabled"));
+        } else if (args.length != 1)
             return ReturnType.SYNTAX_ERROR;
 
         long delay = Methods.parseTime(args[0]);
-
-        if (delay == 0)
-            return ReturnType.SYNTAX_ERROR;
 
         ChatListener.setSlowModeOverride(delay);
 
@@ -55,7 +55,7 @@ public class CommandSlowMode extends AbstractCommand {
 
     @Override
     public String getSyntax() {
-        return "/slowmode <delay>";
+        return "/slowmode [delay]";
     }
 
     @Override
