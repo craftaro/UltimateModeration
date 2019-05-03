@@ -1,6 +1,7 @@
 package com.songoda.ultimatemoderation.utils.gui;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
+import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.version.NMSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -110,7 +111,8 @@ public class AbstractAnvilGUI {
                     player.setLevel(player.getLevel() - 1);
                     if (inv.equals(inv)) {
                         inv.clear();
-                        player.playSound(player.getLocation(), closeSound, 1F, 1F);
+                        if (UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_9))
+                            player.playSound(player.getLocation(), closeSound, 1F, 1F);
                         Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateModeration.getInstance(), () -> {
                             if (onClose != null) onClose.OnClose(player, inv);
                             destroy();
