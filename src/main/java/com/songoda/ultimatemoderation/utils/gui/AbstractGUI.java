@@ -100,6 +100,7 @@ public abstract class AbstractGUI implements Listener {
                 for (OnClose onClose : gui.onCloses) {
                     onClose.OnClose((Player) event.getPlayer(), inventory);
                 }
+                gui.destory();
             }
 
             private AbstractGUI getGUIFromInventory(Inventory inventory) {
@@ -116,9 +117,9 @@ public abstract class AbstractGUI implements Listener {
     public void init(String title, int slots) {
         if (inventory == null
                 || inventory.getSize() != slots
-                || ChatColor.translateAlternateColorCodes('&', title) != player.getOpenInventory().getTitle()) {
-            this.inventory = Bukkit.getServer().createInventory(new GUIHolder(), slots, Methods.formatText(title));
-            this.setTitle = Methods.formatText(title);
+                || Methods.formatTitle(title) != player.getOpenInventory().getTitle()) {
+            this.inventory = Bukkit.getServer().createInventory(new GUIHolder(), slots, Methods.formatTitle(title));
+            this.setTitle = Methods.formatTitle(title);
             if (this.clickables.size() == 0)
                 registerClickables();
             if (this.onCloses.size() == 0)
@@ -127,6 +128,12 @@ public abstract class AbstractGUI implements Listener {
         constructGUI();
         initializeListeners(UltimateModeration.getInstance());
         player.openInventory(inventory);
+    }
+
+    private void destory() {
+        onCloses.clear();
+        clickables.clear();
+        draggableRanges.clear();
     }
 
     protected abstract void constructGUI();

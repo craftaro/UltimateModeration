@@ -59,6 +59,17 @@ public class Methods {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
+    public static String formatTitle(String text) {
+        if (text == null || text.equals(""))
+            return "";
+        if (!UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_9)) {
+            if (text.length() > 31)
+                text = text.substring(0, 29) + "...";
+        }
+        text = formatText(text);
+        return text;
+    }
+
     public static String makeReadable(Long time) {
         if (time == null)
             return "";
