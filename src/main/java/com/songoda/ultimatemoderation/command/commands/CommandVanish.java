@@ -42,13 +42,13 @@ public class CommandVanish extends AbstractCommand {
 
         if (inVanish.contains(uuid)) {
             inVanish.remove(uuid);
+            player.setInvulnerable(false);
             player.setCanPickupItems(true);
-            player.setInvulnerable(true);
             player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOff")));
         } else {
             inVanish.add(uuid);
             player.setCanPickupItems(false);
-            player.setInvulnerable(false);
+            player.setInvulnerable(true);
             player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOn")));
         }
         if (SettingsManager.Setting.VANISH_EFFECTS.getBoolean()) {
