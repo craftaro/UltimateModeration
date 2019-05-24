@@ -3,7 +3,6 @@ package com.songoda.ultimatemoderation.utils.settings;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.ServerVersion;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -314,8 +313,10 @@ public class SettingsManager implements Listener {
         }
 
         try {
+            if (!plugin.getDataFolder().exists())
+                plugin.getDataFolder().mkdir();
             BufferedWriter writer =
-                    new BufferedWriter(new FileWriter(new File(plugin.getDataFolder() + "\\config.yml")));
+                    new BufferedWriter(new FileWriter(new File(plugin.getDataFolder() + File.separator + "config.yml")));
             writer.write(config.toString());
             writer.flush();
             writer.close();
