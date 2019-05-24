@@ -3,20 +3,14 @@ package com.songoda.ultimatemoderation.gui;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
-import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.AbstractChatConfirm;
-import com.songoda.ultimatemoderation.utils.SettingsManager;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
-import org.bukkit.Bukkit;
+import com.songoda.ultimatemoderation.utils.settings.Setting;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GUITicketType extends AbstractGUI {
 
@@ -40,7 +34,7 @@ public class GUITicketType extends AbstractGUI {
         resetClickables();
         registerClickables();
 
-        List<String> types = SettingsManager.Setting.TICKET_TYPES.getStringList();
+        List<String> types = Setting.TICKET_TYPES.getStringList();
 
         for (int i = 0; i < types.size(); i ++) {
             createButton(i, Material.PAPER, types.get(i));

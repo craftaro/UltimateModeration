@@ -4,7 +4,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.ServerVersion;
-import com.songoda.ultimatemoderation.utils.SettingsManager;
+import com.songoda.ultimatemoderation.utils.settings.Setting;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -34,7 +34,7 @@ public class SlowModeTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        long slowmode = ChatListener.getSlowModeOverride() == 0 ? Methods.parseTime(SettingsManager.Setting.SLOW_MODE.getString()) : ChatListener.getSlowModeOverride();
+        long slowmode = ChatListener.getSlowModeOverride() == 0 ? Methods.parseTime(Setting.SLOW_MODE.getString()) : ChatListener.getSlowModeOverride();
 
         if (slowmode == 0) return;
 

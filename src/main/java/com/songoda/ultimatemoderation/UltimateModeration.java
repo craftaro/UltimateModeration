@@ -22,8 +22,9 @@ import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.Metrics;
 import com.songoda.ultimatemoderation.utils.ServerVersion;
-import com.songoda.ultimatemoderation.utils.SettingsManager;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
+import com.songoda.ultimatemoderation.utils.settings.Setting;
+import com.songoda.ultimatemoderation.utils.settings.SettingsManager;
 import com.songoda.ultimatemoderation.utils.updateModules.LocaleModule;
 import com.songoda.update.Plugin;
 import com.songoda.update.SongodaUpdate;
@@ -64,10 +65,10 @@ public class UltimateModeration extends JavaPlugin {
         console.sendMessage(Methods.formatText("&7Action: &aEnabling&7..."));
 
         this.settingsManager = new SettingsManager(this);
-        this.setupConfig();
+        this.settingsManager.setupConfig();
 
         // Setup language
-        String langMode = SettingsManager.Setting.LANGUGE_MODE.getString();
+        String langMode = Setting.LANGUGE_MODE.getString();
         Locale.init(this);
         Locale.saveDefaultLocale("en_US");
         this.locale = Locale.getLocale(getConfig().getString("System.Language Mode", langMode));
@@ -106,7 +107,7 @@ public class UltimateModeration extends JavaPlugin {
         // Starting Metrics
         new Metrics(this);
 
-        int timeout = SettingsManager.Setting.AUTOSAVE.getInt() * 60 * 20;
+        int timeout = Setting.AUTOSAVE.getInt() * 60 * 20;
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> storage.doSave(), timeout, timeout);
         console.sendMessage(Methods.formatText("&a============================="));
     }
@@ -216,17 +217,10 @@ public class UltimateModeration extends JavaPlugin {
         return serverVersion.ordinal() >= version.ordinal();
     }
 
-    private void setupConfig() {
-        settingsManager.updateSettings();
-        this.getConfig().options().copyDefaults(true);
-        this.saveConfig();
-    }
-
     public void reload() {
         locale.reloadMessages();
         references = new References();
-        this.setupConfig();
-        saveConfig();
+        this.settingsManager.reloadConfig();
     }
 
     public CommandManager getCommandManager() {

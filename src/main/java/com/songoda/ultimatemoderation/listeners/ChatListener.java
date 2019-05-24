@@ -5,7 +5,7 @@ import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.staffchat.StaffChannel;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.utils.SettingsManager;
+import com.songoda.ultimatemoderation.utils.settings.Setting;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,7 +39,7 @@ public class ChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        long slowmode = slowModeOverride == 0 ? Methods.parseTime(SettingsManager.Setting.SLOW_MODE.getString()) : slowModeOverride;
+        long slowmode = slowModeOverride == 0 ? Methods.parseTime(Setting.SLOW_MODE.getString()) : slowModeOverride;
 
         if (!player.hasPermission("um.slowmode.bypass") && slowmode != 0) {
             List<Log> chats = chatLog.stream().filter(log -> log.player == player.getUniqueId()).collect(Collectors.toList());

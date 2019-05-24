@@ -4,7 +4,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.ServerVersion;
-import com.songoda.ultimatemoderation.utils.SettingsManager;
+import com.songoda.ultimatemoderation.utils.settings.Setting;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -51,10 +51,10 @@ public class CommandVanish extends AbstractCommand {
             player.setInvulnerable(true);
             player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOn")));
         }
-        if (SettingsManager.Setting.VANISH_EFFECTS.getBoolean()) {
-            player.getWorld().playSound(player.getLocation(), Sound.valueOf(SettingsManager.Setting.VANISH_SOUND.getString()), 1L, 1L);
+        if (Setting.VANISH_EFFECTS.getBoolean()) {
+            player.getWorld().playSound(player.getLocation(), Sound.valueOf(Setting.VANISH_SOUND.getString()), 1L, 1L);
 
-            if (SettingsManager.Setting.VANISH_BATS.getBoolean()) {
+            if (Setting.VANISH_BATS.getBoolean()) {
                 List<Entity> entities = new ArrayList<>();
                 for (int i = 0; i < 5; i++) {
                     entities.add(player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.BAT));
@@ -70,7 +70,7 @@ public class CommandVanish extends AbstractCommand {
             float yy = (float) (0 + (Math.random() * 2));
             float zz = (float) (0 + (Math.random() * 1));
             if (instance.isServerVersionAtLeast(ServerVersion.V1_12))
-                player.getWorld().spawnParticle(Particle.valueOf(SettingsManager.Setting.VANISH_PARTICLE.getString()), player.getLocation().add(0, 1, 0), 35, xx, yy, zz, 0);
+                player.getWorld().spawnParticle(Particle.valueOf(Setting.VANISH_PARTICLE.getString()), player.getLocation().add(0, 1, 0), 35, xx, yy, zz, 0);
         }
 
         for (Player p : Bukkit.getOnlinePlayers()) {
