@@ -81,15 +81,15 @@ commands:
     usage: /warn
   RunTemplate:
     description: RunTemplate
-    defaullt: false
+    default: false
     usage: /runtemplate
   Ticket:
     description: Ticket
-    defaullt: false
+    default: false
     usage: /ticket
   StaffChat:
     description: StaffChat
-    defaullt: false
+    default: false
     aliases: [sc]
     usage: /staffchat
   SlowMode:
