@@ -33,6 +33,12 @@ public class CommandUnBan extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (!instance.getPunishmentManager().getPlayer(player).getActivePunishments()
+                .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
+            sender.sendMessage(instance.getReferences().getPrefix() + "That player isn't banned.");
+            return ReturnType.FAILURE;
+        }
+
         PlayerPunishData playerPunishData = instance.getPunishmentManager().getPlayer(player);
 
         playerPunishData.expirePunishments(PunishmentType.BAN);

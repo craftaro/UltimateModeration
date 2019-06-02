@@ -50,6 +50,12 @@ public class CommandMute extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
+                .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
+            sender.sendMessage(instance.getReferences().getPrefix() + "That player is already muted.");
+            return ReturnType.FAILURE;
+        }
+
         new Punishment(PunishmentType.MUTE, duration == 0 ? -1 : duration, reason.equals("") ? null : reason)
                 .execute(sender, player);
 

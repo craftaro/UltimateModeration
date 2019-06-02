@@ -50,6 +50,12 @@ public class CommandBan extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
+                .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
+            sender.sendMessage(instance.getReferences().getPrefix() + "That player is already banned.");
+            return ReturnType.FAILURE;
+        }
+
         new Punishment(PunishmentType.BAN, duration == 0 ? -1 : duration, reason.equals("") ? null : reason)
                 .execute(sender, player);
 
