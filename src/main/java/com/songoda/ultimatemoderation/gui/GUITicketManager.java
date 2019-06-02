@@ -151,7 +151,8 @@ public class GUITicketManager extends AbstractGUI {
         UltimateModeration plugin = UltimateModeration.getInstance();
 
         AbstractAnvilGUI gui = new AbstractAnvilGUI(player, event ->
-                new GUITicketType(plugin, toModerate, player, event.getName()));
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () ->
+                        new GUITicketType(plugin, toModerate, player, event.getName()), 1L));
 
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();

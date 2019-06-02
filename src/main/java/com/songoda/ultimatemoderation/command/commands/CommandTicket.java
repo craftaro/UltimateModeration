@@ -24,7 +24,7 @@ public class CommandTicket extends AbstractCommand {
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
         Player senderP = ((Player) sender);
 
-        GUITicketManager.createNew(senderP, senderP);
+        new GUITicketManager(instance, senderP, senderP);
         return ReturnType.SUCCESS;
     }
 

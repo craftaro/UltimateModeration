@@ -86,6 +86,7 @@ commands:
   Ticket:
     description: Ticket
     default: false
+    aliases: [tickets]
     usage: /ticket
   StaffChat:
     description: StaffChat
