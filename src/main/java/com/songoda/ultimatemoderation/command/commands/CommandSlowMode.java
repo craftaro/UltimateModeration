@@ -21,7 +21,8 @@ public class CommandSlowMode extends AbstractCommand {
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
         if (args.length == 0) {
             ChatListener.setSlowModeOverride(0);
-            sender.sendMessage(instance.getLocale().getMessage("event.slowmode.disabled"));
+            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.slowmode.disabled"));
+            return ReturnType.SUCCESS;
         } else if (args.length != 1)
             return ReturnType.SYNTAX_ERROR;
 
@@ -31,7 +32,7 @@ public class CommandSlowMode extends AbstractCommand {
 
         Bukkit.getOnlinePlayers().forEach(player ->
                 player.sendMessage(instance.getReferences().getPrefix() +
-                        instance.getLocale().getMessage("event.slowmode.enabled",(delay / 1000))));
+                        instance.getLocale().getMessage("event.slowmode.enabled", Methods.makeReadable(delay))));
 
         return ReturnType.SUCCESS;
     }
@@ -55,11 +56,11 @@ public class CommandSlowMode extends AbstractCommand {
 
     @Override
     public String getSyntax() {
-        return "/slowmode [delay]";
+        return "/slowmode [delay in seconds]";
     }
 
     @Override
     public String getDescription() {
-        return "Allows you to see inside of a players inventory.";
+        return "Allows you to slow down the chat. Accepts time in the format of 1s 5s 10s.";
     }
 }

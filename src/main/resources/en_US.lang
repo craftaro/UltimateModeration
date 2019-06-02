@@ -63,7 +63,7 @@ event.staffchat.format = "&%color%[%channel%] %player%&%color%: %message%"
 
 event.slowmode.wait = "&7Slow mode &6%delay% &7seconds left."
 event.slowmode.done = "&7Slow mode time out."
-event.slowmode.enabled = "&7Slow mode has been enabled with the delay &6%delay% &7seconds."
+event.slowmode.enabled = "&7Slow mode has been enabled with the delay &6%delay%&7."
 event.slowmode.disabled = "&7You disabled slowmode."
 
 #GUI Messages
