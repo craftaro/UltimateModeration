@@ -5,6 +5,7 @@ import com.songoda.ultimatemoderation.command.commands.CommandCommandSpy;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.utils.settings.Setting;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -50,7 +51,7 @@ public class CommandListener implements Listener {
         if (!player.hasPermission("um.commandspy.immune")) {
             for (Player pl : Bukkit.getOnlinePlayers()) {
                 if (pl.hasPermission("um.commandspy") && CommandCommandSpy.isSpying(pl))
-                    pl.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.commandspy.deny", player.getName(), command));
+                    pl.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.commandspy.deny", player.getName(), StringEscapeUtils.escapeJava(command)));
             }
         }
     }
