@@ -13,7 +13,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class CommandVanish extends AbstractCommand {
 
@@ -42,13 +44,16 @@ public class CommandVanish extends AbstractCommand {
 
         if (inVanish.contains(uuid)) {
             inVanish.remove(uuid);
-            player.setInvulnerable(false);
+            if (instance.isServerVersionAtLeast(ServerVersion.V1_9))
+                player.setInvulnerable(false);
             player.setCanPickupItems(true);
             player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOff")));
         } else {
             inVanish.add(uuid);
             player.setCanPickupItems(false);
-            player.setInvulnerable(true);
+
+            if (instance.isServerVersionAtLeast(ServerVersion.V1_9))
+                player.setInvulnerable(true);
             player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOn")));
         }
         if (Setting.VANISH_EFFECTS.getBoolean()) {
