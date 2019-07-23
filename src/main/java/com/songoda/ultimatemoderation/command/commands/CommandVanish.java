@@ -11,6 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -51,10 +52,10 @@ public class CommandVanish extends AbstractCommand {
         } else {
             inVanish.add(uuid);
             player.setCanPickupItems(false);
-
             if (instance.isServerVersionAtLeast(ServerVersion.V1_9))
                 player.setInvulnerable(true);
             player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOn")));
+
         }
         if (Setting.VANISH_EFFECTS.getBoolean()) {
             player.getWorld().playSound(player.getLocation(), Sound.valueOf(Setting.VANISH_SOUND.getString()), 1L, 1L);
@@ -83,6 +84,11 @@ public class CommandVanish extends AbstractCommand {
                 registerVanishedPlayers(p);
             else
                 p.showPlayer(player);
+        }
+        for (Entity e : player.getNearbyEntities(30, 30, 30)) {
+            if (e instanceof Monster) {
+                ((Monster) e).setTarget(null);
+            }
         }
     }
 

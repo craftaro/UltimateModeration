@@ -29,3 +29,6 @@ hs_err_pid*
 /bin/
 /target/
 *.iml
+src/\.DS_Store
+
+\.DS_Store
