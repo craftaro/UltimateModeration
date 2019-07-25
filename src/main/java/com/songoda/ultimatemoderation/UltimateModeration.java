@@ -23,6 +23,7 @@ import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.Metrics;
 import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
+import com.songoda.ultimatemoderation.utils.locale.Locale;
 import com.songoda.ultimatemoderation.utils.settings.Setting;
 import com.songoda.ultimatemoderation.utils.settings.SettingsManager;
 import com.songoda.ultimatemoderation.utils.updateModules.LocaleModule;
@@ -38,7 +39,6 @@ import java.util.UUID;
 public class UltimateModeration extends JavaPlugin {
     private static CommandSender console = Bukkit.getConsoleSender();
     private static UltimateModeration INSTANCE;
-    private References references;
 
     private ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
 
@@ -69,16 +69,13 @@ public class UltimateModeration extends JavaPlugin {
 
         // Setup language
         String langMode = Setting.LANGUGE_MODE.getString();
-        Locale.init(this);
-        Locale.saveDefaultLocale("en_US");
-        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode", langMode));
+        locale = new Locale(this, "en_US");
+        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
 
         //Running Songoda Updater
         Plugin plugin = new Plugin(this, 29);
         plugin.addModule(new LocaleModule());
         SongodaUpdate.load(plugin);
-
-        this.references = new References();
 
         // Setup Managers
         this.ticketManager = new TicketManager();
@@ -219,8 +216,8 @@ public class UltimateModeration extends JavaPlugin {
     }
 
     public void reload() {
-        locale.reloadMessages();
-        references = new References();
+        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
+        this.locale.reloadMessages();
         this.settingsManager.reloadConfig();
     }
 
@@ -234,10 +231,6 @@ public class UltimateModeration extends JavaPlugin {
 
     public Locale getLocale() {
         return locale;
-    }
-
-    public References getReferences() {
-        return references;
     }
 
     public TemplateManager getTemplateManager() {

@@ -23,13 +23,16 @@ public class GUIModerate extends AbstractGUI {
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage("gui.moderate.title", toModerate.getName()), 45);
+        init(plugin.getLocale().getMessage("gui.moderate.title")
+                .processPlaceholder("toModerate", toModerate.getName()).getMessage(), 45);
     }
 
     @Override
     protected void constructGUI() {
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
         createButton(10, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.BLUE_ICE : Material.valueOf("PACKED_ICE"), "&6&lFreeze", "&7Stop this player from moving.", "", "&7Currently:&6 " + (CommandFreeze.isFrozen(toModerate) ? "Frozen" : "Unfrozen"));
         createButton(12, Material.SADDLE, "&6&lSpy", "&7Spy on this player");

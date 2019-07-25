@@ -38,7 +38,8 @@ public class GUITicketManager extends AbstractGUI {
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage(toModerate != null ? "gui.tickets.titlesingle" : "gui.tickets.title", toModerate != null ? toModerate.getName() : ""), 54);
+        init(plugin.getLocale().getMessage(toModerate != null ? "gui.tickets.titlesingle" : "gui.tickets.title")
+                .processPlaceholder("toModerate", toModerate != null ? toModerate.getName() : "").getMessage(), 54);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class GUITicketManager extends AbstractGUI {
         tickets = tickets.stream().skip(page * 36).limit(36).collect(Collectors.toList());
 
         if (page != 0) {
-            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
                 page --;
                 constructGUI();
@@ -63,7 +64,7 @@ public class GUITicketManager extends AbstractGUI {
         }
 
         if (maxPage >= 36) {
-            createButton(5, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            createButton(5, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
@@ -73,10 +74,13 @@ public class GUITicketManager extends AbstractGUI {
         createButton(3 ,Material.DIAMOND_SWORD, Methods.formatText("&6" + status.getStatus()));
 
         if (toModerate != null)
-        createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.tickets.create"));
+        createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.tickets.create").getMessage());
 
         if (player.hasPermission("um.ticket"))
-            createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+            createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                    ? Material.OAK_DOOR
+                    : Material.valueOf("WOOD_DOOR"),
+                    plugin.getLocale().getMessage("gui.general.back").getMessage());
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
@@ -108,13 +112,17 @@ public class GUITicketManager extends AbstractGUI {
 
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
-            lore.add(plugin.getLocale().getMessage("gui.ticket.status", ticket.getStatus().getStatus()));
+            lore.add(plugin.getLocale().getMessage("gui.ticket.status")
+                    .processPlaceholder("status", ticket.getStatus().getStatus()).getMessage());
 
             if (toModerate != null)
-                lore.add(plugin.getLocale().getMessage("gui.tickets.player", Bukkit.getOfflinePlayer(ticket.getVictim()).getName()));
-            lore.add(plugin.getLocale().getMessage("gui.ticket.type", ticket.getType()));
-            lore.add(plugin.getLocale().getMessage("gui.ticket.createdon", format.format(new Date(ticket.getCreationDate()))));
-            lore.add(plugin.getLocale().getMessage("gui.tickets.click"));
+                lore.add(plugin.getLocale().getMessage("gui.tickets.player")
+                        .processPlaceholder("player", Bukkit.getOfflinePlayer(ticket.getVictim()).getName()).getMessage());
+            lore.add(plugin.getLocale().getMessage("gui.ticket.type")
+                    .processPlaceholder("type", ticket.getType()).getMessage());
+            lore.add(plugin.getLocale().getMessage("gui.ticket.createdon")
+                    .processPlaceholder("sent", format.format(new Date(ticket.getCreationDate()))).getMessage());
+            lore.add(plugin.getLocale().getMessage("gui.tickets.click").getMessage());
 
             createButton(18 + i, Material.MAP, name, lore);
 
@@ -156,7 +164,7 @@ public class GUITicketManager extends AbstractGUI {
 
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(plugin.getLocale().getMessage("gui.tickets.subject"));
+        meta.setDisplayName(plugin.getLocale().getMessage("gui.tickets.subject").getMessage());
         item.setItemMeta(meta);
 
         gui.setSlot(AbstractAnvilGUI.AnvilSlot.INPUT_LEFT, item);

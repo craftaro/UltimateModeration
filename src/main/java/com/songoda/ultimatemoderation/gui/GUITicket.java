@@ -36,7 +36,8 @@ public class GUITicket extends AbstractGUI {
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage("gui.ticket.title", ticket.getTicketId()), 54);
+        init(plugin.getLocale().getMessage("gui.ticket.title")
+                .processPlaceholder("id", ticket.getTicketId()).getMessage(), 54);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class GUITicket extends AbstractGUI {
                 .collect(Collectors.toList());
 
         if (page != 0) {
-            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
                 page --;
                 constructGUI();
@@ -60,7 +61,7 @@ public class GUITicket extends AbstractGUI {
         }
 
         if (page != maxPage) {
-            createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
@@ -70,12 +71,16 @@ public class GUITicket extends AbstractGUI {
         if (player.hasPermission("um.ticket.openclose"))
             createButton(5, Material.REDSTONE, "&6" + ticket.getStatus().getStatus());
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"),
+                plugin.getLocale().getMessage("gui.general.back").getMessage());
 
         if (player.hasPermission("um.ticket.clicktotele") && ticket.getLocation() != null)
-            createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.ticket.clicktotele"));
+            createButton(7, Material.REDSTONE,
+                    plugin.getLocale().getMessage("gui.ticket.clicktotele").getMessage());
 
-        createButton(6, Material.REDSTONE,  plugin.getLocale().getMessage("gui.ticket.respond"));
+        createButton(6, Material.REDSTONE,  plugin.getLocale().getMessage("gui.ticket.respond").getMessage());
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
@@ -108,8 +113,10 @@ public class GUITicket extends AbstractGUI {
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
 
-            lore.add(plugin.getLocale().getMessage("gui.ticket.postedby", Bukkit.getOfflinePlayer(ticketResponse.getAuthor()).getName() ));
-            lore.add(plugin.getLocale().getMessage("gui.ticket.createdon", format.format(new Date(ticketResponse.getPostedDate()))));
+            lore.add(plugin.getLocale().getMessage("gui.ticket.postedby")
+                    .processPlaceholder("player", Bukkit.getOfflinePlayer(ticketResponse.getAuthor()).getName()).getMessage());
+            lore.add(plugin.getLocale().getMessage("gui.ticket.createdon")
+                    .processPlaceholder("sent", format.format(new Date(ticketResponse.getPostedDate()))).getMessage());
 
             createButton(18 + i, Material.MAP, name, lore);
         }
@@ -133,7 +140,7 @@ public class GUITicket extends AbstractGUI {
         }
 
         registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
-            player.sendMessage(plugin.getLocale().getMessage("gui.ticket.what"));
+            player.sendMessage(plugin.getLocale().getMessage("gui.ticket.what").getMessage());
             AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
                 ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
                 constructGUI();

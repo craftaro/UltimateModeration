@@ -28,7 +28,7 @@ public class GUITemplateManager extends AbstractGUI {
         super(player);
         this.plugin = plugin;
 
-        init(plugin.getLocale().getMessage("gui.templatemanager.title"), 54);
+        init(plugin.getLocale().getMessage("gui.templatemanager.title").getMessage(), 54);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class GUITemplateManager extends AbstractGUI {
                 .collect(Collectors.toList());
 
         if (page != 0) {
-            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
                 page --;
                 constructGUI();
@@ -52,7 +52,7 @@ public class GUITemplateManager extends AbstractGUI {
         }
 
         if (page != maxPage) {
-            createButton(5, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            createButton(5, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
@@ -61,9 +61,12 @@ public class GUITemplateManager extends AbstractGUI {
 
         createButton(3 ,Material.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name()));
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"),
+                plugin.getLocale().getMessage("gui.general.back").getMessage());
 
-        createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.templatemanager.create"));
+        createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.templatemanager.create").getMessage());
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
@@ -73,8 +76,8 @@ public class GUITemplateManager extends AbstractGUI {
         for (int i = 0; i < templates.size(); i++) {
             Template template = templates.get(i);
             createButton(18 + i, Material.MAP, "&6&l" + template.getTemplateName(),
-                    plugin.getLocale().getMessage("gui.templatemanager.leftclick"),
-                    plugin.getLocale().getMessage("gui.templatemanager.rightclick"));
+                    plugin.getLocale().getMessage("gui.templatemanager.leftclick").getMessage(),
+                    plugin.getLocale().getMessage("gui.templatemanager.rightclick").getMessage());
 
             registerClickable(18 + i, ((player1, inventory1, cursor, slot, type) -> {
                 if (type == ClickType.LEFT) {

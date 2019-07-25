@@ -25,7 +25,7 @@ public class GUITicketType extends AbstractGUI {
         this.toModerate = toModerate;
         this.subject = subject;
 
-        init(plugin.getLocale().getMessage("gui.ticket.picktype"), 27);
+        init(plugin.getLocale().getMessage("gui.ticket.picktype").getMessage(), 27);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class GUITicketType extends AbstractGUI {
             final int fi = i;
             registerClickable(i, (player1, inventory1, cursor, slot, type) -> {
                 Ticket ticket = new Ticket(toModerate, subject, types.get(fi));
-                player.sendMessage(plugin.getLocale().getMessage("gui.tickets.what"));
+                player.sendMessage(plugin.getLocale().getMessage("gui.tickets.what").getMessage());
                 AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
                     plugin.getTicketManager().addTicket(ticket);
                     if (player == toModerate)

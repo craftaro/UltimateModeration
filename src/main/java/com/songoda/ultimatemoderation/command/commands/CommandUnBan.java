@@ -29,13 +29,13 @@ public class CommandUnBan extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist.");
+            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (!instance.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player isn't banned.");
+            instance.getLocale().newMessage("That player isn't banned.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
@@ -43,7 +43,8 @@ public class CommandUnBan extends AbstractCommand {
 
         playerPunishData.expirePunishments(PunishmentType.BAN);
 
-        sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.unban.success", player.getName()));
+        instance.getLocale().getMessage("event.unban.success")
+                .processPlaceholder("player", player.getName()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }
 

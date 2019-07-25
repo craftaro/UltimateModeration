@@ -28,13 +28,13 @@ public class CommandUnMute extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist.");
+            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (!instance.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player isn't muted.");
+            instance.getLocale().newMessage("That player isn't muted.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
@@ -42,7 +42,8 @@ public class CommandUnMute extends AbstractCommand {
 
         playerPunishData.expirePunishments(PunishmentType.MUTE);
 
-        sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.unmute.success", player.getName()));
+        instance.getLocale().newMessage(instance.getLocale().getMessage("event.unmute.success")
+                .processPlaceholder("player", player.getName()).getMessage()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }
 

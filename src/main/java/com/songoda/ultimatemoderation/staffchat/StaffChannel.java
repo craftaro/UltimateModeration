@@ -36,16 +36,29 @@ public class StaffChannel {
         if (chatLog.size() > 5) {
             chatLog.stream().skip(chatLog.size() - 3).forEach(message -> player.sendMessage(Methods.formatText(message)));
         }
-        messageAll(UltimateModeration.getInstance().getLocale().getMessage("event.staffchat.format.join", chatChar, channelName, player.getDisplayName()));
+        messageAll(UltimateModeration.getInstance().getLocale()
+                .getMessage("event.staffchat.format.join")
+                .processPlaceholder("color", chatChar)
+                .processPlaceholder("channel", channelName)
+                .processPlaceholder("player", player.getDisplayName()).getMessage());
     }
 
     public void removeMember(Player player) {
         members.remove(player.getUniqueId());
-        messageAll(UltimateModeration.getInstance().getLocale().getMessage("event.staffchat.format.leave", chatChar, channelName, player.getDisplayName()));
+        messageAll(UltimateModeration.getInstance().getLocale()
+            .getMessage("event.staffchat.format.leave")
+            .processPlaceholder("color", chatChar)
+            .processPlaceholder("channel", channelName)
+            .processPlaceholder("player", player.getDisplayName()).getMessage());
     }
 
     public void processMessage(String message, Player player) {
-        messageAll(UltimateModeration.getInstance().getLocale().getMessage("event.staffchat.format", chatChar, channelName, player.getDisplayName(), chatChar, message));
+        messageAll(UltimateModeration.getInstance().getLocale()
+            .getMessage("event.staffchat.format")
+            .processPlaceholder("color", chatChar)
+            .processPlaceholder("channel", channelName)
+            .processPlaceholder("player", player.getDisplayName())
+            .processPlaceholder("message", message).getMessage());
     }
 
     private void messageAll(String message) {

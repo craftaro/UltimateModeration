@@ -21,7 +21,7 @@ public class CommandSlowMode extends AbstractCommand {
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
         if (args.length == 0) {
             ChatListener.setSlowModeOverride(0);
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.slowmode.disabled"));
+            instance.getLocale().getMessage("event.slowmode.disabled").sendPrefixedMessage(sender);
             return ReturnType.SUCCESS;
         } else if (args.length != 1)
             return ReturnType.SYNTAX_ERROR;
@@ -31,8 +31,8 @@ public class CommandSlowMode extends AbstractCommand {
         ChatListener.setSlowModeOverride(delay);
 
         Bukkit.getOnlinePlayers().forEach(player ->
-                player.sendMessage(instance.getReferences().getPrefix() +
-                        instance.getLocale().getMessage("event.slowmode.enabled", Methods.makeReadable(delay))));
+                instance.getLocale().getMessage("event.slowmode.enabled")
+                        .processPlaceholder("delay", Methods.makeReadable(delay)).sendPrefixedMessage(player));
 
         return ReturnType.SUCCESS;
     }

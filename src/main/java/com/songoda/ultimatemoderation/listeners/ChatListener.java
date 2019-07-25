@@ -60,7 +60,7 @@ public class ChatListener implements Listener {
 
         if (!isChatToggled && !player.hasPermission("um.togglechat.bypass")) {
             event.setCancelled(true);
-            player.sendMessage(instance.getReferences().getPrefix() + Methods.formatText(instance.getLocale().getMessage("command.togglechat.muted")));
+            instance.getLocale().getMessage("command.togglechat.muted").sendPrefixedMessage(player);
         }
 
         List<AppliedPunishment> appliedPunishments = instance.getPunishmentManager().getPlayer(player).getActivePunishments(PunishmentType.MUTE);

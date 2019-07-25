@@ -49,7 +49,7 @@ public class Punishment {
         UltimateModeration plugin = UltimateModeration.getInstance();
 
         if (!punisher.hasPermission("Um." + punishmentType)) {
-            punisher.sendMessage(plugin.getReferences().getPrefix() + plugin.getLocale().getMessage("event.general.nopermission"));
+            plugin.getLocale().getMessage("event.general.nopermission").sendPrefixedMessage(punisher);
             return;
         }
 
@@ -57,29 +57,29 @@ public class Punishment {
         switch (punishmentType) {
             case BAN:
                 if (!playerPunishData.getActivePunishments(PunishmentType.BAN).isEmpty()) {
-                    punisher.sendMessage(plugin.getReferences().getPrefix()
-                            + plugin.getLocale().getMessage("event.ban.already"));
+                    plugin.getLocale().getMessage("event.ban.already").sendPrefixedMessage(punisher);
                     return;
                 }
                 if (victim.isOnline()) {
-                    victim.getPlayer().kickPlayer(plugin.getLocale().getMessage("event.ban.message",
-                            reason == null ? "" : reason,
-                            Methods.makeReadable(duration)));
+                    victim.getPlayer().kickPlayer(plugin.getLocale()
+                            .getMessage("event.ban.message")
+                            .processPlaceholder("reason", reason == null ? "" : reason)
+                            .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
                 }
                 break;
             case MUTE:
                 if (!playerPunishData.getActivePunishments(PunishmentType.MUTE).isEmpty()) {
-                    punisher.sendMessage(plugin.getReferences().getPrefix()
-                            + plugin.getLocale().getMessage("event.mute.already"));
+                    plugin.getLocale().getMessage("event.mute.already").sendPrefixedMessage(punisher);
                     return;
                 }
                 sendMessage(victim);
                 break;
             case KICK:
                 if (victim.isOnline()) {
-                    victim.getPlayer().kickPlayer(plugin.getLocale().getMessage("event.kick.message",
-                            reason == null ? "" : reason,
-                            Methods.makeReadable(duration)));
+                    victim.getPlayer().kickPlayer(plugin.getLocale()
+                            .getMessage("event.kick.message")
+                            .processPlaceholder("reason", reason == null ? "" : reason)
+                            .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
                 }
                 break;
             case WARNING:
@@ -87,14 +87,18 @@ public class Punishment {
                 break;
         }
 
-        String punishSuccess = plugin.getReferences().getPrefix()
-                + plugin.getLocale().getMessage("event." + punishmentType.name().toLowerCase() + ".success", victim.getName());
+        String punishSuccess = plugin.getLocale()
+                .getMessage("event." + punishmentType.name().toLowerCase() + ".success")
+                .processPlaceholder("player", victim.getName())
+                .getPrefixedMessage();
 
         if (reason != null)
-            punishSuccess += plugin.getLocale().getMessage("event.punish.reason", reason);
+            punishSuccess += plugin.getLocale().getMessage("event.punish.reason")
+                    .processPlaceholder("reason", reason).getMessage();
 
         if (duration != -1)
-            punishSuccess += plugin.getLocale().getMessage("event.punish.theirduration", Methods.makeReadable(duration));
+            punishSuccess += plugin.getLocale().getMessage("event.punish.theirduration")
+                    .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage();
 
         punisher.sendMessage(punishSuccess + Methods.formatText("&7."));
 
@@ -106,14 +110,16 @@ public class Punishment {
         Player victim = offlineVictim.getPlayer();
         UltimateModeration plugin = UltimateModeration.getInstance();
 
-        String punishSuccess = plugin.getReferences().getPrefix()
-                + plugin.getLocale().getMessage("event." + punishmentType.name().toLowerCase() + ".message");
+        String punishSuccess = plugin.getLocale()
+                .getMessage("event." + punishmentType.name().toLowerCase() + ".message").getPrefixedMessage();
 
         if (reason != null)
-            punishSuccess += plugin.getLocale().getMessage("event.punish.reason", reason);
+            punishSuccess += plugin.getLocale().getMessage("event.punish.reason")
+                    .processPlaceholder("reason", reason).getMessage();
 
         if (duration != -1)
-            punishSuccess += plugin.getLocale().getMessage("event.punish.yourduration", Methods.makeReadable(duration));
+            punishSuccess += plugin.getLocale().getMessage("event.punish.yourduration")
+                    .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage();
 
         victim.sendMessage(punishSuccess + Methods.formatText("&7."));
     }

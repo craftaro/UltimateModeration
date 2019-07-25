@@ -25,14 +25,15 @@ public class CommandRevive extends AbstractCommand {
         Player player = Bukkit.getPlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
+            instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (!(revive(player, sender))) return ReturnType.FAILURE;
 
-        player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.revived"));
-        sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.success", player.getName()));
+        instance.getLocale().getMessage("command.revive.revived").sendPrefixedMessage(player);
+        instance.getLocale().getMessage("command.revive.success")
+                .processPlaceholder("player", player.getName()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }
 
@@ -53,7 +54,7 @@ public class CommandRevive extends AbstractCommand {
         List<ItemStack> drops = DeathListener.getLastDrop(player);
 
         if (drops == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.revive.noloot"));
+            instance.getLocale().getMessage("command.revive.noloot").sendPrefixedMessage(sender);
             return false;
         }
 

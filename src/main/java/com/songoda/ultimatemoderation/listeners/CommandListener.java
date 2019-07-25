@@ -44,14 +44,17 @@ public class CommandListener implements Listener {
                     && !player.hasPermission("um.commandblock.bypass")) {
                 event.setCancelled(true);
                 event.setMessage("-");
-                player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("event.command.blocked"));
+                instance.getLocale().getMessage("event.command.blocked").sendPrefixedMessage(player);
             }
         }
 
         if (!player.hasPermission("um.commandspy.immune")) {
             for (Player pl : Bukkit.getOnlinePlayers()) {
                 if (pl.hasPermission("um.commandspy") && CommandCommandSpy.isSpying(pl))
-                    pl.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.commandspy.deny", player.getName(), StringEscapeUtils.escapeJava(command)));
+                    instance.getLocale().getMessage("command.commandspy.deny")
+                            .processPlaceholder("player", player.getName())
+                            .processPlaceholder("command", StringEscapeUtils.escapeJava(command))
+                            .sendPrefixedMessage(player);
             }
         }
     }

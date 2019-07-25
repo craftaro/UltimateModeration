@@ -50,7 +50,9 @@ public class SlowModeTask extends BukkitRunnable {
             if ((System.currentTimeMillis() - last.getSent()) < (slowmode + 1000)) {
                 int remaining = (int)((slowmode / 1000) - (System.currentTimeMillis() - last.getSent()) / 1000);
                 if (plugin.isServerVersionAtLeast(ServerVersion.V1_9))
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(remaining == 0 ? plugin.getLocale().getMessage("event.slowmode.done") : plugin.getLocale().getMessage("event.slowmode.wait", remaining)));
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(remaining == 0
+                        ? plugin.getLocale().getMessage("event.slowmode.done").getMessage()
+                        : plugin.getLocale().getMessage("event.slowmode.wait").processPlaceholder("delay", remaining).getMessage()));
             }
 
         });

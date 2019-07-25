@@ -46,13 +46,13 @@ public class CommandMute extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist.");
+            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player is already muted.");
+            instance.getLocale().newMessage("That player is already muted.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

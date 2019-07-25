@@ -22,6 +22,6 @@ public enum PunishmentType {
     }
 
     public String getTranslation() {
-        return UltimateModeration.getInstance().getLocale().getMessage("gui.punishmenttypes." + this.name().toLowerCase());
+        return UltimateModeration.getInstance().getLocale().getMessage("gui.punishmenttypes." + this.name().toLowerCase()).getMessage();
     }
 }

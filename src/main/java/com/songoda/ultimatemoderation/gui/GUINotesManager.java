@@ -32,7 +32,8 @@ public class GUINotesManager extends AbstractGUI {
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage("gui.notes.title", player.getName()), 54);
+        init(plugin.getLocale().getMessage("gui.notes.title")
+                .processPlaceholder("tonotes", player.getName()).getMessage(), 54);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class GUINotesManager extends AbstractGUI {
                 .skip(page * 36).limit(36).collect(Collectors.toList());
 
         if (page != 0) {
-            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
                 page --;
                 constructGUI();
@@ -59,16 +60,18 @@ public class GUINotesManager extends AbstractGUI {
         }
 
         if (page != maxPage) {
-            createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
             }));
         }
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
-        createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create"));
+        createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create").getMessage());
 
         for (int i = 0; i < notes.size(); i++) {
             PunishmentNote note = notes.get(i);
@@ -97,9 +100,13 @@ public class GUINotesManager extends AbstractGUI {
 
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
-            lore.add(plugin.getLocale().getMessage("gui.notes.createdby", Bukkit.getOfflinePlayer(note.getAuthor()).getName()));
-            lore.add(plugin.getLocale().getMessage("gui.notes.createdon", format.format(new Date(note.getCreationDate()))));
-            lore.add(plugin.getLocale().getMessage("gui.notes.remove"));
+            lore.add(plugin.getLocale().getMessage("gui.notes.createdby")
+                    .processPlaceholder("player", Bukkit.getOfflinePlayer(note.getAuthor()).getName())
+                    .getMessage());
+            lore.add(plugin.getLocale().getMessage("gui.notes.createdon")
+                    .processPlaceholder("sent", format.format(new Date(note.getCreationDate())))
+                    .getMessage());
+            lore.add(plugin.getLocale().getMessage("gui.notes.remove").getMessage());
 
             createButton(18 + i, Material.MAP, name, lore);
 
@@ -117,7 +124,7 @@ public class GUINotesManager extends AbstractGUI {
                 new GUIPlayer(plugin, toModerate, player1)));
 
         registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
-            player.sendMessage(plugin.getLocale().getMessage("gui.notes.type"));
+            plugin.getLocale().getMessage("gui.notes.type").sendMessage(player);
             AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event -> {
                 plugin.getPunishmentManager().getPlayer(toModerate).addNotes(new PunishmentNote(event.getMessage(),
                         player.getUniqueId(), toModerate.getUniqueId(), System.currentTimeMillis()));

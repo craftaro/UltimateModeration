@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.command.commands;
 
-import com.songoda.ultimatemoderation.Locale;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.command.AbstractCommand;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.locale.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,27 +25,24 @@ public class CommandToggleChat extends AbstractCommand {
     @Override
     protected ReturnType runCommand(UltimateModeration instance, CommandSender sender, String... args) {
         toggled = !toggled;
-        String prefix = instance.getReferences().getPrefix();
 
-        Locale locale = instance.getLocale();
-        String strToggledOn = locale.getMessage("command.togglechat.toggledOn");
-        String strToggledOff = locale.getMessage("command.togglechat.toggledOff");
-        String messageToSend = prefix + Methods.formatText(toggled ? strToggledOn : strToggledOff);
+        Message message = toggled ? instance.getLocale().getMessage("command.togglechat.toggledOn")
+                : instance.getLocale().getMessage("command.togglechat.toggledOff");
 
         ChatListener.setChatToggled(toggled);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
 
-            player.sendMessage(messageToSend);
+            message.sendPrefixedMessage(player);
 
             if (!player.hasPermission(getPermissionNode() + ".bypass"))
                 continue;
 
-            player.sendMessage(Methods.formatText(locale.getMessage("command.togglechat.bypass")));
+            instance.getLocale().getMessage("command.togglechat.bypass").sendMessage(player);
         }
 
         if (!(sender instanceof Player))
-            sender.sendMessage(messageToSend);
+            message.sendPrefixedMessage(sender);
 
         return ReturnType.SUCCESS;
     }

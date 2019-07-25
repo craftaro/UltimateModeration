@@ -27,10 +27,10 @@ public class CommandCommandSpy extends AbstractCommand {
 
         if (inSpy.contains(player.getUniqueId())) {
             inSpy.remove(player.getUniqueId());
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.commandspy.toggleOn"));
+            instance.getLocale().getMessage("command.commandspy.toggleOn").sendPrefixedMessage(player);
         } else {
             inSpy.add(player.getUniqueId());
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.commandspy.toggleOff"));
+            instance.getLocale().getMessage("command.commandspy.toggleOff").sendPrefixedMessage(player);
         }
         return ReturnType.SUCCESS;
     }

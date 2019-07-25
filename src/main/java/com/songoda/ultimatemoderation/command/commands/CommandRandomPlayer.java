@@ -24,7 +24,7 @@ public class CommandRandomPlayer extends AbstractCommand {
         players.remove(sender);
 
         if (players.size() == 0) {
-            sender.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + "&c You are the only one online!"));
+            instance.getLocale().newMessage("&c You are the only one online!").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

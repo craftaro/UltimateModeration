@@ -32,7 +32,7 @@ public class GUIPlayers extends AbstractGUI {
         super(player);
         this.plugin = plugin;
 
-        init(plugin.getLocale().getMessage("gui.players.title"), 54);
+        init(plugin.getLocale().getMessage("gui.players.title").getMessage(), 54);
         runTask();
     }
 
@@ -64,7 +64,7 @@ public class GUIPlayers extends AbstractGUI {
                 .skip(page * 36).limit(36).collect(Collectors.toList());
 
         if (page != 0) {
-            createButton(46, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            createButton(46, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(46, ((player1, inventory1, cursor, slot, type) -> {
                 page --;
                 constructGUI();
@@ -72,7 +72,7 @@ public class GUIPlayers extends AbstractGUI {
         }
 
         if (maxPage != page) {
-            createButton(48, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            createButton(48, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(48, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
@@ -93,30 +93,32 @@ public class GUIPlayers extends AbstractGUI {
             head.setItemMeta(meta);
 
             ArrayList<String> lore = new ArrayList<>();
-            lore.add(plugin.getLocale().getMessage("gui.players.click"));
+            lore.add(plugin.getLocale().getMessage("gui.players.click").getMessage());
             lore.add("");
 
             int ticketAmt = (int) plugin.getTicketManager().getTicketsAbout(pl).stream()
                     .filter(t -> t.getStatus() == TicketStatus.OPEN).count();
 
             if (ticketAmt == 0)
-                lore.add(plugin.getLocale().getMessage("gui.players.notickets"));
+                lore.add(plugin.getLocale().getMessage("gui.players.notickets").getMessage());
             else {
                 if (ticketAmt == 1)
-                    lore.add(plugin.getLocale().getMessage("gui.players.ticketsone"));
+                    lore.add(plugin.getLocale().getMessage("gui.players.ticketsone").getMessage());
                 else
-                    lore.add(plugin.getLocale().getMessage("gui.players.tickets",ticketAmt));
+                    lore.add(plugin.getLocale().getMessage("gui.players.tickets")
+                            .processPlaceholder("amount", ticketAmt).getMessage());
             }
 
             int warningAmt = playerPunishData.getActivePunishments(PunishmentType.WARNING).size();
 
             if (warningAmt == 0)
-                lore.add(plugin.getLocale().getMessage("gui.players.nowarnings"));
+                lore.add(plugin.getLocale().getMessage("gui.players.nowarnings").getMessage());
             else {
                 if (warningAmt == 1)
-                    lore.add(plugin.getLocale().getMessage("gui.players.warningsone"));
+                    lore.add(plugin.getLocale().getMessage("gui.players.warningsone").getMessage());
                 else
-                    lore.add(plugin.getLocale().getMessage("gui.players.warnings",warningAmt));
+                    lore.add(plugin.getLocale().getMessage("gui.players.warnings")
+                            .processPlaceholder("amount", warningAmt).getMessage());
             }
 
 
@@ -127,11 +129,11 @@ public class GUIPlayers extends AbstractGUI {
         for (int i = 0; i < 9; i++)
             createButton(36 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
-        createButton(46, Material.ENDER_PEARL, plugin.getLocale().getMessage("gui.players.search"));
+        createButton(46, Material.ENDER_PEARL, plugin.getLocale().getMessage("gui.players.search").getMessage());
         createButton(47, Material.HOPPER, "&6" + currentOnline.getTranslation());
 
-        createButton(51, Material.CHEST, plugin.getLocale().getMessage("gui.players.button.tickets"));
-        createButton(52, Material.MAP, plugin.getLocale().getMessage("gui.players.button.templatemanager"));
+        createButton(51, Material.CHEST, plugin.getLocale().getMessage("gui.players.button.tickets").getMessage());
+        createButton(52, Material.MAP, plugin.getLocale().getMessage("gui.players.button.templatemanager").getMessage());
     }
 
 
@@ -146,7 +148,8 @@ public class GUIPlayers extends AbstractGUI {
         }
 
         public String getTranslation() {
-            return UltimateModeration.getInstance().getLocale().getMessage("gui.players.online." + this.name().toLowerCase());
+            return UltimateModeration.getInstance().getLocale()
+                    .getMessage("gui.players.online." + this.name().toLowerCase()).getMessage();
         }
     }
 
@@ -171,14 +174,14 @@ public class GUIPlayers extends AbstractGUI {
                     if (found.size() == 1) {
                         new GUIPlayer(plugin, Bukkit.getOfflinePlayer(found.get(0)), player);
                     } else {
-                        player.sendMessage(plugin.getLocale().getMessage("gui.players.nonefound"));
+                        plugin.getLocale().getMessage("gui.players.nonefound").sendMessage(player);
                     }
 
             });
 
             ItemStack item = new ItemStack(Material.PAPER);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(plugin.getLocale().getMessage("gui.players.name"));
+            meta.setDisplayName(plugin.getLocale().getMessage("gui.players.name").getMessage());
             item.setItemMeta(meta);
 
             gui.setSlot(AbstractAnvilGUI.AnvilSlot.INPUT_LEFT, item);

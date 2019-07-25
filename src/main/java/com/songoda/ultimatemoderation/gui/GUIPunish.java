@@ -47,8 +47,9 @@ public class GUIPunish extends AbstractGUI {
             this.templateName = template.getTemplateName();
         }
 
-        init(toModerate == null ? plugin.getLocale().getMessage("gui.punish.title.template")
-                : plugin.getLocale().getMessage("gui.punish.title", toModerate.getName()), 45);
+        init(toModerate == null ? plugin.getLocale().getMessage("gui.punish.title.template").getMessage()
+                : plugin.getLocale().getMessage("gui.punish.title")
+                .processPlaceholder("toModerate", toModerate.getName()).getMessage(), 45);
         if (toModerate != null) runTask();
     }
 
@@ -68,42 +69,61 @@ public class GUIPunish extends AbstractGUI {
             createButton(13, head, "&7&l" + toModerate.getName());
         }
 
-        createButton(22, Material.EMERALD_BLOCK, plugin.getLocale().getMessage("gui.punish.submit"));
+        createButton(22, Material.EMERALD_BLOCK, plugin.getLocale().getMessage("gui.punish.submit").getMessage());
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
-        createButton(28, Material.ANVIL, plugin.getLocale().getMessage("gui.punish.type.punishment"),
+        createButton(28, Material.ANVIL,
+                plugin.getLocale().getMessage("gui.punish.type.punishment").getMessage(),
                 "&7" + type.getTranslation(),
                 "",
-                plugin.getLocale().getMessage("gui.punish.type.punishment.click"));
+                plugin.getLocale().getMessage("gui.punish.type.punishment.click").getMessage());
 
         if (toModerate != null) {
-            createButton(30, Material.MAP, plugin.getLocale().getMessage("gui.punish.type.template"),
-                    plugin.getLocale().getMessage("gui.punish.type.template.current",
-                            (template == null ? plugin.getLocale().getMessage("gui.general.none") : template.getTemplateName())),
+            createButton(30, Material.MAP,
+                    plugin.getLocale().getMessage("gui.punish.type.template").getMessage(),
+                    plugin.getLocale().getMessage("gui.punish.type.template.current")
+                            .processPlaceholder("template",
+                                    template == null
+                                            ? plugin.getLocale().getMessage("gui.general.none")
+                                            : template.getTemplateName()).getMessage(),
                     "",
-                    plugin.getLocale().getMessage(plugin.getTemplateManager().getTemplates().size() == 0 ? "gui.punish.type.template.none" : "gui.punish.type.template.click"));
+                    plugin.getLocale().getMessage(plugin.getTemplateManager().getTemplates().size() == 0
+                            ? "gui.punish.type.template.none"
+                            : "gui.punish.type.template.click").getMessage());
         } else {
-            createButton(30, Material.MAP, plugin.getLocale().getMessage("gui.punish.type.name"),
-                    plugin.getLocale().getMessage("gui.punish.type.name.current",
-                            (templateName == null ? plugin.getLocale().getMessage("gui.general.none") : templateName)),
+            createButton(30, Material.MAP,
+                    plugin.getLocale().getMessage("gui.punish.type.name").getMessage(),
+                    plugin.getLocale().getMessage("gui.punish.type.name.current")
+                            .processPlaceholder("template",
+                                    templateName == null
+                                            ? plugin.getLocale().getMessage("gui.punish.type.name.current").getMessage()
+                                            : templateName).getMessage(),
                     "",
-                    plugin.getLocale().getMessage("gui.punish.type.name.current.click"));
+                    plugin.getLocale().getMessage("gui.punish.type.name.current.click").getMessage());
         }
 
         if (type != PunishmentType.KICK) {
-            createButton(32, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.CLOCK : Material.valueOf("WATCH"), plugin.getLocale().getMessage("gui.punish.type.duration"),
-                    plugin.getLocale().getMessage("gui.punish.type.duration.leftclick"),
-                    plugin.getLocale().getMessage("gui.punish.type.duration.rightclick"),
+            createButton(32, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                    ? Material.CLOCK
+                    : Material.valueOf("WATCH"),
+                    plugin.getLocale().getMessage("gui.punish.type.duration").getMessage(),
+                    plugin.getLocale().getMessage("gui.punish.type.duration.leftclick").getMessage(),
+                    plugin.getLocale().getMessage("gui.punish.type.duration.rightclick").getMessage(),
                     "",
-                    plugin.getLocale().getMessage("gui.punish.type.duration.current"),
-                    "&6" + (duration == -1 ? plugin.getLocale().getMessage("gui.general.permanent") : Methods.makeReadable(duration)));
+                    plugin.getLocale().getMessage("gui.punish.type.duration.current").getMessage(),
+                    "&6" + (duration == -1 ? plugin.getLocale().getMessage("gui.general.permanent").getMessage()
+                            : Methods.makeReadable(duration)));
         }
 
-        createButton(34, Material.PAPER, plugin.getLocale().getMessage("gui.punish.type.reason"),
-                plugin.getLocale().getMessage("gui.punish.type.reason.click"),
+        createButton(34, Material.PAPER,
+                plugin.getLocale().getMessage("gui.punish.type.reason").getMessage(),
+                plugin.getLocale().getMessage("gui.punish.type.reason.click").getMessage(),
                 "",
-                plugin.getLocale().getMessage("gui.punish.type.reason.current"), "&6" + reason);
+                plugin.getLocale().getMessage("gui.punish.type.reason.current").getMessage(),
+                "&6" + reason);
     }
 
     private void notifyTemplate() {
@@ -113,16 +133,17 @@ public class GUIPunish extends AbstractGUI {
         }
 
         Material material = plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.WHITE_WOOL : Material.valueOf("WOOL");
-        String name = plugin.getLocale().getMessage("gui.punish.template.create");
+        String name = plugin.getLocale().getMessage("gui.punish.template.create").getMessage();
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(plugin.getLocale().getMessage("gui.punish.template.create2"));
+        lore.add(plugin.getLocale().getMessage("gui.punish.template.create2").getMessage());
 
         if (!justSaved && template != null) {
-            name = plugin.getLocale().getMessage("gui.punish.template.leftclick");
+            name = plugin.getLocale().getMessage("gui.punish.template.leftclick").getMessage();
             lore.clear();
-            lore.add(plugin.getLocale().getMessage("gui.punish.template.leftclick2", template.getTemplateName()));
+            lore.add(plugin.getLocale().getMessage("gui.punish.template.leftclick2")
+                    .processPlaceholder("template", template.getTemplateName()).getMessage());
             lore.add("");
-            lore.add(plugin.getLocale().getMessage("gui.punish.template.rightclick"));
+            lore.add(plugin.getLocale().getMessage("gui.punish.template.rightclick").getMessage());
         }
 
         if (plugin.isServerVersionAtLeast(ServerVersion.V1_13) && inventory.getItem(4) != null && inventory.getItem(4).getType() == Material.WHITE_WOOL)
@@ -204,7 +225,7 @@ public class GUIPunish extends AbstractGUI {
 
             ItemStack item = new ItemStack(Material.PAPER);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(reason == null ? plugin.getLocale().getMessage("gui.general.reason") : reason);
+            meta.setDisplayName(reason == null ? plugin.getLocale().getMessage("gui.general.reason").getMessage() : reason);
             item.setItemMeta(meta);
 
             gui.setSlot(AbstractAnvilGUI.AnvilSlot.INPUT_LEFT, item);
@@ -256,7 +277,7 @@ public class GUIPunish extends AbstractGUI {
 
         ItemStack item = new ItemStack(Material.PAPER);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(plugin.getLocale().getMessage("gui.general.templatename"));
+        meta.setDisplayName(plugin.getLocale().getMessage("gui.general.templatename").getMessage());
         item.setItemMeta(meta);
 
         gui.setSlot(AbstractAnvilGUI.AnvilSlot.INPUT_LEFT, item);

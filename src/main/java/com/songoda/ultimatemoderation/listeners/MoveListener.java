@@ -20,7 +20,7 @@ public class MoveListener implements Listener {
         Player player = event.getPlayer();
         if (CommandFreeze.isFrozen(player)) {
             event.setCancelled(true);
-            player.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.nope"));
+            instance.getLocale().getMessage("command.freeze.nope").sendPrefixedMessage(player);
         }
     }
 }

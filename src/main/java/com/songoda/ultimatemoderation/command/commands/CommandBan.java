@@ -46,13 +46,13 @@ public class CommandBan extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist.");
+            instance.getLocale().newMessage("That player does not exist.").sendMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player is already banned.");
+            instance.getLocale().newMessage("That player is already banned.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

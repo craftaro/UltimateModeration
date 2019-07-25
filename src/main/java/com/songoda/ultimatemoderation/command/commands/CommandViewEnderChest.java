@@ -26,7 +26,7 @@ public class CommandViewEnderChest extends AbstractCommand {
         Player player = Bukkit.getPlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
+            instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

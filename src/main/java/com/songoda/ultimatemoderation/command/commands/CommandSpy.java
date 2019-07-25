@@ -23,19 +23,19 @@ public class CommandSpy extends AbstractCommand {
         UltimateModeration instance = UltimateModeration.getInstance();
 
         if (!UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_12)) {
-            senderP.sendMessage(instance.getReferences().getPrefix() + "This feature is not compatible with this version of spigot.");
+            instance.getLocale().newMessage("This feature is not compatible with this version of spigot.").sendPrefixedMessage(senderP);
             return;
         }
 
         Player player = oPlayer.getPlayer();
 
         if (player == null) {
-            senderP.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
+            instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(senderP);
             return;
         }
 
         if (player == senderP) {
-            senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.cant"));
+            instance.getLocale().getMessage("command.spy.cant").sendPrefixedMessage(senderP);
             return;
         }
 
@@ -49,7 +49,8 @@ public class CommandSpy extends AbstractCommand {
         spying.put(senderP.getUniqueId(), new Spy(senderP.getLocation(), didVanish));
         player.getPlayer().addPassenger(senderP);
 
-        senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.success", player.getName()));
+        instance.getLocale().getMessage("command.spy.success")
+                .processPlaceholder("player", player.getName()).sendPrefixedMessage(senderP);
     }
 
     @Override
@@ -67,14 +68,14 @@ public class CommandSpy extends AbstractCommand {
                 CommandVanish.vanish(senderP);
 
             spying.remove(senderP.getUniqueId());
-            senderP.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.spy.returned"));
+            instance.getLocale().getMessage("command.spy.returned").sendPrefixedMessage(sender);
             return ReturnType.SUCCESS;
         }
 
         Player player = Bukkit.getPlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
+            instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

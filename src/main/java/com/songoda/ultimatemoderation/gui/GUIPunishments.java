@@ -34,7 +34,8 @@ public class GUIPunishments extends AbstractGUI {
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage("gui.punishments.title", toModerate.getName()), 54);
+        init(plugin.getLocale().getMessage("gui.punishments.title")
+                .processPlaceholder("toModerate", toModerate.getName()).getMessage(), 54);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class GUIPunishments extends AbstractGUI {
                 .collect(Collectors.toList());
 
         if (page != 0) {
-            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous"));
+            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
                 page --;
                 constructGUI();
@@ -82,14 +83,16 @@ public class GUIPunishments extends AbstractGUI {
         }
 
         if (page != maxPage) {
-            createButton(6, Material.ARROW, plugin.getLocale().getMessage("gui.general.next"));
+            createButton(6, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
                 page ++;
                 constructGUI();
             }));
         }
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
         createButton(3, Material.APPLE, Methods.formatText("&6" + currentActivity.getTranslation()));
         createButton(4, Material.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name()));
@@ -104,25 +107,25 @@ public class GUIPunishments extends AbstractGUI {
 
             ArrayList<String> lore = new ArrayList<>();
             lore.add("");
-            lore.add(plugin.getLocale().getMessage("gui.punishments.reason"));
+            lore.add(plugin.getLocale().getMessage("gui.punishments.reason").getMessage());
             lore.add("&7" + appliedPunishment.getReason());
             if (appliedPunishment.getPunishmentType() != PunishmentType.KICK) {
                 lore.add("");
-                lore.add(plugin.getLocale().getMessage("gui.punishments.duration"));
+                lore.add(plugin.getLocale().getMessage("gui.punishments.duration").getMessage());
                 lore.add("&7" + (appliedPunishment.getDuration() != -1
                         ? Methods.makeReadable(appliedPunishment.getDuration())
                         : plugin.getLocale().getMessage("gui.general.permanent")));
                 lore.add("");
-                lore.add(plugin.getLocale().getMessage("gui.punishments.punisher"));
+                lore.add(plugin.getLocale().getMessage("gui.punishments.punisher").getMessage());
                 lore.add("&7" + (appliedPunishment.getPunisher() == null ? "Console" : Bukkit.getOfflinePlayer(appliedPunishment.getPunisher()).getName()));
                 if (activity == Activity.ACTIVE) {
                     lore.add("");
                     if (appliedPunishment.getDuration() != -1) {
-                        lore.add(plugin.getLocale().getMessage("gui.punishments.remaining"));
+                        lore.add(plugin.getLocale().getMessage("gui.punishments.remaining").getMessage());
                         lore.add("&7" + Methods.makeReadable(appliedPunishment.getTimeRemaining()));
                         lore.add("");
                     }
-                    lore.add(plugin.getLocale().getMessage("gui.punishments.click"));
+                    lore.add(plugin.getLocale().getMessage("gui.punishments.click").getMessage());
 
                     registerClickable(currentSlot, ((player1, inventory1, cursor, slot, type) -> {
                         appliedPunishment.expire();
@@ -191,7 +194,7 @@ public class GUIPunishments extends AbstractGUI {
         }
 
         public String getTranslation() {
-            return UltimateModeration.getInstance().getLocale().getMessage("gui.punishments.activity." + this.name().toLowerCase());
+            return UltimateModeration.getInstance().getLocale().getMessage("gui.punishments.activity." + this.name().toLowerCase()).getMessage();
         }
     }
 }

@@ -48,13 +48,13 @@ public class CommandVanish extends AbstractCommand {
             if (instance.isServerVersionAtLeast(ServerVersion.V1_9))
                 player.setInvulnerable(false);
             player.setCanPickupItems(true);
-            player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOff")));
+            instance.getLocale().getMessage("command.vanish.toggledOff").sendPrefixedMessage(player);
         } else {
             inVanish.add(uuid);
             player.setCanPickupItems(false);
             if (instance.isServerVersionAtLeast(ServerVersion.V1_9))
                 player.setInvulnerable(true);
-            player.sendMessage(Methods.formatText(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.vanish.toggledOn")));
+            instance.getLocale().getMessage("command.vanish.toggledOn").sendPrefixedMessage(player);
 
         }
         if (Setting.VANISH_EFFECTS.getBoolean()) {

@@ -20,7 +20,8 @@ public class GUIPlayer extends AbstractGUI {
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage("gui.player.title", toModerate.getName()), 54);
+        init(plugin.getLocale().getMessage("gui.player.title")
+                .processPlaceholder("toModerate", toModerate.getName()).getMessage(), 54);
     }
 
     @Override
@@ -36,14 +37,16 @@ public class GUIPlayer extends AbstractGUI {
         createButton(13, head, "&7&l" + toModerate.getName(),
                 player.isOnline() ? "&a" + plugin.getLocale().getMessage("gui.players.online.online") : "&c" + plugin.getLocale().getMessage("gui.players.online.offline"));
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
-        createButton(38, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish"));
-        createButton(30, Material.CHEST, plugin.getLocale().getMessage("gui.player.tickets"));
+        createButton(38, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish").getMessage());
+        createButton(30, Material.CHEST, plugin.getLocale().getMessage("gui.player.tickets").getMessage());
         if (player.isOnline())
-            createButton(32, Material.DIAMOND_SWORD, plugin.getLocale().getMessage("gui.player.punishments"));
-        createButton(42, Material.MAP, plugin.getLocale().getMessage("gui.player.notes"));
-        createButton(40, Material.DIAMOND_CHESTPLATE, plugin.getLocale().getMessage("gui.player.moderate"));
+            createButton(32, Material.DIAMOND_SWORD, plugin.getLocale().getMessage("gui.player.punishments").getMessage());
+        createButton(42, Material.MAP, plugin.getLocale().getMessage("gui.player.notes").getMessage());
+        createButton(40, Material.DIAMOND_CHESTPLATE, plugin.getLocale().getMessage("gui.player.moderate").getMessage());
     }
 
     @Override

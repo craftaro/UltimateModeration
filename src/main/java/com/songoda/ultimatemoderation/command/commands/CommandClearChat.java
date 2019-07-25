@@ -31,10 +31,11 @@ public class CommandClearChat extends AbstractCommand {
                 player.sendMessage(toSend);
             }
 
-            player.sendMessage(instance.getReferences().getPrefix() + Methods.formatText(instance.getLocale().getMessage("command.clearchat.cleared", sender.getName())));
+            instance.getLocale().getMessage("command.clearchat.cleared")
+                    .processPlaceholder("player", sender.getName()).sendPrefixedMessage(player);
 
             if (player.hasPermission("um.clearchat.bypass") && !isForced(args)) {
-                player.sendMessage(instance.getLocale().getMessage("command.clearchat.immune"));
+                instance.getLocale().getMessage("command.clearchat.immune").sendMessage(player);
             }
         }
         return ReturnType.SUCCESS;

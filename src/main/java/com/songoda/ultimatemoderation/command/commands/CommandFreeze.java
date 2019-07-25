@@ -21,12 +21,14 @@ public class CommandFreeze extends AbstractCommand {
         UltimateModeration instance = UltimateModeration.getInstance();
         if (frozen.contains(player.getUniqueId())) {
             frozen.remove(player.getUniqueId());
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.remove", player.getPlayer().getDisplayName()));
-            player.getPlayer().sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertremove"));
+            instance.getLocale().getMessage("command.freeze.remove")
+                    .processPlaceholder("player", player.getPlayer().getDisplayName()).sendPrefixedMessage(sender);
+            instance.getLocale().getMessage("command.freeze.alertremove").sendPrefixedMessage(sender);
         } else {
             frozen.add(player.getUniqueId());
-            sender.sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.add", player.getPlayer().getDisplayName()));
-            player.getPlayer().sendMessage(instance.getReferences().getPrefix() + instance.getLocale().getMessage("command.freeze.alertadd"));
+            instance.getLocale().getMessage("command.freeze.add")
+                    .processPlaceholder("player", player.getPlayer().getDisplayName()).sendPrefixedMessage(sender);
+            instance.getLocale().getMessage("command.freeze.alertadd").sendPrefixedMessage(player.getPlayer());
         }
     }
 
@@ -42,7 +44,7 @@ public class CommandFreeze extends AbstractCommand {
         Player player = Bukkit.getPlayer(args[0]);
 
         if (player == null) {
-            sender.sendMessage(instance.getReferences().getPrefix() + "That player does not exist or is not online.");
+            instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

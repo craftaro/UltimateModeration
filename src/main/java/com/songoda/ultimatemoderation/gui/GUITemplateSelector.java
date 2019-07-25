@@ -22,12 +22,15 @@ public class GUITemplateSelector extends AbstractGUI {
         this.plugin = plugin;
         this.punish = punish;
 
-        init(plugin.getLocale().getMessage("gui.templateselector.title"), 54);
+        init(plugin.getLocale().getMessage("gui.templateselector.title").getMessage(), 54);
     }
 
     @Override
     protected void constructGUI() {
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.OAK_DOOR : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back"));
+        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+                ? Material.OAK_DOOR
+                : Material.valueOf("WOOD_DOOR"),
+                plugin.getLocale().getMessage("gui.general.back").getMessage());
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
@@ -35,7 +38,8 @@ public class GUITemplateSelector extends AbstractGUI {
         ArrayList<Template> templates = new ArrayList<>(plugin.getTemplateManager().getTemplates().values());
         for (int i = 0; i < templates.size(); i++) {
             Template template = templates.get(i);
-            createButton(18 + i, Material.MAP, "&6&l" + template.getTemplateName(), plugin.getLocale().getMessage("gui.templateselector.click"));
+            createButton(18 + i, Material.MAP, "&6&l" + template.getTemplateName(),
+                    plugin.getLocale().getMessage("gui.templateselector.click").getMessage());
 
             registerClickable(18 + i, ((player1, inventory1, cursor, slot, type) -> {
                 punish.setType(template.getPunishmentType());
