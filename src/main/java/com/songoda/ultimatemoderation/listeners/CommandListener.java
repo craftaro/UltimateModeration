@@ -50,11 +50,11 @@ public class CommandListener implements Listener {
 
         if (!player.hasPermission("um.commandspy.immune")) {
             for (Player pl : Bukkit.getOnlinePlayers()) {
-                if (pl.hasPermission("um.commandspy") && CommandCommandSpy.isSpying(pl))
+                if (pl != player && pl.hasPermission("um.commandspy") && CommandCommandSpy.isSpying(pl))
                     instance.getLocale().getMessage("command.commandspy.deny")
                             .processPlaceholder("player", player.getName())
                             .processPlaceholder("command", StringEscapeUtils.escapeJava(command))
-                            .sendPrefixedMessage(player);
+                            .sendPrefixedMessage(pl);
             }
         }
     }
