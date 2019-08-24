@@ -73,8 +73,8 @@ public class GUITicketManager extends AbstractGUI {
 
         createButton(3 ,Material.DIAMOND_SWORD, Methods.formatText("&6" + status.getStatus()));
 
-        if (toModerate != null)
-        createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.tickets.create").getMessage());
+        if (toModerate != null && player.hasPermission("um.tickets.create"))
+            createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.tickets.create").getMessage());
 
         if (player.hasPermission("um.ticket"))
             createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
@@ -149,9 +149,9 @@ public class GUITicketManager extends AbstractGUI {
             constructGUI();
         }));
 
-        if (toModerate != null) {
-                registerClickable(7, ((player1, inventory1, cursor, slot, type) ->
-                        createNew(player, toModerate)));
+        if (toModerate != null && player.hasPermission("um.tickets.create")) {
+            registerClickable(7, ((player1, inventory1, cursor, slot, type) ->
+                    createNew(player, toModerate)));
         }
     }
 

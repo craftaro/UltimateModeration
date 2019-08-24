@@ -4,6 +4,7 @@ main: com.songoda.ultimatemoderation.UltimateModeration
 version: maven-version-number
 author: Songoda
 api-version: 1.13
+softdepend: [Vault]
 commands:
   UltimateModeration:
     description: View information on this plugin.

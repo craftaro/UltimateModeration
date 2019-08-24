@@ -132,8 +132,11 @@ public class GUIPlayers extends AbstractGUI {
         createButton(46, Material.ENDER_PEARL, plugin.getLocale().getMessage("gui.players.search").getMessage());
         createButton(47, Material.HOPPER, "&6" + currentOnline.getTranslation());
 
-        createButton(51, Material.CHEST, plugin.getLocale().getMessage("gui.players.button.tickets").getMessage());
-        createButton(52, Material.MAP, plugin.getLocale().getMessage("gui.players.button.templatemanager").getMessage());
+        if (player.hasPermission("um.tickets"))
+            createButton(51, Material.CHEST, plugin.getLocale().getMessage("gui.players.button.tickets").getMessage());
+
+        if (player.hasPermission("um.templates"))
+            createButton(52, Material.MAP, plugin.getLocale().getMessage("gui.players.button.templatemanager").getMessage());
     }
 
 
@@ -194,11 +197,17 @@ public class GUIPlayers extends AbstractGUI {
             constructGUI();
         }));
 
-        registerClickable(51, (player1, inventory1, cursor, slot, type) ->
-                new GUITicketManager(plugin, null, player));
+        if (player.hasPermission("um.tickets")) {
+            registerClickable(51, (player1, inventory1, cursor, slot, type) -> {
+                new GUITicketManager(plugin, null, player);
+            });
+        }
 
-        registerClickable(52, (player1, inventory1, cursor, slot, type) ->
-                new GUITemplateManager(plugin, player));
+        if (player.hasPermission("um.templates")) {
+            registerClickable(52, (player1, inventory1, cursor, slot, type) -> {
+                if (player.hasPermission("um.templates")) new GUITemplateManager(plugin, player);
+            });
+        }
     }
 
     @Override

@@ -29,6 +29,11 @@ public class CommandInvSee extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (player.hasPermission("um.invsee.exempt")) {
+            instance.getLocale().newMessage("You cannot invsee that player.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
         ((Player) sender).openInventory(player.getInventory());
         return ReturnType.SUCCESS;
     }

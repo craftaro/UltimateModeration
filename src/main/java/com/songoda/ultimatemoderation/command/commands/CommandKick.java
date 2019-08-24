@@ -43,6 +43,11 @@ public class CommandKick extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (sender instanceof Player && player.getPlayer().hasPermission("um.kick.exempt")) {
+            instance.getLocale().newMessage("You cannot kick this player.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
         new Punishment(PunishmentType.KICK, reason.equals("") ? null : reason)
                 .execute(sender, player);
 

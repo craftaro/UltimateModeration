@@ -29,9 +29,11 @@ import com.songoda.ultimatemoderation.utils.settings.SettingsManager;
 import com.songoda.ultimatemoderation.utils.updateModules.LocaleModule;
 import com.songoda.update.Plugin;
 import com.songoda.update.SongodaUpdate;
+import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
@@ -51,6 +53,8 @@ public class UltimateModeration extends JavaPlugin {
 
     private Locale locale;
     private Storage storage;
+
+    private Permission perms = null;
 
     public static UltimateModeration getInstance() {
         return INSTANCE;
@@ -104,6 +108,11 @@ public class UltimateModeration extends JavaPlugin {
 
         // Starting Metrics
         new Metrics(this);
+
+        if (getServer().getPluginManager().getPlugin("Vault") != null) {
+            setupPermissions();
+            console.sendMessage("Hooked Vault.");
+        }
 
         int timeout = Setting.AUTOSAVE.getInt() * 60 * 20;
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> storage.doSave(), timeout, timeout);
@@ -200,6 +209,12 @@ public class UltimateModeration extends JavaPlugin {
         storage.doSave();
     }
 
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
+    }
+
     public ServerVersion getServerVersion() {
         return serverVersion;
     }
@@ -247,5 +262,9 @@ public class UltimateModeration extends JavaPlugin {
 
     public StaffChatManager getStaffChatManager() {
         return staffChatManager;
+    }
+
+    public Permission getPerms() {
+        return perms;
     }
 }

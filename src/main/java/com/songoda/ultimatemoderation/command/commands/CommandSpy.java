@@ -79,6 +79,11 @@ public class CommandSpy extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (player.hasPermission("um.spy.exempt")) {
+            instance.getLocale().newMessage("You cannot spy on that player.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
         spy(player, senderP);
 
         return ReturnType.SUCCESS;

@@ -50,6 +50,12 @@ public class CommandWarn extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (instance.getPerms() != null && sender instanceof Player
+                && instance.getPerms().playerHas(Bukkit.getWorlds().get(0).getName(), player, "um.warning.exempt")) {
+            instance.getLocale().newMessage("You cannot warn that player.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
         new Punishment(PunishmentType.WARNING, duration == 0 ? -1 : duration, reason.equals("") ? null : reason)
                 .execute(sender, player);
 

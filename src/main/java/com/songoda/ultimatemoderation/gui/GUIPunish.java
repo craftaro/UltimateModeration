@@ -69,7 +69,8 @@ public class GUIPunish extends AbstractGUI {
             createButton(13, head, "&7&l" + toModerate.getName());
         }
 
-        createButton(22, Material.EMERALD_BLOCK, plugin.getLocale().getMessage("gui.punish.submit").getMessage());
+        if (player.hasPermission("um." + type.toString().toLowerCase()))
+            createButton(22, Material.EMERALD_BLOCK, plugin.getLocale().getMessage("gui.punish.submit").getMessage());
 
         createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
                 ? Material.OAK_DOOR
@@ -188,8 +189,9 @@ public class GUIPunish extends AbstractGUI {
             }
             if (plugin.getTemplateManager().getTemplates().size() == 0) return;
 
-            new GUITemplateSelector(plugin, this, player);
+            if (player.hasPermission("um.templates.use")) new GUITemplateSelector(plugin, this, player);
         }));
+
         registerClickable(32, ((player1, inventory1, cursor, slot, type) -> {
             if (this.type == PunishmentType.KICK) return;
             if (type == ClickType.LEFT) {
@@ -233,6 +235,9 @@ public class GUIPunish extends AbstractGUI {
         }));
 
         registerClickable(22, ((player1, inventory1, cursor, slot, type1) -> {
+            if (!player.hasPermission("um." + type.toString().toLowerCase())) return;
+            if (duration == -1 && type == PunishmentType.BAN && !player.hasPermission("um.ban.permanent")) return;
+
             if (toModerate == null) {
                 if (reason == null || duration == 0 || templateName == null) return;
 
@@ -253,6 +258,7 @@ public class GUIPunish extends AbstractGUI {
                     new Punishment(type, reason).execute(player, toModerate);
                     break;
             }
+
             new GUIPlayer(plugin, toModerate, player);
         }));
     }

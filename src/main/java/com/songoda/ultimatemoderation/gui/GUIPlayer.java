@@ -15,10 +15,17 @@ public class GUIPlayer extends AbstractGUI {
 
     private final OfflinePlayer toModerate;
 
+    private boolean punish, tickets, punishments, notes, moderate;
+
     public GUIPlayer(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
         this.plugin = plugin;
         this.toModerate = toModerate;
+        this.punish = player.hasPermission("um.punish");
+        this.tickets = player.hasPermission("um.tickets");
+        this.punishments = player.hasPermission("um.punishments");
+        this.notes = player.hasPermission("um.notes");
+        this.moderate = player.hasPermission("um.moderation");
 
         init(plugin.getLocale().getMessage("gui.player.title")
                 .processPlaceholder("toModerate", toModerate.getName()).getMessage(), 54);
@@ -41,12 +48,12 @@ public class GUIPlayer extends AbstractGUI {
                 ? Material.OAK_DOOR
                 : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
-        createButton(38, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish").getMessage());
-        createButton(30, Material.CHEST, plugin.getLocale().getMessage("gui.player.tickets").getMessage());
-        if (player.isOnline())
+        if (punish) createButton(38, Material.ANVIL, plugin.getLocale().getMessage("gui.player.punish").getMessage());
+        if (tickets) createButton(30, Material.CHEST, plugin.getLocale().getMessage("gui.player.tickets").getMessage());
+        if (player.isOnline() && punishments)
             createButton(32, Material.DIAMOND_SWORD, plugin.getLocale().getMessage("gui.player.punishments").getMessage());
-        createButton(42, Material.MAP, plugin.getLocale().getMessage("gui.player.notes").getMessage());
-        createButton(40, Material.DIAMOND_CHESTPLATE, plugin.getLocale().getMessage("gui.player.moderate").getMessage());
+        if (notes) createButton(42, Material.MAP, plugin.getLocale().getMessage("gui.player.notes").getMessage());
+        if (moderate) createButton(40, Material.DIAMOND_CHESTPLATE, plugin.getLocale().getMessage("gui.player.moderate").getMessage());
     }
 
     @Override
@@ -54,20 +61,30 @@ public class GUIPlayer extends AbstractGUI {
         registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
                 new GUIPlayers(plugin, player1)));
 
-        registerClickable(38, ((player1, inventory1, cursor, slot, type) ->
-                new GUIPunish(plugin, toModerate, null, player1)));
+        if (punish) {
+            registerClickable(38, ((player1, inventory1, cursor, slot, type) ->
+                    new GUIPunish(plugin, toModerate, null, player1)));
+        }
 
-        registerClickable(30, ((player1, inventory1, cursor, slot, type) ->
-                new GUITicketManager(plugin, toModerate, player1)));
+        if (tickets) {
+            registerClickable(30, ((player1, inventory1, cursor, slot, type) ->
+                    new GUITicketManager(plugin, toModerate, player1)));
+        }
 
-        registerClickable(32, ((player1, inventory1, cursor, slot, type) ->
-                new GUIPunishments(plugin, toModerate, player1)));
+        if (punishments) {
+            registerClickable(32, ((player1, inventory1, cursor, slot, type) ->
+                    new GUIPunishments(plugin, toModerate, player1)));
+        }
 
-        registerClickable(42, ((player1, inventory1, cursor, slot, type) ->
-                new GUINotesManager(plugin, toModerate, player1)));
+        if (notes) {
+            registerClickable(42, ((player1, inventory1, cursor, slot, type) ->
+                    new GUINotesManager(plugin, toModerate, player1)));
+        }
 
-        registerClickable(40, ((player1, inventory1, cursor, slot, type) ->
-                new GUIModerate(plugin, toModerate, player1)));
+        if (moderate) {
+            registerClickable(40, ((player1, inventory1, cursor, slot, type) ->
+                    new GUIModerate(plugin, toModerate, player1)));
+        }
     }
 
     @Override

@@ -66,7 +66,8 @@ public class GUITemplateManager extends AbstractGUI {
                 : Material.valueOf("WOOD_DOOR"),
                 plugin.getLocale().getMessage("gui.general.back").getMessage());
 
-        createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.templatemanager.create").getMessage());
+        if (player.hasPermission("um.templates.create"))
+            createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.templatemanager.create").getMessage());
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
@@ -81,9 +82,9 @@ public class GUITemplateManager extends AbstractGUI {
 
             registerClickable(18 + i, ((player1, inventory1, cursor, slot, type) -> {
                 if (type == ClickType.LEFT) {
-                    new GUIPunish(plugin, null, template, player);
+                    if (player.hasPermission("um.templates.edit")) new GUIPunish(plugin, null, template, player);
                 } else if (type == ClickType.RIGHT) {
-                    plugin.getTemplateManager().removeTemplate(template.getUUID());
+                    if (player.hasPermission("um.templates.destroy")) plugin.getTemplateManager().removeTemplate(template.getUUID());
                     constructGUI();
                 }
             }));
@@ -95,8 +96,11 @@ public class GUITemplateManager extends AbstractGUI {
         registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
                 new GUIPlayers(plugin, player)));
 
-        registerClickable(7, ((player1, inventory1, cursor, slot, type) ->
-                new GUIPunish(plugin, null, null, player)));
+        if (player.hasPermission("um.templates.create")) {
+            registerClickable(7, ((player1, inventory1, cursor, slot, type) -> {
+                new GUIPunish(plugin, null, null, player);
+            }));
+        }
 
         registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
             this.punishmentType = punishmentType.nextFilter();

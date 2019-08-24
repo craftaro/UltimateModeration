@@ -7,8 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CommandViewEnderChest extends AbstractCommand {
@@ -27,6 +25,11 @@ public class CommandViewEnderChest extends AbstractCommand {
 
         if (player == null) {
             instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
+        if (player.hasPermission("um.viewenderchest.exempt")) {
+            instance.getLocale().newMessage("You cannot view the enderchest of that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

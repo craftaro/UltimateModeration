@@ -48,6 +48,11 @@ public class CommandFreeze extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (sender instanceof Player && player.hasPermission("um.freeze.exempt")) {
+            instance.getLocale().newMessage("That player cannot be frozen.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
         freeze(player, (Player) sender);
 
         return ReturnType.SUCCESS;

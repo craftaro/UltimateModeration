@@ -50,6 +50,11 @@ public class CommandMute extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (sender instanceof Player && player.getPlayer().hasPermission("um.mute.exempt")) {
+            instance.getLocale().newMessage("You cannot mute that player.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
         if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
             instance.getLocale().newMessage("That player is already muted.").sendPrefixedMessage(sender);

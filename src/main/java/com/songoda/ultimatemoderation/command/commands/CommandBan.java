@@ -50,9 +50,20 @@ public class CommandBan extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        if (instance.getPerms() != null && sender instanceof Player
+                && instance.getPerms().playerHas(Bukkit.getWorlds().get(0).getName(), player, "um.ban.exempt")) {
+            instance.getLocale().newMessage("You cannot ban this player.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
         if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
             instance.getLocale().newMessage("That player is already banned.").sendPrefixedMessage(sender);
+            return ReturnType.FAILURE;
+        }
+
+        if (duration == 0 && !sender.hasPermission("um.ban.permanent")) {
+            instance.getLocale().getMessage("event.general.nopermission").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

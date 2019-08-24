@@ -27,10 +27,14 @@ public class GUINotesManager extends AbstractGUI {
 
     private int page = 0;
 
+    private boolean create, delete;
+
     public GUINotesManager(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(player);
         this.plugin = plugin;
         this.toModerate = toModerate;
+        this.create = player.hasPermission("um.notes.create");
+        this.delete = player.hasPermission("um.notes.delete");
 
         init(plugin.getLocale().getMessage("gui.notes.title")
                 .processPlaceholder("tonotes", player.getName()).getMessage(), 54);
@@ -71,7 +75,7 @@ public class GUINotesManager extends AbstractGUI {
                 ? Material.OAK_DOOR
                 : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
-        createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create").getMessage());
+        if (create) createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.notes.create").getMessage());
 
         for (int i = 0; i < notes.size(); i++) {
             PunishmentNote note = notes.get(i);
@@ -106,14 +110,16 @@ public class GUINotesManager extends AbstractGUI {
             lore.add(plugin.getLocale().getMessage("gui.notes.createdon")
                     .processPlaceholder("sent", format.format(new Date(note.getCreationDate())))
                     .getMessage());
-            lore.add(plugin.getLocale().getMessage("gui.notes.remove").getMessage());
+            if (delete) lore.add(plugin.getLocale().getMessage("gui.notes.remove").getMessage());
 
             createButton(18 + i, Material.MAP, name, lore);
 
-            registerClickable(18 + i, ((player1, inventory1, cursor, slot, type) -> {
-                plugin.getPunishmentManager().getPlayer(toModerate).removeNote(note);
-                constructGUI();
-            }));
+            if (delete) {
+                registerClickable(18 + i, ((player1, inventory1, cursor, slot, type) -> {
+                    plugin.getPunishmentManager().getPlayer(toModerate).removeNote(note);
+                    constructGUI();
+                }));
+            }
         }
 
     }
@@ -123,17 +129,19 @@ public class GUINotesManager extends AbstractGUI {
         registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
                 new GUIPlayer(plugin, toModerate, player1)));
 
-        registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
-            plugin.getLocale().getMessage("gui.notes.type").sendMessage(player);
-            AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event -> {
-                plugin.getPunishmentManager().getPlayer(toModerate).addNotes(new PunishmentNote(event.getMessage(),
-                        player.getUniqueId(), toModerate.getUniqueId(), System.currentTimeMillis()));
-                constructGUI();
-            });
+        if (create) {
+            registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
+                plugin.getLocale().getMessage("gui.notes.type").sendMessage(player);
+                AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event -> {
+                    plugin.getPunishmentManager().getPlayer(toModerate).addNotes(new PunishmentNote(event.getMessage(),
+                            player.getUniqueId(), toModerate.getUniqueId(), System.currentTimeMillis()));
+                    constructGUI();
+                });
 
-            abstractChatConfirm.setOnClose(() ->
-                    init(setTitle, inventory.getSize()));
-        }));
+                abstractChatConfirm.setOnClose(() ->
+                        init(setTitle, inventory.getSize()));
+            }));
+        }
     }
 
     @Override

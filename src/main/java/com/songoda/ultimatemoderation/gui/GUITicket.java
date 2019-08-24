@@ -80,7 +80,7 @@ public class GUITicket extends AbstractGUI {
             createButton(7, Material.REDSTONE,
                     plugin.getLocale().getMessage("gui.ticket.clicktotele").getMessage());
 
-        createButton(6, Material.REDSTONE,  plugin.getLocale().getMessage("gui.ticket.respond").getMessage());
+        if (player.hasPermission("um.tickets.respond")) createButton(6, Material.REDSTONE,  plugin.getLocale().getMessage("gui.ticket.respond").getMessage());
 
         for (int i = 0; i < 9; i++)
             createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
@@ -139,16 +139,18 @@ public class GUITicket extends AbstractGUI {
             }));
         }
 
-        registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
-            player.sendMessage(plugin.getLocale().getMessage("gui.ticket.what").getMessage());
-            AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
-                ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
-                constructGUI();
-            });
+        if (player.hasPermission("um.ticket.respond")) {
+            registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
+                player.sendMessage(plugin.getLocale().getMessage("gui.ticket.what").getMessage());
+                AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
+                    ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
+                    constructGUI();
+                });
 
-            abstractChatConfirm.setOnClose(() ->
-                    init(setTitle, inventory.getSize()));
-        }));
+                abstractChatConfirm.setOnClose(() ->
+                        init(setTitle, inventory.getSize()));
+            }));
+        }
     }
 
     @Override
