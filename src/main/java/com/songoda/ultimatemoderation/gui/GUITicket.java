@@ -68,7 +68,7 @@ public class GUITicket extends AbstractGUI {
             }));
         }
 
-        if (player.hasPermission("um.ticket.openclose"))
+        if (player.hasPermission("um.tickets.openclose"))
             createButton(5, Material.REDSTONE, "&6" + ticket.getStatus().getStatus());
 
         createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
@@ -127,19 +127,19 @@ public class GUITicket extends AbstractGUI {
         registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
                 new GUITicketManager(plugin, toModerate, player)));
 
-        if (player.hasPermission("um.ticket.clicktotele") && ticket.getLocation() != null) {
+        if (player.hasPermission("um.tickets.clicktotele") && ticket.getLocation() != null) {
             registerClickable(7, ((player1, inventory1, cursor, slot, type) ->
                     player.teleport(ticket.getLocation())));
         }
 
-        if (player.hasPermission("um.ticket.openclose")) {
+        if (player.hasPermission("um.tickets.openclose")) {
             registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
                     ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
                     constructGUI();
             }));
         }
 
-        if (player.hasPermission("um.ticket.respond")) {
+        if (player.hasPermission("um.tickets.respond")) {
             registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
                 player.sendMessage(plugin.getLocale().getMessage("gui.ticket.what").getMessage());
                 AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
