@@ -51,6 +51,10 @@ public class CommandSpy extends AbstractCommand {
 
         instance.getLocale().getMessage("command.spy.success")
                 .processPlaceholder("player", player.getName()).sendPrefixedMessage(senderP);
+    }	
+    
+    public static boolean isSpying(OfflinePlayer player) {
+        return spying.containsKey(player.getUniqueId());
     }
 
     @Override
@@ -63,11 +67,11 @@ public class CommandSpy extends AbstractCommand {
         if (args.length == 0) {
             if (!spying.containsKey(senderP.getUniqueId()))
                 return ReturnType.SYNTAX_ERROR;
-            senderP.teleport(spying.get(senderP.getUniqueId()).getLastLocation());
-            if (spying.get(senderP.getUniqueId()).isVanishApplied() && CommandVanish.isVanished(senderP))
+            Spy spyingEntry = spying.remove(senderP.getUniqueId());
+            senderP.teleport(spyingEntry.getLastLocation());
+            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(senderP))
                 CommandVanish.vanish(senderP);
 
-            spying.remove(senderP.getUniqueId());
             instance.getLocale().getMessage("command.spy.returned").sendPrefixedMessage(sender);
             return ReturnType.SUCCESS;
         }

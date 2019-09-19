@@ -102,6 +102,7 @@ public class UltimateModeration extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new LoginListener(this), this);
         Bukkit.getPluginManager().registerEvents(new MobTargetLister(), this);
+        Bukkit.getPluginManager().registerEvents(new SpyingDismountListener(), this);
 
         // Start tasks
         SlowModeTask.startTask(this);
