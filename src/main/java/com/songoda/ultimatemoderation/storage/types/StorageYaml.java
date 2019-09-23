@@ -62,6 +62,8 @@ public class StorageYaml extends Storage {
 
     @Override
     public void doSave() {
+        dataFile.getConfig().set("data", null);
+
         this.updateData(instance);
         if (toSave.isEmpty()) return;
         Map<String, Object> nextSave = new HashMap<>(toSave);
