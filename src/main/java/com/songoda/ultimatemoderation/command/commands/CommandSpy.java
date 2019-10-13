@@ -43,10 +43,12 @@ public class CommandSpy extends AbstractCommand {
         if (!CommandVanish.isVanished(senderP)) {
             CommandVanish.vanish(senderP);
             senderP.setCanPickupItems(false);
+            didVanish = true;
         }
+        spying.put(senderP.getUniqueId(), new Spy(senderP.getLocation(), didVanish));
+
         senderP.teleport(player.getPlayer().getLocation());
 
-        spying.put(senderP.getUniqueId(), new Spy(senderP.getLocation(), didVanish));
         player.getPlayer().addPassenger(senderP);
 
         instance.getLocale().getMessage("command.spy.success")
@@ -118,6 +120,10 @@ public class CommandSpy extends AbstractCommand {
     @Override
     public String getDescription() {
         return "Allows you to spy on a player.";
+    }
+
+    public static Map<UUID, Spy> getSpying() {
+        return spying;
     }
 
     public static class Spy {
