@@ -53,7 +53,7 @@ public class CommandListener implements Listener {
                 if (pl != player && pl.hasPermission("um.commandspy") && CommandCommandSpy.isSpying(pl))
                     instance.getLocale().getMessage("command.commandspy.deny")
                             .processPlaceholder("player", player.getName())
-                            .processPlaceholder("command", StringEscapeUtils.escapeJava(command))
+                            .processPlaceholder("command", command)
                             .sendPrefixedMessage(pl);
             }
         }
