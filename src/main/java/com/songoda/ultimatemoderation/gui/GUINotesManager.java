@@ -1,17 +1,15 @@
 package com.songoda.ultimatemoderation.gui;
 
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.utils.AbstractChatConfirm;
-import com.songoda.ultimatemoderation.utils.ServerVersion;
-import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ public class GUINotesManager extends AbstractGUI {
         registerClickables();
 
         for (int i = 0; i < 9; i++)
-            createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
+            createButton(9 + i, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         int numNotes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().size();
         int maxPage = (int) Math.floor(numNotes / 36.0);
@@ -58,7 +56,7 @@ public class GUINotesManager extends AbstractGUI {
         if (page != 0) {
             createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
-                page --;
+                page--;
                 constructGUI();
             }));
         }
@@ -66,12 +64,12 @@ public class GUINotesManager extends AbstractGUI {
         if (page != maxPage) {
             createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
-                page ++;
+                page++;
                 constructGUI();
             }));
         }
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+        createButton(8, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)
                 ? Material.OAK_DOOR
                 : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
@@ -89,7 +87,7 @@ public class GUINotesManager extends AbstractGUI {
                     continue;
 
                 if (noteStr.charAt(n) == ' ') {
-                    lore.add("&6" +noteStr.substring(lastIndex, n).trim());
+                    lore.add("&6" + noteStr.substring(lastIndex, n).trim());
                     lastIndex = n;
                 }
             }

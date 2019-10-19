@@ -1,13 +1,11 @@
 package com.songoda.ultimatemoderation.gui;
 
+import com.songoda.core.compatibility.CompatibleMaterial;
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.tickets.Ticket;
-import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
-import com.songoda.ultimatemoderation.utils.AbstractChatConfirm;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
@@ -58,7 +56,7 @@ public class GUITicketManager extends AbstractGUI {
         if (page != 0) {
             createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
-                page --;
+                page--;
                 constructGUI();
             }));
         }
@@ -66,24 +64,22 @@ public class GUITicketManager extends AbstractGUI {
         if (maxPage >= 36) {
             createButton(5, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
-                page ++;
+                page++;
                 constructGUI();
             }));
         }
 
-        createButton(3 ,Material.DIAMOND_SWORD, Methods.formatText("&6" + status.getStatus()));
+        createButton(3, Material.DIAMOND_SWORD, Methods.formatText("&6" + status.getStatus()));
 
         if (toModerate != null && player.hasPermission("um.tickets.create"))
             createButton(7, Material.REDSTONE, plugin.getLocale().getMessage("gui.tickets.create").getMessage());
 
         if (player.hasPermission("um.ticket"))
-            createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
-                    ? Material.OAK_DOOR
-                    : Material.valueOf("WOOD_DOOR"),
+            createButton(8, CompatibleMaterial.OAK_DOOR.getMaterial(),
                     plugin.getLocale().getMessage("gui.general.back").getMessage());
 
         for (int i = 0; i < 9; i++)
-            createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
+            createButton(9 + i, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         for (int i = 0; i < tickets.size(); i++) {
             Ticket ticket = tickets.get(i);
@@ -97,7 +93,7 @@ public class GUITicketManager extends AbstractGUI {
                     continue;
 
                 if (subjectStr.charAt(n) == ' ') {
-                    lore.add("&6" +subjectStr.substring(lastIndex, n).trim());
+                    lore.add("&6" + subjectStr.substring(lastIndex, n).trim());
                     lastIndex = n;
                 }
             }

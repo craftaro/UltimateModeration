@@ -1,22 +1,20 @@
 package com.songoda.ultimatemoderation.gui;
 
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
-import com.songoda.ultimatemoderation.punish.Punishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
-import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.omg.PortableInterceptor.ACTIVE;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GUIPunishments extends AbstractGUI {
@@ -77,7 +75,7 @@ public class GUIPunishments extends AbstractGUI {
         if (page != 0) {
             createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
-                page --;
+                page--;
                 constructGUI();
             }));
         }
@@ -85,12 +83,12 @@ public class GUIPunishments extends AbstractGUI {
         if (page != maxPage) {
             createButton(6, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
-                page ++;
+                page++;
                 constructGUI();
             }));
         }
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+        createButton(8, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)
                 ? Material.OAK_DOOR
                 : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
@@ -98,7 +96,7 @@ public class GUIPunishments extends AbstractGUI {
         createButton(4, Material.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name()));
 
         for (int i = 0; i < 9; i++)
-            createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
+            createButton(9 + i, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         int currentSlot = 18;
         for (PunishmentHolder punishmentHolder : punishments) {

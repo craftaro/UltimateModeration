@@ -32,7 +32,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
-                                    <include>com.songoda:songodaupdater</include>
+                                    <include>com.songoda:SongodaCore</include>
                                 </includes>
                             </artifactSet>
                             <filters>
@@ -45,6 +45,12 @@
                                     </excludes>
                                 </filter>
                             </filters>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.songoda.core</pattern>
+                                    <shadedPattern>${project.groupId}.ultimatemoderation.core</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -61,17 +67,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.14</version>
+            <version>1.14.4</version>
         </dependency>
         <dependency>
             <groupId>com.songoda</groupId>
-            <artifactId>songodaupdater</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.milkbowl</groupId>
-            <artifactId>vault</artifactId>
-            <version>1.7.1</version>
+            <artifactId>SongodaCore</artifactId>
+            <version>LATEST</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

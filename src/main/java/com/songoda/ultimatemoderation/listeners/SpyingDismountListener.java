@@ -1,8 +1,8 @@
 package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.command.commands.CommandSpy;
-import com.songoda.ultimatemoderation.command.commands.CommandVanish;
+import com.songoda.ultimatemoderation.commands.CommandSpy;
+import com.songoda.ultimatemoderation.commands.CommandVanish;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

@@ -1,8 +1,9 @@
 package com.songoda.ultimatemoderation.staffchat;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
+import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.utils.settings.Setting;
+import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class StaffChannel {
 
     private final String channelName;
-    private char chatChar = Setting.STAFFCHAT_COLOR_CODE.getChar();
+    private char chatChar = Settings.STAFFCHAT_COLOR_CODE.getChar();
     private final List<UUID> members = new ArrayList<>();
     private final List<String> chatLog = new ArrayList<>();
 

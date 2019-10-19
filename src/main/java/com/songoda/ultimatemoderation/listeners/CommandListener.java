@@ -1,11 +1,10 @@
 package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.command.commands.CommandCommandSpy;
+import com.songoda.ultimatemoderation.commands.CommandCommandSpy;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
-import com.songoda.ultimatemoderation.utils.settings.Setting;
-import org.apache.commons.lang.StringEscapeUtils;
+import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,13 +29,13 @@ public class CommandListener implements Listener {
 
         List<AppliedPunishment> appliedPunishments = instance.getPunishmentManager().getPlayer(player).getActivePunishments(PunishmentType.MUTE);
         if (!appliedPunishments.isEmpty()) {
-            if (Setting.MUTE_DISABLED_COMMANDS.getStringList().stream()
+            if (Settings.MUTE_DISABLED_COMMANDS.getStringList().stream()
                     .anyMatch(s -> command.toUpperCase().startsWith("/" + s.toUpperCase())))
                 event.setCancelled(true);
 
         }
 
-        List<String> blockedCommands = Setting.BLOCKED_COMMANDS.getStringList();
+        List<String> blockedCommands = Settings.BLOCKED_COMMANDS.getStringList();
 
         for (String cmd : blockedCommands) {
             if (command.toUpperCase().startsWith("/" + cmd.toUpperCase())

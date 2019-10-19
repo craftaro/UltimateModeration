@@ -1,6 +1,13 @@
 package com.songoda.ultimatemoderation;
 
-import com.songoda.ultimatemoderation.command.CommandManager;
+import com.songoda.core.SongodaCore;
+import com.songoda.core.SongodaPlugin;
+import com.songoda.core.commands.CommandManager;
+import com.songoda.core.compatibility.CompatibleMaterial;
+import com.songoda.core.compatibility.ServerVersion;
+import com.songoda.core.configuration.Config;
+import com.songoda.core.gui.GuiManager;
+import com.songoda.ultimatemoderation.commands.*;
 import com.songoda.ultimatemoderation.listeners.*;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
@@ -9,10 +16,10 @@ import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.punish.player.PunishmentManager;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.punish.template.TemplateManager;
+import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.staffchat.StaffChatManager;
 import com.songoda.ultimatemoderation.storage.Storage;
 import com.songoda.ultimatemoderation.storage.StorageRow;
-import com.songoda.ultimatemoderation.storage.types.StorageMysql;
 import com.songoda.ultimatemoderation.storage.types.StorageYaml;
 import com.songoda.ultimatemoderation.tasks.SlowModeTask;
 import com.songoda.ultimatemoderation.tickets.Ticket;
@@ -20,71 +27,80 @@ import com.songoda.ultimatemoderation.tickets.TicketManager;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.utils.Metrics;
-import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
-import com.songoda.ultimatemoderation.utils.locale.Locale;
-import com.songoda.ultimatemoderation.utils.settings.Setting;
-import com.songoda.ultimatemoderation.utils.settings.SettingsManager;
-import com.songoda.ultimatemoderation.utils.updateModules.LocaleModule;
-import com.songoda.update.Plugin;
-import com.songoda.update.SongodaUpdate;
-import net.milkbowl.vault.permission.Permission;
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.UUID;
 
-public class UltimateModeration extends JavaPlugin {
-    private static CommandSender console = Bukkit.getConsoleSender();
+public class UltimateModeration extends SongodaPlugin {
     private static UltimateModeration INSTANCE;
 
-    private ServerVersion serverVersion = ServerVersion.fromPackageName(Bukkit.getServer().getClass().getPackage().getName());
-
+    private final GuiManager guiManager = new GuiManager(this);
     private TicketManager ticketManager;
     private TemplateManager templateManager;
-    private SettingsManager settingsManager;
     private CommandManager commandManager;
     private PunishmentManager punishmentManager;
     private StaffChatManager staffChatManager;
 
-    private Locale locale;
     private Storage storage;
-
-    private Permission perms = null;
 
     public static UltimateModeration getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public void onEnable() {
+    public void onPluginLoad() {
         INSTANCE = this;
+    }
 
-        console.sendMessage(Methods.formatText("&a============================="));
-        console.sendMessage(Methods.formatText("&7UltimateModeration " + this.getDescription().getVersion() + " by &5Songoda <3!"));
-        console.sendMessage(Methods.formatText("&7Action: &aEnabling&7..."));
+    @Override
+    public void onPluginDisable() {
+        storage.doSave();
+        this.storage.closeConnection();
+    }
 
-        this.settingsManager = new SettingsManager(this);
-        this.settingsManager.setupConfig();
+    @Override
+    public void onPluginEnable() {
+        // Run Songoda Updater
+        SongodaCore.registerPlugin(this, 29, CompatibleMaterial.DIAMOND_CHESTPLATE);
 
-        // Setup language
-        String langMode = Setting.LANGUGE_MODE.getString();
-        locale = new Locale(this, "en_US");
-        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
+        // Setup Config
+        Settings.setupConfig();
+        this.setLocale(Settings.LANGUGE_MODE.getString(), false);
 
-        //Running Songoda Updater
-        Plugin plugin = new Plugin(this, 29);
-        plugin.addModule(new LocaleModule());
-        SongodaUpdate.load(plugin);
+        // Register commands
+        this.commandManager = new CommandManager(this);
+        this.commandManager.addCommand(new CommandUltimateModeration(this))
+                .addSubCommands(
+                        new CommandReload(this),
+                        new CommandSettings(this, guiManager),
+                        new CommandHelp(this)
+                );
+        this.commandManager.addCommand(new CommandBan(this));
+        this.commandManager.addCommand(new CommandClearChat(this));
+        this.commandManager.addCommand(new CommandCommandSpy(this));
+        this.commandManager.addCommand(new CommandFreeze(this));
+        this.commandManager.addCommand(new CommandInvSee(this));
+        this.commandManager.addCommand(new CommandKick(this));
+        this.commandManager.addCommand(new CommandMute(this));
+        this.commandManager.addCommand(new CommandRandomPlayer(this));
+        this.commandManager.addCommand(new CommandRevive(this));
+        this.commandManager.addCommand(new CommandRunTemplate(this));
+        this.commandManager.addCommand(new CommandSlowMode(this));
+        this.commandManager.addCommand(new CommandSpy(this));
+        this.commandManager.addCommand(new CommandStaffChat(this));
+        this.commandManager.addCommand(new CommandTicket(this));
+        this.commandManager.addCommand(new CommandToggleChat(this));
+        this.commandManager.addCommand(new CommandUnBan(this));
+        this.commandManager.addCommand(new CommandUnMute(this));
+        this.commandManager.addCommand(new CommandVanish(this));
+        this.commandManager.addCommand(new CommandViewEnderChest(this));
+        this.commandManager.addCommand(new CommandWarn(this));
 
         // Setup Managers
         this.ticketManager = new TicketManager();
         this.templateManager = new TemplateManager();
-        this.commandManager = new CommandManager(this);
         this.punishmentManager = new PunishmentManager();
         this.staffChatManager = new StaffChatManager();
 
@@ -93,6 +109,7 @@ public class UltimateModeration extends JavaPlugin {
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, this::loadFromFile, 1L);
 
         // Register Listeners
+        guiManager.init();
         AbstractGUI.initializeListeners(this);
         Bukkit.getPluginManager().registerEvents(new CommandListener(this), this);
         Bukkit.getPluginManager().registerEvents(new DeathListener(this), this);
@@ -103,40 +120,18 @@ public class UltimateModeration extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new LoginListener(this), this);
         Bukkit.getPluginManager().registerEvents(new MobTargetLister(), this);
 
-        if (isServerVersionAtLeast(ServerVersion.V1_13)) Bukkit.getPluginManager().registerEvents(new SpyingDismountListener(), this);
+        if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13))
+            Bukkit.getPluginManager().registerEvents(new SpyingDismountListener(), this);
 
         // Start tasks
         SlowModeTask.startTask(this);
 
-        // Starting Metrics
-        new Metrics(this);
-
-        if (getServer().getPluginManager().getPlugin("Vault") != null) {
-            setupPermissions();
-            console.sendMessage("Hooked Vault.");
-        }
-
-        int timeout = Setting.AUTOSAVE.getInt() * 60 * 20;
+        int timeout = Settings.AUTOSAVE.getInt() * 60 * 20;
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> storage.doSave(), timeout, timeout);
-        console.sendMessage(Methods.formatText("&a============================="));
-    }
-
-    @Override
-    public void onDisable() {
-        storage.doSave();
-        this.storage.closeConnection();
-        console.sendMessage(Methods.formatText("&a============================="));
-        console.sendMessage(Methods.formatText("&7UltimateModeration " + this.getDescription().getVersion() + " by &5Songoda <3!"));
-        console.sendMessage(Methods.formatText("&7Action: &cDisabling&7..."));
-        console.sendMessage(Methods.formatText("&a============================="));
     }
 
     private void checkStorage() {
-        if (getConfig().getBoolean("Database.Activate Mysql Support")) {
-            this.storage = new StorageMysql(this);
-        } else {
-            this.storage = new StorageYaml(this);
-        }
+        this.storage = new StorageYaml(this);
     }
 
     private void loadFromFile() {
@@ -201,8 +196,8 @@ public class UltimateModeration extends JavaPlugin {
                 int id = row.get("ticketid").asInt();
                 TicketResponse ticketResponse = new TicketResponse(
                         UUID.fromString(row.get("author").asString()),
-                                row.get("message").asString(),
-                                row.get("posted").asLong());
+                        row.get("message").asString(),
+                        row.get("posted").asLong());
                 ticketResponse.setTicketId(id);
                 ticketManager.getTicket(id).addResponse(ticketResponse);
 
@@ -211,43 +206,19 @@ public class UltimateModeration extends JavaPlugin {
         storage.doSave();
     }
 
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
-    }
-
-    public ServerVersion getServerVersion() {
-        return serverVersion;
-    }
-
-    public boolean isServerVersion(ServerVersion version) {
-        return serverVersion == version;
-    }
-    public boolean isServerVersion(ServerVersion... versions) {
-        return ArrayUtils.contains(versions, serverVersion);
-    }
-
-    public boolean isServerVersionAtLeast(ServerVersion version) {
-        return serverVersion.ordinal() >= version.ordinal();
-    }
-
-    public void reload() {
-        this.locale = Locale.getLocale(getConfig().getString("System.Language Mode"));
+    @Override
+    public void onConfigReload() {
+        this.setLocale(getConfig().getString("System.Language Mode"), true);
         this.locale.reloadMessages();
-        this.settingsManager.reloadConfig();
+    }
+
+    @Override
+    public List<Config> getExtraConfig() {
+        return null;
     }
 
     public CommandManager getCommandManager() {
         return commandManager;
-    }
-
-    public SettingsManager getSettingsManager() {
-        return settingsManager;
-    }
-
-    public Locale getLocale() {
-        return locale;
     }
 
     public TemplateManager getTemplateManager() {
@@ -264,9 +235,5 @@ public class UltimateModeration extends JavaPlugin {
 
     public StaffChatManager getStaffChatManager() {
         return staffChatManager;
-    }
-
-    public Permission getPerms() {
-        return perms;
     }
 }

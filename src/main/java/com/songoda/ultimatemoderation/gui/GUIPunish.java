@@ -1,11 +1,11 @@
 package com.songoda.ultimatemoderation.gui;
 
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.Punishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
@@ -58,9 +58,9 @@ public class GUIPunish extends AbstractGUI {
         inventory.clear();
 
         if (toModerate != null) {
-            ItemStack head = new ItemStack(plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.PLAYER_HEAD : Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
+            ItemStack head = new ItemStack(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.PLAYER_HEAD : Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
             SkullMeta meta = ((SkullMeta) head.getItemMeta());
-            if (plugin.isServerVersionAtLeast(ServerVersion.V1_13))
+            if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13))
                 meta.setOwningPlayer(toModerate);
             else
                 meta.setOwner(toModerate.getName());
@@ -72,7 +72,7 @@ public class GUIPunish extends AbstractGUI {
         if (player.hasPermission("um." + type.toString().toLowerCase()))
             createButton(22, Material.EMERALD_BLOCK, plugin.getLocale().getMessage("gui.punish.submit").getMessage());
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
+        createButton(8, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)
                 ? Material.OAK_DOOR
                 : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
 
@@ -107,9 +107,9 @@ public class GUIPunish extends AbstractGUI {
         }
 
         if (type != PunishmentType.KICK) {
-            createButton(32, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
-                    ? Material.CLOCK
-                    : Material.valueOf("WATCH"),
+            createButton(32, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)
+                            ? Material.CLOCK
+                            : Material.valueOf("WATCH"),
                     plugin.getLocale().getMessage("gui.punish.type.duration").getMessage(),
                     plugin.getLocale().getMessage("gui.punish.type.duration.leftclick").getMessage(),
                     plugin.getLocale().getMessage("gui.punish.type.duration.rightclick").getMessage(),
@@ -133,7 +133,7 @@ public class GUIPunish extends AbstractGUI {
             return;
         }
 
-        Material material = plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.WHITE_WOOL : Material.valueOf("WOOL");
+        Material material = ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.WHITE_WOOL : Material.valueOf("WOOL");
         String name = plugin.getLocale().getMessage("gui.punish.template.create").getMessage();
         ArrayList<String> lore = new ArrayList<>();
         lore.add(plugin.getLocale().getMessage("gui.punish.template.create2").getMessage());
@@ -147,7 +147,7 @@ public class GUIPunish extends AbstractGUI {
             lore.add(plugin.getLocale().getMessage("gui.punish.template.rightclick").getMessage());
         }
 
-        if (plugin.isServerVersionAtLeast(ServerVersion.V1_13) && inventory.getItem(4) != null && inventory.getItem(4).getType() == Material.WHITE_WOOL)
+        if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) && inventory.getItem(4) != null && inventory.getItem(4).getType() == Material.WHITE_WOOL)
             material = Material.YELLOW_WOOL;
 
         createButton(4, material, name, lore);

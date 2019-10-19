@@ -1,19 +1,17 @@
 package com.songoda.ultimatemoderation.gui;
 
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.AbstractChatConfirm;
-import com.songoda.ultimatemoderation.utils.ServerVersion;
-import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class GUITicket extends AbstractGUI {
         if (page != 0) {
             createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
-                page --;
+                page--;
                 constructGUI();
             }));
         }
@@ -63,7 +61,7 @@ public class GUITicket extends AbstractGUI {
         if (page != maxPage) {
             createButton(3, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
-                page ++;
+                page++;
                 constructGUI();
             }));
         }
@@ -71,19 +69,20 @@ public class GUITicket extends AbstractGUI {
         if (player.hasPermission("um.tickets.openclose"))
             createButton(5, Material.REDSTONE, "&6" + ticket.getStatus().getStatus());
 
-        createButton(8, plugin.isServerVersionAtLeast(ServerVersion.V1_13)
-                ? Material.OAK_DOOR
-                : Material.valueOf("WOOD_DOOR"),
+        createButton(8, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)
+                        ? Material.OAK_DOOR
+                        : Material.valueOf("WOOD_DOOR"),
                 plugin.getLocale().getMessage("gui.general.back").getMessage());
 
         if (player.hasPermission("um.ticket.clicktotele") && ticket.getLocation() != null)
             createButton(7, Material.REDSTONE,
                     plugin.getLocale().getMessage("gui.ticket.clicktotele").getMessage());
 
-        if (player.hasPermission("um.tickets.respond")) createButton(6, Material.REDSTONE,  plugin.getLocale().getMessage("gui.ticket.respond").getMessage());
+        if (player.hasPermission("um.tickets.respond"))
+            createButton(6, Material.REDSTONE, plugin.getLocale().getMessage("gui.ticket.respond").getMessage());
 
         for (int i = 0; i < 9; i++)
-            createButton(9 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
+            createButton(9 + i, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         for (int i = 0; i < responses.size(); i++) {
             TicketResponse ticketResponse = responses.get(i);
@@ -97,7 +96,7 @@ public class GUITicket extends AbstractGUI {
                     continue;
 
                 if (subjectStr.charAt(n) == ' ') {
-                    lore.add("&6" +subjectStr.substring(lastIndex, n).trim());
+                    lore.add("&6" + subjectStr.substring(lastIndex, n).trim());
                     lastIndex = n;
                 }
             }
@@ -134,8 +133,8 @@ public class GUITicket extends AbstractGUI {
 
         if (player.hasPermission("um.tickets.openclose")) {
             registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
-                    ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
-                    constructGUI();
+                ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
+                constructGUI();
             }));
         }
 

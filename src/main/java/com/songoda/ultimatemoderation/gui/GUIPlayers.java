@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.gui;
 
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
-import com.songoda.ultimatemoderation.utils.ServerVersion;
 import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
@@ -66,7 +66,7 @@ public class GUIPlayers extends AbstractGUI {
         if (page != 0) {
             createButton(46, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
             registerClickable(46, ((player1, inventory1, cursor, slot, type) -> {
-                page --;
+                page--;
                 constructGUI();
             }));
         }
@@ -74,7 +74,7 @@ public class GUIPlayers extends AbstractGUI {
         if (maxPage != page) {
             createButton(48, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
             registerClickable(48, ((player1, inventory1, cursor, slot, type) -> {
-                page ++;
+                page++;
                 constructGUI();
             }));
         }
@@ -84,9 +84,9 @@ public class GUIPlayers extends AbstractGUI {
 
             PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(pl);
 
-            ItemStack head = new ItemStack(plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.PLAYER_HEAD : Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
+            ItemStack head = new ItemStack(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.PLAYER_HEAD : Material.valueOf("SKULL_ITEM"), 1, (byte) 3);
             SkullMeta meta = ((SkullMeta) head.getItemMeta());
-            if (plugin.isServerVersionAtLeast(ServerVersion.V1_13))
+            if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13))
                 meta.setOwningPlayer(pl);
             else
                 meta.setOwner(pl.getName());
@@ -127,7 +127,7 @@ public class GUIPlayers extends AbstractGUI {
         }
 
         for (int i = 0; i < 9; i++)
-            createButton(36 + i, plugin.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE :  new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
+            createButton(36 + i, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
 
         createButton(46, Material.ENDER_PEARL, plugin.getLocale().getMessage("gui.players.search").getMessage());
         createButton(47, Material.HOPPER, "&6" + currentOnline.getTranslation());
@@ -167,18 +167,18 @@ public class GUIPlayers extends AbstractGUI {
             AbstractAnvilGUI gui = new AbstractAnvilGUI(player, event -> {
                 List<UUID> players = new ArrayList<>(plugin.getPunishmentManager().getPunishments().keySet());
 
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (players.contains(player.getUniqueId())) continue;
-                        players.add(player.getUniqueId());
-                    }
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (players.contains(player.getUniqueId())) continue;
+                    players.add(player.getUniqueId());
+                }
 
-                    List<UUID> found = players.stream().filter(uuid -> Bukkit.getOfflinePlayer(uuid).getName().equalsIgnoreCase(event.getName())).collect(Collectors.toList());
+                List<UUID> found = players.stream().filter(uuid -> Bukkit.getOfflinePlayer(uuid).getName().equalsIgnoreCase(event.getName())).collect(Collectors.toList());
 
-                    if (found.size() == 1) {
-                        new GUIPlayer(plugin, Bukkit.getOfflinePlayer(found.get(0)), player);
-                    } else {
-                        plugin.getLocale().getMessage("gui.players.nonefound").sendMessage(player);
-                    }
+                if (found.size() == 1) {
+                    new GUIPlayer(plugin, Bukkit.getOfflinePlayer(found.get(0)), player);
+                } else {
+                    plugin.getLocale().getMessage("gui.players.nonefound").sendMessage(player);
+                }
 
             });
 

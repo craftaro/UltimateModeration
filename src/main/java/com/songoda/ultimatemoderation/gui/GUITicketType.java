@@ -5,7 +5,7 @@ import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
 import com.songoda.ultimatemoderation.utils.AbstractChatConfirm;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
-import com.songoda.ultimatemoderation.utils.settings.Setting;
+import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -34,7 +34,7 @@ public class GUITicketType extends AbstractGUI {
         resetClickables();
         registerClickables();
 
-        List<String> types = Setting.TICKET_TYPES.getStringList();
+        List<String> types = Settings.TICKET_TYPES.getStringList();
 
         for (int i = 0; i < types.size(); i ++) {
             createButton(i, Material.PAPER, types.get(i));

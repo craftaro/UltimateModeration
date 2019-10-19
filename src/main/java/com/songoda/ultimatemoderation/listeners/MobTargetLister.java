@@ -1,6 +1,6 @@
 package com.songoda.ultimatemoderation.listeners;
 
-import com.songoda.ultimatemoderation.command.commands.CommandVanish;
+import com.songoda.ultimatemoderation.commands.CommandVanish;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

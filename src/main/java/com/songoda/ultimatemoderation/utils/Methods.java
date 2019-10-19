@@ -1,5 +1,6 @@
 package com.songoda.ultimatemoderation.utils;
 
+import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -33,11 +34,11 @@ public class Methods {
         int randomNum = 1 + (int) (Math.random() * 6);
         ItemStack glass;
         if (rainbow) {
-            glass = new ItemStack(UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_13) ?
-                    Material.LEGACY_STAINED_GLASS_PANE :  Material.valueOf("STAINED_GLASS_PANE"), 1, (short) randomNum);
+            glass = new ItemStack(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ?
+                    Material.LEGACY_STAINED_GLASS_PANE : Material.valueOf("STAINED_GLASS_PANE"), 1, (short) randomNum);
         } else {
-            glass = new ItemStack(UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_13) ?
-                    Material.LEGACY_STAINED_GLASS_PANE :  Material.valueOf("STAINED_GLASS_PANE"), 1, (short) type);
+            glass = new ItemStack(ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ?
+                    Material.LEGACY_STAINED_GLASS_PANE : Material.valueOf("STAINED_GLASS_PANE"), 1, (short) type);
         }
         ItemMeta glassmeta = glass.getItemMeta();
         glassmeta.setDisplayName("§l");
@@ -62,7 +63,7 @@ public class Methods {
     public static String formatTitle(String text) {
         if (text == null || text.equals(""))
             return "";
-        if (!UltimateModeration.getInstance().isServerVersionAtLeast(ServerVersion.V1_9)) {
+        if (!ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
             if (text.length() > 31)
                 text = text.substring(0, 29) + "...";
         }
@@ -150,7 +151,7 @@ public class Methods {
      * @return The serialized data.
      */
     public static String serializeLocation(Location location) {
-        if (location == null  || location.getWorld() == null)
+        if (location == null || location.getWorld() == null)
             return "";
         String w = location.getWorld().getName();
         double x = location.getX();

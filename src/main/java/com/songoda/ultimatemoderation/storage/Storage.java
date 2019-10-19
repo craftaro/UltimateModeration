@@ -1,5 +1,6 @@
 package com.songoda.ultimatemoderation.storage;
 
+import com.songoda.core.configuration.Config;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
@@ -7,24 +8,19 @@ import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketResponse;
-import com.songoda.ultimatemoderation.tickets.TicketStatus;
-import com.songoda.ultimatemoderation.utils.ConfigWrapper;
 import com.songoda.ultimatemoderation.utils.Methods;
 
 import java.util.List;
-import java.util.UUID;
 
 public abstract class Storage {
 
-    protected final UltimateModeration instance;
-    protected final ConfigWrapper dataFile;
+    protected final UltimateModeration plugin;
+    protected final Config dataFile;
 
-    public Storage(UltimateModeration instance) {
-        this.instance = instance;
-        this.dataFile = new ConfigWrapper(instance, "", "data.yml");
-        this.dataFile.createNewFile(null, "UltimateModeration Data File");
-        this.dataFile.getConfig().options().copyDefaults(true);
-        this.dataFile.saveConfig();
+    public Storage(UltimateModeration plugin) {
+        this.plugin = plugin;
+        this.dataFile = new Config(plugin, "data.yml");
+        this.dataFile.load();
     }
 
     public abstract boolean containsGroup(String group);
