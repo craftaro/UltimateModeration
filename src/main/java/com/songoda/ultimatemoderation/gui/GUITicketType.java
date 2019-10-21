@@ -9,12 +9,15 @@ import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import com.songoda.ultimatemoderation.staffchat.*;
 
 import java.util.List;
+import org.bukkit.Bukkit;
 
 public class GUITicketType extends AbstractGUI {
 
     private final UltimateModeration plugin;
+    private StaffChatManager chatManager = UltimateModeration.getInstance().getStaffChatManager();
 
     private final OfflinePlayer toModerate;
     private final String subject;
@@ -44,6 +47,8 @@ public class GUITicketType extends AbstractGUI {
                 player.sendMessage(plugin.getLocale().getMessage("gui.tickets.what").getMessage());
                 AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
                     plugin.getTicketManager().addTicket(ticket);
+                    // Notify staff
+                    chatManager.getChat("ticket").messageAll("&7[UM] &a[Ticket #" + ticket.getTicketId() + " - " + ticket.getType() + " - " + Bukkit.getPlayer(ticket.getVictim()).getDisplayName() + "&a] Has been created!");
                     if (player == toModerate)
                         ticket.setLocation(player.getLocation());
                     ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));

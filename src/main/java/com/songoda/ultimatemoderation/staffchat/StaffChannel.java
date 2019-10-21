@@ -62,7 +62,7 @@ public class StaffChannel {
             .processPlaceholder("message", message).getMessage());
     }
 
-    private void messageAll(String message) {
+    public void messageAll(String message) {
         chatLog.add(message);
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!members.contains(player.getUniqueId()) && !player.hasPermission("um.staffchat.spy")) continue;

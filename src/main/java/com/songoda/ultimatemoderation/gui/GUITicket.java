@@ -18,16 +18,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.songoda.ultimatemoderation.staffchat.*;
 
 public class GUITicket extends AbstractGUI {
 
     private final UltimateModeration plugin;
-
+    private StaffChatManager chatManager = UltimateModeration.getInstance().getStaffChatManager();
+    
     private final Ticket ticket;
 
     private final OfflinePlayer toModerate;
     private int page = 0;
-
+    
     public GUITicket(UltimateModeration plugin, Ticket ticket, OfflinePlayer toModerate, Player player) {
         super(player);
         this.ticket = ticket;
@@ -134,6 +136,8 @@ public class GUITicket extends AbstractGUI {
         if (player.hasPermission("um.tickets.openclose")) {
             registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
                 ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
+                // Notify staff of ticket status
+                    chatManager.getChat("ticket").messageAll("&7[UM] &a[Ticket #" + ticket.getTicketId() + " - " + ticket.getType() + " - " + Bukkit.getPlayer(ticket.getVictim()).getDisplayName() + "&a] New Status: &6" + ticket.getStatus());
                 constructGUI();
             }));
         }
@@ -143,6 +147,8 @@ public class GUITicket extends AbstractGUI {
                 player.sendMessage(plugin.getLocale().getMessage("gui.ticket.what").getMessage());
                 AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
                     ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
+                    // Notify staff of ticket response.
+                    chatManager.getChat("ticket").messageAll("&7[UM] &a[Ticket #" + ticket.getTicketId() + " - " + ticket.getType() + " - " + Bukkit.getPlayer(ticket.getVictim()).getDisplayName() + "&a] Has a new response!");
                     constructGUI();
                 });
 
