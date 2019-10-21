@@ -21,6 +21,7 @@ public class CommandToggleChat extends AbstractCommand {
 
     public CommandToggleChat(UltimateModeration instance) {
         super(CommandType.PLAYER_ONLY, "togglechat");
+        this.instance = instance;
     }
 
     @Override
