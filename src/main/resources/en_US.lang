@@ -175,3 +175,8 @@ gui.ticket.respond = "&6Respond"
 gui.ticket.status = "&7Status &6%status%&7."
 gui.ticket.postedby = "&7Posted by &6%player%&7."
 gui.ticket.what = "&6What would you like to say?"
+
+notify.block.main = "&a Has mined [&6%material%&a] at &6"
+notify.ticket.created = "&7[UM] &a[Ticket #%tid% - %type% - %player%&a] Has been created!"
+notify.ticket.status = "&7[UM] &a[Ticket #%tid% - %type% - %player%&a] New Status: &6%status%"
+notify.ticket.response = "&7[UM] &a[Ticket #%tid% - %type% - %player%&a] Has a new response!"

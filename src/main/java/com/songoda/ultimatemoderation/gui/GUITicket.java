@@ -137,7 +137,7 @@ public class GUITicket extends AbstractGUI {
             registerClickable(5, ((player1, inventory1, cursor, slot, type) -> {
                 ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
                 // Notify staff of ticket status
-                    chatManager.getChat("ticket").messageAll("&7[UM] &a[Ticket #" + ticket.getTicketId() + " - " + ticket.getType() + " - " + Bukkit.getPlayer(ticket.getVictim()).getDisplayName() + "&a] New Status: &6" + ticket.getStatus());
+                    chatManager.getChat("ticket").messageAll(UltimateModeration.getInstance().getLocale().getMessage("notify.ticket.status").getMessage().replace("%tid%", ""+ticket.getTicketId()).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()).replace("%status%", ticket.getStatus().toString()));
                 constructGUI();
             }));
         }
@@ -148,7 +148,7 @@ public class GUITicket extends AbstractGUI {
                 AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
                     ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
                     // Notify staff of ticket response.
-                    chatManager.getChat("ticket").messageAll("&7[UM] &a[Ticket #" + ticket.getTicketId() + " - " + ticket.getType() + " - " + Bukkit.getPlayer(ticket.getVictim()).getDisplayName() + "&a] Has a new response!");
+                    chatManager.getChat("ticket").messageAll(UltimateModeration.getInstance().getLocale().getMessage("notify.ticket.response").getMessage().replace("%tid%", ""+ticket.getTicketId()).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()));
                     constructGUI();
                 });
 

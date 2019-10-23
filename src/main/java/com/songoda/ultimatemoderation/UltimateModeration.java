@@ -119,6 +119,7 @@ public class UltimateModeration extends SongodaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
         Bukkit.getPluginManager().registerEvents(new LoginListener(this), this);
         Bukkit.getPluginManager().registerEvents(new MobTargetLister(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockListener(this), this);
 
         if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13))
             Bukkit.getPluginManager().registerEvents(new SpyingDismountListener(), this);

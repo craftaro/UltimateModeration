@@ -48,7 +48,7 @@ public class GUITicketType extends AbstractGUI {
                 AbstractChatConfirm abstractChatConfirm = new AbstractChatConfirm(player, event2 -> {
                     plugin.getTicketManager().addTicket(ticket);
                     // Notify staff
-                    chatManager.getChat("ticket").messageAll("&7[UM] &a[Ticket #" + ticket.getTicketId() + " - " + ticket.getType() + " - " + Bukkit.getPlayer(ticket.getVictim()).getDisplayName() + "&a] Has been created!");
+                    chatManager.getChat("ticket").messageAll(UltimateModeration.getInstance().getLocale().getMessage("notify.ticket.created").getMessage().replace("%tid%", ""+ticket.getTicketId()).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()));
                     if (player == toModerate)
                         ticket.setLocation(player.getLocation());
                     ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
