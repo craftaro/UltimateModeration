@@ -49,7 +49,7 @@ public abstract class Storage {
                         new StorageItem("duration", appliedPunishment.getDuration()),
                         new StorageItem("reason", appliedPunishment.getReason()),
                         new StorageItem("victim", appliedPunishment.getVictim().toString()),
-                        new StorageItem("punisher", appliedPunishment.getPunisher().toString()),
+                        new StorageItem("punisher", appliedPunishment.getPunisher() == null ? null : appliedPunishment.getPunisher().toString()),
                         new StorageItem("expiration", appliedPunishment.getExpiration()));
             }
 

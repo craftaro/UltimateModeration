@@ -38,6 +38,12 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+        if (!onChat(player, event.getMessage()))
+            event.setCancelled(true);
+    }
+
+    public static boolean onChat(Player player, String message) {
+        UltimateModeration instance = UltimateModeration.getInstance();
 
         long slowmode = slowModeOverride == 0 ? Methods.parseTime(Settings.SLOW_MODE.getString()) : slowModeOverride;
 
@@ -46,33 +52,35 @@ public class ChatListener implements Listener {
             if (chats.size() != 0) {
                 Log last = chats.get(chats.size() - 1);
                 if ((System.currentTimeMillis() - last.sent) < slowmode) {
-                    event.setCancelled(true);
-                    return;
+                    return false;
                 }
             }
         }
 
+        boolean isCancelled = false;
+
         for (StaffChannel channel : instance.getStaffChatManager().getChats().values()) {
             if (!channel.listMembers().contains(player.getUniqueId())) continue;
-            event.setCancelled(true);
-            channel.processMessage(event.getMessage(), player);
+            isCancelled = true;
+            channel.processMessage(message, player);
         }
 
         if (!isChatToggled && !player.hasPermission("um.togglechat.bypass")) {
-            event.setCancelled(true);
+            isCancelled = true;
             instance.getLocale().getMessage("command.togglechat.muted").sendPrefixedMessage(player);
         }
 
         List<AppliedPunishment> appliedPunishments = instance.getPunishmentManager().getPlayer(player).getActivePunishments(PunishmentType.MUTE);
         if (!appliedPunishments.isEmpty()) {
             appliedPunishments.get(0).sendMessage(player);
-            event.setCancelled(true);
+            isCancelled = true;
         }
 
 
         // Log chat.
-        chatLog.add(new Log(player.getUniqueId(), System.currentTimeMillis(), event.getMessage()));
+        chatLog.add(new Log(player.getUniqueId(), System.currentTimeMillis(), message));
 
+        return !isCancelled;
     }
 
     public static void setSlowModeOverride(long slowModeOverride) {
@@ -83,7 +91,7 @@ public class ChatListener implements Listener {
         return new ArrayList<>(chatLog);
     }
 
-    public class Log {
+    public static class Log {
 
         private UUID player;
         private long sent;
