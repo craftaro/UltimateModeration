@@ -29,6 +29,7 @@ import com.songoda.ultimatemoderation.tickets.TicketStatus;
 import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.List;
 import java.util.UUID;
@@ -111,18 +112,21 @@ public class UltimateModeration extends SongodaPlugin {
         // Register Listeners
         guiManager.init();
         AbstractGUI.initializeListeners(this);
-        Bukkit.getPluginManager().registerEvents(new CommandListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new DeathListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new MoveListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new DropListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new LoginListener(this), this);
-        Bukkit.getPluginManager().registerEvents(new MobTargetLister(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockListener(this), this);
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new CommandListener(this), this);
+        pluginManager.registerEvents(new DeathListener(this), this);
+        pluginManager.registerEvents(new MoveListener(this), this);
+        pluginManager.registerEvents(new DropListener(this), this);
+        pluginManager.registerEvents(new InventoryListener(this), this);
+        pluginManager.registerEvents(new ChatListener(this), this);
+        pluginManager.registerEvents(new LoginListener(this), this);
+        pluginManager.registerEvents(new MobTargetLister(), this);
+        pluginManager.registerEvents(new BlockListener(this), this);
+        if (pluginManager.isPluginEnabled("FabledSkyBlock"))
+            pluginManager.registerEvents(new SkyBlockListener(this), this);
 
         if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13))
-            Bukkit.getPluginManager().registerEvents(new SpyingDismountListener(), this);
+            pluginManager.registerEvents(new SpyingDismountListener(), this);
 
         // Start tasks
         SlowModeTask.startTask(this);
