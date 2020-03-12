@@ -158,7 +158,7 @@ public class UltimateModeration extends SongodaPlugin {
                         row.get("duration").asLong(),
                         row.get("reason").asString(),
                         UUID.fromString(row.get("victim").asString()),
-                        UUID.fromString(row.get("punisher").asString()),
+                        row.get("punisher").asObject() == null ? null : UUID.fromString(row.get("punisher").asString()),
                         row.get("expiration").asLong(),
                         playerUUID);
                 PlayerPunishData playerPunishData = getPunishmentManager().getPlayer(playerUUID);
