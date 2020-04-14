@@ -38,19 +38,15 @@ public class StaffChannel {
             chatLog.stream().skip(chatLog.size() - 3).forEach(message -> player.sendMessage(Methods.formatText(message)));
         }
         messageAll(UltimateModeration.getInstance().getLocale()
-                .getMessage("event.staffchat.format.join")
-                .processPlaceholder("color", chatChar)
-                .processPlaceholder("channel", channelName)
-                .processPlaceholder("player", player.getDisplayName()).getMessage());
+                .getMessage("event.staffchat.join")
+                .processPlaceholder("channel", channelName).getMessage());
     }
 
     public void removeMember(Player player) {
         members.remove(player.getUniqueId());
         messageAll(UltimateModeration.getInstance().getLocale()
-            .getMessage("event.staffchat.format.leave")
-            .processPlaceholder("color", chatChar)
-            .processPlaceholder("channel", channelName)
-            .processPlaceholder("player", player.getDisplayName()).getMessage());
+                .getMessage("event.staffchat.leave")
+                .processPlaceholder("channel", channelName).getMessage());
     }
 
     public void processMessage(String message, Player player) {
