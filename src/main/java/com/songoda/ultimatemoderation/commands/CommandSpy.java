@@ -3,7 +3,9 @@ package com.songoda.ultimatemoderation.commands;
 import com.songoda.core.commands.AbstractCommand;
 import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
+import com.songoda.ultimatemoderation.listeners.SpyingDismountListener;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,11 +27,22 @@ public class CommandSpy extends AbstractCommand {
     public static void spy(OfflinePlayer oPlayer, Player senderP) {
         UltimateModeration instance = UltimateModeration.getInstance();
 
+        if (isSpying(senderP) && oPlayer == null) {
+            CommandSpy.Spy spyingEntry = CommandSpy.getSpying().remove(senderP.getUniqueId());
+            senderP.teleport(spyingEntry.getLastLocation());
+            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(senderP))
+                CommandVanish.vanish(senderP);
+            senderP.setGameMode(SpyingDismountListener.getGamemodes().get(senderP.getUniqueId()));
+
+            UltimateModeration.getInstance().getLocale().getMessage("command.spy.returned").sendPrefixedMessage(senderP);
+        }
+
         if (!ServerVersion.isServerVersionAtLeast(ServerVersion.V1_12)) {
             instance.getLocale().newMessage("This feature is not compatible with this version of spigot.").sendPrefixedMessage(senderP);
             return;
         }
 
+        if (oPlayer == null) return;
         Player player = oPlayer.getPlayer();
 
         if (player == null) {

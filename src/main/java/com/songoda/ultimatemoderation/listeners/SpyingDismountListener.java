@@ -2,7 +2,6 @@ package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.commands.CommandSpy;
-import com.songoda.ultimatemoderation.commands.CommandVanish;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -12,13 +11,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class SpyingDismountListener implements Listener {
 
-    private Map<UUID, GameMode> gamemodes = new HashMap<>();
+    private static Map<UUID, GameMode> gamemodes = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDismountEvent(EntityDismountEvent event) {
@@ -28,8 +28,11 @@ public class SpyingDismountListener implements Listener {
             Player player = (Player) event.getEntity();
             gamemodes.put(player.getUniqueId(), player.getGameMode());
             player.setGameMode(GameMode.SPECTATOR);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateModeration.getInstance(), () ->
-                    player.setSpectatorTarget(event.getDismounted()), 5L);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateModeration.getInstance(), () -> {
+
+                if (player.getGameMode() == GameMode.SPECTATOR)
+                    player.setSpectatorTarget(event.getDismounted());
+            }, 5L);
         }
     }
 
@@ -37,12 +40,10 @@ public class SpyingDismountListener implements Listener {
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
         if (player.isSneaking() || !CommandSpy.isSpying(player) || player.getGameMode() != GameMode.SPECTATOR) return;
-        CommandSpy.Spy spyingEntry = CommandSpy.getSpying().remove(player.getUniqueId());
-        player.teleport(spyingEntry.getLastLocation());
-        if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(player))
-            CommandVanish.vanish(player);
-        player.setGameMode(gamemodes.get(player.getUniqueId()));
+        CommandSpy.spy(null, player);
+    }
 
-        UltimateModeration.getInstance().getLocale().getMessage("command.spy.returned").sendPrefixedMessage(player);
+    public static Map<UUID, GameMode> getGamemodes() {
+        return Collections.unmodifiableMap(gamemodes);
     }
 }
