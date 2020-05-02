@@ -38,6 +38,8 @@ public class CommandStaffChat extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
+        instance.getLocale().getMessage("event.staffchat.leave")
+                .processPlaceholder("channel", channelName).sendPrefixedMessage(player);
         instance.getStaffChatManager().getChat(channelName).addMember(player);
         return ReturnType.SUCCESS;
     }

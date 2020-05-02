@@ -69,7 +69,9 @@ event:
     message: '&7You have been warned'
   staffchat:
     leave: '&7You left &6%channel% &7successfully.'
-    leave: '&7You joined &6%channel% &7successfully.'
+    join: '&7You joined &6%channel% &7successfully.'
+    allleave: '&6%player% &7has left the channel.'
+    alljoin: '&6%player% has joined the channel.'
     nochannels: '&cYou are not in any channels.'
     format: '&%color%[%channel%] %player%&%color%: %message%'
   slowmode:
