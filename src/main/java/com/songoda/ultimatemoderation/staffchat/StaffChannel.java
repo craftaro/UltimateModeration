@@ -28,6 +28,10 @@ public class StaffChannel {
 
     public void addMember(Player player) {
         if (members.contains(player.getUniqueId())) return;
+        messageAll(UltimateModeration.getInstance().getLocale()
+                .getMessage("event.staffchat.alljoin")
+                .processPlaceholder("player", player.getName()).getMessage());
+
         UltimateModeration.getInstance().getStaffChatManager().getChats().values().stream().forEach(members1 -> {
             if (members1.listMembers().contains(player.getUniqueId())) {
                 members1.removeMember(player);
@@ -37,16 +41,13 @@ public class StaffChannel {
         if (chatLog.size() > 5) {
             chatLog.stream().skip(chatLog.size() - 3).forEach(message -> player.sendMessage(Methods.formatText(message)));
         }
-        messageAll(UltimateModeration.getInstance().getLocale()
-                .getMessage("event.staffchat.join")
-                .processPlaceholder("channel", channelName).getMessage());
     }
 
     public void removeMember(Player player) {
         members.remove(player.getUniqueId());
         messageAll(UltimateModeration.getInstance().getLocale()
-                .getMessage("event.staffchat.leave")
-                .processPlaceholder("channel", channelName).getMessage());
+                .getMessage("event.staffchat.allleave")
+                .processPlaceholder("player", player.getName()).getMessage());
     }
 
     public void processMessage(String message, Player player) {

@@ -8,6 +8,7 @@ import com.songoda.ultimatemoderation.utils.Methods;
 import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -35,7 +36,7 @@ public class ChatListener implements Listener {
         return slowModeOverride;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (!onChat(player, event.getMessage()))
