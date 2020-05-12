@@ -184,7 +184,7 @@ public class UltimateModeration extends SongodaPlugin {
         if (storage.containsGroup("tickets")) {
             for (StorageRow row : storage.getRowsByGroup("tickets")) {
 
-                int id = row.get("id").asInt();
+                int id = Integer.parseInt(row.get("id").asString());
                 Ticket ticket = new Ticket(
                         UUID.fromString(row.get("player").asString()),
                         row.get("subject").asString(),
@@ -202,7 +202,7 @@ public class UltimateModeration extends SongodaPlugin {
                 TicketResponse ticketResponse = new TicketResponse(
                         UUID.fromString(row.get("author").asString()),
                         row.get("message").asString(),
-                        row.get("posted").asLong());
+                        Long.parseLong(row.get("posted").asString()));
                 ticketResponse.setTicketId(id);
                 ticketManager.getTicket(id).addResponse(ticketResponse);
 

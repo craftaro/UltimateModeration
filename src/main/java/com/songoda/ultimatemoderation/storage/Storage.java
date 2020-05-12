@@ -64,7 +64,7 @@ public abstract class Storage {
         }
 
         for (Ticket ticket : instance.getTicketManager().getTickets()) {
-            prepareSaveItem("tickets", new StorageItem("id", ticket.getTicketId()),
+            prepareSaveItem("tickets", new StorageItem("id", String.valueOf(ticket.getTicketId())),
                     new StorageItem("player", ticket.getVictim().toString()),
                     new StorageItem("subject", ticket.getSubject()),
                     new StorageItem("type", ticket.getType()),
@@ -72,7 +72,7 @@ public abstract class Storage {
                     new StorageItem("status", ticket.getStatus().toString()));
 
             for (TicketResponse ticketResponse : ticket.getResponses()) {
-                prepareSaveItem("ticketresponses", new StorageItem("posted", ticketResponse.getPostedDate()),
+                prepareSaveItem("ticketresponses", new StorageItem("posted", String.valueOf(ticketResponse.getPostedDate())),
                         new StorageItem("ticketid", ticket.getTicketId()),
                         new StorageItem("author", ticketResponse.getAuthor().toString()),
                         new StorageItem("message", ticketResponse.getMessage()));

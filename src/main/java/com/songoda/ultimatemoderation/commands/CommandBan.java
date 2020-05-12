@@ -1,7 +1,6 @@
 package com.songoda.ultimatemoderation.commands;
 
 import com.songoda.core.commands.AbstractCommand;
-import com.songoda.core.utils.PlayerUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.Punishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
@@ -11,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.omg.CORBA.TypeCodePackage.BadKind;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,11 +55,6 @@ public class CommandBan extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        if (sender instanceof Player && VaultPermissions.hasPermission(Bukkit.getWorlds().get(0).getName(), player, "um.ban.exempt")) {
-            instance.getLocale().newMessage("You cannot ban this player.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
         if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
             instance.getLocale().newMessage("That player is already banned.").sendPrefixedMessage(sender);
@@ -71,8 +66,16 @@ public class CommandBan extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        new Punishment(PunishmentType.BAN, duration == 0 ? -1 : duration, reason.equals("") ? null : reason)
-                .execute(sender, player);
+        long durationFinal = duration;
+        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+            if (sender instanceof Player && VaultPermissions.hasPermission(Bukkit.getWorlds().get(0).getName(), player, "um.ban.exempt")) {
+                instance.getLocale().newMessage("You cannot ban this player.").sendPrefixedMessage(sender);
+                return;
+            }
+
+            new Punishment(PunishmentType.BAN, durationFinal == 0 ? -1 : durationFinal, reason.equals("") ? null : reason)
+                    .execute(sender, player);
+        });
 
         return ReturnType.SUCCESS;
     }
