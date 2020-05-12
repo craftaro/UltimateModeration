@@ -28,7 +28,7 @@ public class CommandUnBan extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (player == null) {
+        if (!player.hasPlayedBefore()) {
             instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
