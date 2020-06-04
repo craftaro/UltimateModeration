@@ -1,11 +1,11 @@
 package com.songoda.ultimatemoderation.gui;
 
 import com.songoda.core.compatibility.ServerVersion;
+import com.songoda.core.gui.AnvilGui;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
-import com.songoda.ultimatemoderation.utils.gui.AbstractAnvilGUI;
 import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -28,9 +28,18 @@ public class GUIPlayers extends AbstractGUI {
     private int page = 0;
     private Online currentOnline = Online.ONLINE;
 
+    private List<UUID> players = new ArrayList<>();
+
     public GUIPlayers(UltimateModeration plugin, Player player) {
         super(player);
         this.plugin = plugin;
+
+        for (Player p : Bukkit.getOnlinePlayers())
+            players.add(p.getUniqueId());
+        for (UUID uuid : plugin.getPunishmentManager().getPunishments().keySet()) {
+            if (Bukkit.getOfflinePlayer(uuid).isOnline()) continue;
+            players.add(uuid);
+        }
 
         init(plugin.getLocale().getMessage("gui.players.title").getMessage(), 54);
         runTask();
@@ -42,26 +51,15 @@ public class GUIPlayers extends AbstractGUI {
         resetClickables();
         registerClickables();
 
-
-        int numNotes = Bukkit.getOnlinePlayers().size();
-        int maxPage = (int) Math.floor(numNotes / 36.0);
-
-        List<UUID> players = new ArrayList<>();
-
-        if (currentOnline == Online.ONLINE || currentOnline == Online.BOTH) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                players.add(player.getUniqueId());
-            }
-        }
-        if (currentOnline == Online.OFFLINE || currentOnline == Online.BOTH) {
-            for (UUID uuid : plugin.getPunishmentManager().getPunishments().keySet()) {
-                if (Bukkit.getOfflinePlayer(uuid).isOnline()) continue;
-                players.add(uuid);
-            }
-        }
-
-        players = players.stream()
+        List<UUID> toUse = players.stream()
+                .filter(u -> currentOnline == Online.BOTH
+                        || currentOnline == Online.ONLINE && Bukkit.getOfflinePlayer(u).isOnline()
+                        || currentOnline == Online.OFFLINE && !Bukkit.getOfflinePlayer(u).isOnline())
                 .skip(page * 36).limit(36).collect(Collectors.toList());
+
+
+        int numNotes = toUse.size();
+        int maxPage = (int) Math.floor(numNotes / 36.0);
 
         if (page != 0) {
             createButton(46, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
@@ -79,8 +77,8 @@ public class GUIPlayers extends AbstractGUI {
             }));
         }
 
-        for (int i = 0; i < players.size(); i++) {
-            OfflinePlayer pl = Bukkit.getOfflinePlayer(players.get(i));
+        for (int i = 0; i < toUse.size(); i++) {
+            OfflinePlayer pl = Bukkit.getOfflinePlayer(toUse.get(i));
 
             PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(pl);
 
@@ -164,7 +162,8 @@ public class GUIPlayers extends AbstractGUI {
     protected void registerClickables() {
 
         registerClickable(46, ((player1, inventory1, cursor, slot, type) -> {
-            AbstractAnvilGUI gui = new AbstractAnvilGUI(player, event -> {
+            AnvilGui gui = new AnvilGui(player1);
+            gui.setAction(event -> {
                 List<UUID> players = new ArrayList<>(plugin.getPunishmentManager().getPunishments().keySet());
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
@@ -172,10 +171,12 @@ public class GUIPlayers extends AbstractGUI {
                     players.add(player.getUniqueId());
                 }
 
-                List<UUID> found = players.stream().filter(uuid -> Bukkit.getOfflinePlayer(uuid).getName().equalsIgnoreCase(event.getName())).collect(Collectors.toList());
+                List<UUID> found = players.stream().filter(uuid -> Bukkit.getOfflinePlayer(uuid).getName().toLowerCase().contains(gui.getInputText().toLowerCase())).collect(Collectors.toList());
 
-                if (found.size() == 1) {
-                    new GUIPlayer(plugin, Bukkit.getOfflinePlayer(found.get(0)), player);
+                if (found.size() >= 1) {
+                    this.players = found;
+                    constructGUI();
+                    player.openInventory(this.inventory);
                 } else {
                     plugin.getLocale().getMessage("gui.players.nonefound").sendMessage(player);
                 }
@@ -187,8 +188,8 @@ public class GUIPlayers extends AbstractGUI {
             meta.setDisplayName(plugin.getLocale().getMessage("gui.players.name").getMessage());
             item.setItemMeta(meta);
 
-            gui.setSlot(AbstractAnvilGUI.AnvilSlot.INPUT_LEFT, item);
-            gui.open();
+            gui.setInput(item);
+            plugin.getGuiManager().showGUI(player, gui);
         }));
 
         registerClickable(47, ((player1, inventory1, cursor, slot, type) -> {
