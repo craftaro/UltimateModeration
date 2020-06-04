@@ -27,8 +27,8 @@ public class CommandSpy extends AbstractCommand {
     public static void spy(OfflinePlayer oPlayer, Player senderP) {
         UltimateModeration instance = UltimateModeration.getInstance();
 
-        if (isSpying(senderP) && oPlayer == null) {
-            CommandSpy.Spy spyingEntry = CommandSpy.getSpying().remove(senderP.getUniqueId());
+        if (spying.containsKey(senderP) && oPlayer == null) {
+            Spy spyingEntry = spying.remove(senderP.getUniqueId());
             senderP.teleport(spyingEntry.getLastLocation());
             if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(senderP))
                 CommandVanish.vanish(senderP);
@@ -82,7 +82,7 @@ public class CommandSpy extends AbstractCommand {
 
         Player senderP = ((Player) sender);
 
-        if (args.length == 0) {
+        if (args.length == 0 || spying.containsKey(senderP.getUniqueId())) {
             if (!spying.containsKey(senderP.getUniqueId()))
                 return ReturnType.SYNTAX_ERROR;
             Spy spyingEntry = spying.remove(senderP.getUniqueId());
@@ -136,10 +136,6 @@ public class CommandSpy extends AbstractCommand {
     @Override
     public String getDescription() {
         return "Allows you to spy on a player.";
-    }
-
-    public static Map<UUID, Spy> getSpying() {
-        return spying;
     }
 
     public static class Spy {
