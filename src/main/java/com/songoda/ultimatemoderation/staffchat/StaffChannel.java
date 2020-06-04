@@ -30,7 +30,7 @@ public class StaffChannel {
         if (members.contains(player.getUniqueId())) return;
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.alljoin")
-                .processPlaceholder("player", player.getName()).getMessage());
+                .processPlaceholder("player", player.getName()).getMessage(), player);
 
         UltimateModeration.getInstance().getStaffChatManager().getChats().values().stream().forEach(members1 -> {
             if (members1.listMembers().contains(player.getUniqueId())) {
@@ -47,7 +47,7 @@ public class StaffChannel {
         members.remove(player.getUniqueId());
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.allleave")
-                .processPlaceholder("player", player.getName()).getMessage());
+                .processPlaceholder("player", player.getName()).getMessage(), player);
     }
 
     public void processMessage(String message, Player player) {
@@ -60,8 +60,13 @@ public class StaffChannel {
     }
 
     public void messageAll(String message) {
+        messageAll(message, null);
+    }
+
+    public void messageAll(String message, Player exempt) {
         chatLog.add(message);
         for (Player player : Bukkit.getOnlinePlayers()) {
+            if (exempt != null && player == exempt) continue;
             if (!members.contains(player.getUniqueId()) && !player.hasPermission("um.staffchat.spy")) continue;
             player.sendMessage(Methods.formatText(message));
         }

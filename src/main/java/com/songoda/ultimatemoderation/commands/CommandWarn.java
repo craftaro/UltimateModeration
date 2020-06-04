@@ -5,6 +5,7 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.Punishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.utils.Methods;
+import com.songoda.ultimatemoderation.utils.VaultPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -53,7 +54,7 @@ public class CommandWarn extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        if (sender instanceof Player && player.getPlayer().hasPermission("um.warning.exempt")) {
+        if (sender instanceof Player && VaultPermissions.hasPermission(Bukkit.getWorlds().get(0).getName(), player, "um.warning.exempt")) {
             instance.getLocale().newMessage("You cannot warn that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }

@@ -241,4 +241,8 @@ public class UltimateModeration extends SongodaPlugin {
     public StaffChatManager getStaffChatManager() {
         return staffChatManager;
     }
+
+    public GuiManager getGuiManager() {
+        return guiManager;
+    }
 }
