@@ -3,6 +3,7 @@ package com.songoda.ultimatemoderation.punish;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.utils.Methods;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -61,10 +62,12 @@ public class Punishment {
                     return;
                 }
                 if (victim.isOnline()) {
-                    victim.getPlayer().kickPlayer(plugin.getLocale()
-                            .getMessage("event.ban.message")
-                            .processPlaceholder("reason", reason == null ? "" : reason)
-                            .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        victim.getPlayer().kickPlayer(plugin.getLocale()
+                                .getMessage("event.ban.message")
+                                .processPlaceholder("reason", reason == null ? "" : reason)
+                                .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
+                    });
                 }
                 break;
             case MUTE:
@@ -76,10 +79,12 @@ public class Punishment {
                 break;
             case KICK:
                 if (victim.isOnline()) {
-                    victim.getPlayer().kickPlayer(plugin.getLocale()
-                            .getMessage("event.kick.message")
-                            .processPlaceholder("reason", reason == null ? "" : reason)
-                            .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        victim.getPlayer().kickPlayer(plugin.getLocale()
+                                .getMessage("event.ban.message")
+                                .processPlaceholder("reason", reason == null ? "" : reason)
+                                .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
+                    });
                 }
                 break;
             case WARNING:
