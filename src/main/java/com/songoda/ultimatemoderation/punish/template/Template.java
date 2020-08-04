@@ -11,25 +11,25 @@ public class Template extends Punishment {
     private final String templateName;
     private final UUID creator;
 
-    public Template(PunishmentType punishmentType, long duration, String reason, Player creator, String templateName) {
+    public Template(PunishmentType punishmentType, long duration, String reason, Player creator, String name) {
         super(punishmentType, duration, reason);
         this.creator = creator.getUniqueId();
-        this.templateName = templateName;
+        this.templateName = name;
     }
 
-    public Template(PunishmentType punishmentType, long duration, String reason, UUID creator, String templateName, UUID uuid) {
-        super(punishmentType, duration, reason, uuid);
+    public Template(PunishmentType punishmentType, long duration, String reason, UUID creator, String name, int id) {
+        super(punishmentType, duration, reason, id);
         this.creator = creator;
-        this.templateName = templateName;
+        this.templateName = name;
     }
 
-    public Template(PunishmentType punishmentType, long duration, String reason, UUID creator, String templateName) {
+    public Template(PunishmentType punishmentType, long duration, String reason, UUID creator, String name) {
         super(punishmentType, duration, reason);
         this.creator = creator;
-        this.templateName = templateName;
+        this.templateName = name;
     }
 
-    public String getTemplateName() {
+    public String getName() {
         return templateName;
     }
 

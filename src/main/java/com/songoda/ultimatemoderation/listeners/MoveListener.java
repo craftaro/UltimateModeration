@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.commands.CommandFreeze;
+import com.songoda.ultimatemoderation.moderate.moderations.FreezeModeration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +18,7 @@ public class MoveListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (CommandFreeze.isFrozen(player)) {
+        if (FreezeModeration.isFrozen(player)) {
             event.setCancelled(true);
             instance.getLocale().getMessage("command.freeze.nope").sendPrefixedMessage(player);
         }

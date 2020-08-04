@@ -2,7 +2,7 @@ package com.songoda.ultimatemoderation.commands;
 
 import com.songoda.core.commands.AbstractCommand;
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.gui.GUITicketManager;
+import com.songoda.ultimatemoderation.gui.TicketManagerGui;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,7 +21,7 @@ public class CommandTicket extends AbstractCommand {
     protected ReturnType runCommand(CommandSender sender, String... args) {
         Player senderP = ((Player) sender);
 
-        new GUITicketManager(instance, senderP, senderP);
+        new TicketManagerGui(instance, senderP, senderP);
         return ReturnType.SUCCESS;
     }
 

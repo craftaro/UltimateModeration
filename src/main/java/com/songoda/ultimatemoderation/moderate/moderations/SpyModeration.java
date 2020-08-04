@@ -1,27 +1,71 @@
-package com.songoda.ultimatemoderation.commands;
+package com.songoda.ultimatemoderation.moderate.moderations;
 
-import com.songoda.core.commands.AbstractCommand;
+import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
+import com.songoda.ultimatemoderation.commands.CommandVanish;
 import com.songoda.ultimatemoderation.listeners.SpyingDismountListener;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
+import com.songoda.ultimatemoderation.moderate.AbstractModeration;
+import com.songoda.ultimatemoderation.moderate.ModerationType;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-public class CommandSpy extends AbstractCommand {
-
-    private UltimateModeration instance;
+public class SpyModeration extends AbstractModeration {
 
     private static Map<UUID, Spy> spying = new HashMap<>();
 
-    public CommandSpy(UltimateModeration instance) {
-        super(CommandType.PLAYER_ONLY, "Spy");
-        this.instance = instance;
+    public SpyModeration(UltimateModeration plugin) {
+        super(plugin, true, false);
+        registerCommand(plugin);
+    }
+
+    @Override
+    public ModerationType getType() {
+        return ModerationType.SPY;
+    }
+
+    @Override
+    public CompatibleMaterial getIcon() {
+        return CompatibleMaterial.ENDER_EYE;
+    }
+
+    @Override
+    public String getProper() {
+        return "Spy";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Allows you to spy on a player.";
+    }
+
+    @Override
+    protected boolean runModeration(CommandSender runner, OfflinePlayer toModerate) {
+        Player toModeratePlayer = (Player) toModerate;
+        Player runnerPlayer = (Player) runner;
+
+        if (spying.containsKey(runnerPlayer.getUniqueId())) {
+            Spy spyingEntry = spying.remove(runnerPlayer.getUniqueId());
+            runnerPlayer.teleport(spyingEntry.getLastLocation());
+            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(runnerPlayer))
+                CommandVanish.vanish(runnerPlayer);
+
+            plugin.getLocale().getMessage("command.spy.returned").sendPrefixedMessage(runner);
+            return true;
+        }
+
+        spy(toModeratePlayer, runnerPlayer);
+        return false;
+    }
+
+    public static boolean isSpying(OfflinePlayer player) {
+        return spying.containsKey(player.getUniqueId());
     }
 
     public static void spy(OfflinePlayer oPlayer, Player senderP) {
@@ -69,73 +113,6 @@ public class CommandSpy extends AbstractCommand {
 
         instance.getLocale().getMessage("command.spy.success")
                 .processPlaceholder("player", player.getName()).sendPrefixedMessage(senderP);
-    }
-
-    public static boolean isSpying(OfflinePlayer player) {
-        return spying.containsKey(player.getUniqueId());
-    }
-
-    @Override
-    protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length > 1)
-            return ReturnType.SYNTAX_ERROR;
-
-        Player senderP = ((Player) sender);
-
-        if (args.length == 0 || spying.containsKey(senderP.getUniqueId())) {
-            if (!spying.containsKey(senderP.getUniqueId()))
-                return ReturnType.SYNTAX_ERROR;
-            Spy spyingEntry = spying.remove(senderP.getUniqueId());
-            senderP.teleport(spyingEntry.getLastLocation());
-            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(senderP))
-                CommandVanish.vanish(senderP);
-
-            instance.getLocale().getMessage("command.spy.returned").sendPrefixedMessage(sender);
-            return ReturnType.SUCCESS;
-        }
-
-        Player player = Bukkit.getPlayer(args[0]);
-
-        if (player == null) {
-            instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
-        if (player.hasPermission("um.spy.exempt")) {
-            instance.getLocale().newMessage("You cannot spy on that player.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
-        spy(player, senderP);
-
-        return ReturnType.SUCCESS;
-    }
-
-    @Override
-    protected List<String> onTab(CommandSender sender, String... args) {
-        if (args.length == 1) {
-            List<String> players = new ArrayList<>();
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                players.add(player.getName());
-            }
-            return players;
-        }
-        return null;
-    }
-
-    @Override
-    public String getPermissionNode() {
-        return "um.spy";
-    }
-
-    @Override
-    public String getSyntax() {
-        return "/Spy [player]";
-    }
-
-    @Override
-    public String getDescription() {
-        return "Allows you to spy on a player.";
     }
 
     public static class Spy {

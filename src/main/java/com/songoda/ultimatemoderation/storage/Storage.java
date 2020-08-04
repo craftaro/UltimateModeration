@@ -30,54 +30,6 @@ public abstract class Storage {
     public abstract void prepareSaveItem(String group, StorageItem... items);
 
     public void updateData(UltimateModeration instance) {
-        // Save game data
-        for (Template template : instance.getTemplateManager().getTemplates().values()) {
-            prepareSaveItem("templates", new StorageItem("uuid", template.getUUID().toString()),
-                    new StorageItem("type", template.getPunishmentType().name()),
-                    new StorageItem("duration", template.getDuration()),
-                    new StorageItem("reason", template.getReason()),
-                    new StorageItem("name", template.getTemplateName()),
-                    new StorageItem("creator", template.getCreator().toString()));
-        }
-
-        for (PlayerPunishData playerPunishData : instance.getPunishmentManager().getPunishments().values()) {
-            List<AppliedPunishment> appliedPunishments = playerPunishData.getActivePunishments();
-            appliedPunishments.addAll(playerPunishData.getExpiredPunishments());
-            for (AppliedPunishment appliedPunishment : appliedPunishments) {
-                prepareSaveItem("punishments", new StorageItem("uuid", appliedPunishment.getUUID().toString()),
-                        new StorageItem("type", appliedPunishment.getPunishmentType().name()),
-                        new StorageItem("duration", appliedPunishment.getDuration()),
-                        new StorageItem("reason", appliedPunishment.getReason()),
-                        new StorageItem("victim", appliedPunishment.getVictim().toString()),
-                        new StorageItem("punisher", appliedPunishment.getPunisher() == null ? null : appliedPunishment.getPunisher().toString()),
-                        new StorageItem("expiration", appliedPunishment.getExpiration()));
-            }
-
-            List<PunishmentNote> notes = playerPunishData.getNotes();
-            for (PunishmentNote note : notes) {
-                prepareSaveItem("notes", new StorageItem("uuid", note.getUUID().toString()),
-                        new StorageItem("note", note.getNote()),
-                        new StorageItem("author", note.getAuthor().toString()),
-                        new StorageItem("subject", note.getSubject().toString()),
-                        new StorageItem("creation", note.getCreationDate()));
-            }
-        }
-
-        for (Ticket ticket : instance.getTicketManager().getTickets()) {
-            prepareSaveItem("tickets", new StorageItem("id", String.valueOf(ticket.getTicketId())),
-                    new StorageItem("player", ticket.getVictim().toString()),
-                    new StorageItem("subject", ticket.getSubject()),
-                    new StorageItem("type", ticket.getType()),
-                    new StorageItem("location", Methods.serializeLocation(ticket.getLocation())),
-                    new StorageItem("status", ticket.getStatus().toString()));
-
-            for (TicketResponse ticketResponse : ticket.getResponses()) {
-                prepareSaveItem("ticketresponses", new StorageItem("posted", String.valueOf(ticketResponse.getPostedDate())),
-                        new StorageItem("ticketid", ticket.getTicketId()),
-                        new StorageItem("author", ticketResponse.getAuthor().toString()),
-                        new StorageItem("message", ticketResponse.getMessage()));
-            }
-        }
     }
 
     public abstract void doSave();

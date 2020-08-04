@@ -3,46 +3,42 @@ package com.songoda.ultimatemoderation.punish;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.utils.Methods;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-
 public class Punishment {
 
-    private final UUID uuid;
+    private int id;
 
     private final PunishmentType punishmentType;
     private final long duration;
     private final String reason;
 
-    public Punishment(PunishmentType punishmentType, long duration, String reason, UUID uuid) {
+    public Punishment(PunishmentType punishmentType, long duration, String reason, int id) {
         this.punishmentType = punishmentType;
         this.duration = duration;
         this.reason = reason;
-        this.uuid = uuid;
+        this.id = id;
     }
 
     public Punishment(PunishmentType punishmentType, long duration, String reason) {
         this.punishmentType = punishmentType;
         this.duration = duration;
         this.reason = reason;
-        this.uuid = UUID.randomUUID();
     }
 
     public Punishment(PunishmentType punishmentType, String reason) {
         this.punishmentType = punishmentType;
-        this.duration = -1;
+        this.duration = 0;
         this.reason = reason;
-        this.uuid = UUID.randomUUID();
     }
 
     protected Punishment(Punishment punishment) {
         this.punishmentType = punishment.getPunishmentType();
         this.duration = punishment.getDuration();
         this.reason = punishment.getReason();
-        this.uuid = punishment.getUUID();
     }
 
     public void execute(CommandSender punisher, OfflinePlayer victim) {
@@ -60,12 +56,11 @@ public class Punishment {
                     plugin.getLocale().getMessage("event.ban.already").sendPrefixedMessage(punisher);
                     return;
                 }
-                if (victim.isOnline()) {
-                    victim.getPlayer().kickPlayer(plugin.getLocale()
+                if (victim.isOnline())
+                    Bukkit.getScheduler().runTask(plugin, () -> victim.getPlayer().kickPlayer(plugin.getLocale()
                             .getMessage("event.ban.message")
                             .processPlaceholder("reason", reason == null ? "" : reason)
-                            .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
-                }
+                            .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage()));
                 break;
             case MUTE:
                 if (!playerPunishData.getActivePunishments(PunishmentType.MUTE).isEmpty()) {
@@ -75,12 +70,10 @@ public class Punishment {
                 sendMessage(victim);
                 break;
             case KICK:
-                if (victim.isOnline()) {
-                    victim.getPlayer().kickPlayer(plugin.getLocale()
+                if (victim.isOnline())
+                    Bukkit.getScheduler().runTask(plugin, () -> victim.getPlayer().kickPlayer(plugin.getLocale()
                             .getMessage("event.kick.message")
-                            .processPlaceholder("reason", reason == null ? "" : reason)
-                            .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage());
-                }
+                            .processPlaceholder("reason", reason == null ? "" : reason).getMessage()));
                 break;
             case WARNING:
                 sendMessage(victim);
@@ -96,13 +89,20 @@ public class Punishment {
             punishSuccess += plugin.getLocale().getMessage("event.punish.reason")
                     .processPlaceholder("reason", reason).getMessage();
 
-        if (duration != -1)
+        if (duration != -1 && duration != 0)
             punishSuccess += plugin.getLocale().getMessage("event.punish.theirduration")
                     .processPlaceholder("duration", Methods.makeReadable(duration)).getMessage();
 
         punisher.sendMessage(punishSuccess + Methods.formatText("&7."));
 
-        playerPunishData.addPunishment(apply(victim, punisher));
+        AppliedPunishment appliedPunishment = apply(victim, punisher);
+        if (duration != 0) {
+            playerPunishData.addPunishment(appliedPunishment);
+        } else {
+            appliedPunishment.expire();
+            playerPunishData.addExpiredPunishment(appliedPunishment);
+        }
+        plugin.getDataManager().createAppliedPunishment(appliedPunishment);
     }
 
     public void sendMessage(OfflinePlayer offlineVictim) {
@@ -124,8 +124,12 @@ public class Punishment {
         victim.sendMessage(punishSuccess + Methods.formatText("&7."));
     }
 
-    public UUID getUUID() {
-        return uuid;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public PunishmentType getPunishmentType() {
@@ -142,7 +146,7 @@ public class Punishment {
 
     private AppliedPunishment apply(OfflinePlayer player, CommandSender punisher) {
         return new AppliedPunishment(this, player.getUniqueId(),
-                punisher == null ? null : punisher instanceof OfflinePlayer ? ((OfflinePlayer)punisher).getUniqueId() : null, System.currentTimeMillis() + this.duration);
+                punisher == null ? null : punisher instanceof OfflinePlayer ? ((OfflinePlayer) punisher).getUniqueId() : null, System.currentTimeMillis() + this.duration);
     }
 
 }

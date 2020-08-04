@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.commands.CommandCommandSpy;
+import com.songoda.ultimatemoderation.moderate.moderations.SpyModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.settings.Settings;
@@ -49,7 +49,7 @@ public class CommandListener implements Listener {
 
         if (!player.hasPermission("um.commandspy.immune")) {
             for (Player pl : Bukkit.getOnlinePlayers()) {
-                if (pl != player && pl.hasPermission("um.commandspy") && CommandCommandSpy.isSpying(pl))
+                if (pl != player && pl.hasPermission("um.commandspy") && SpyModeration.isSpying(pl))
                     instance.getLocale().getMessage("command.commandspy.deny")
                             .processPlaceholder("player", player.getName())
                             .processPlaceholder("command", command)

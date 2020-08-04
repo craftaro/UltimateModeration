@@ -31,11 +31,14 @@ commands:
     default: false
     aliases: [v]
     usage: /v
-  ViewEnderChest:
-    description: ViewEnderChest
+  Spy:
+    description: Spy
     default: false
-    aliases: [vec]
-    usage: /vec
+    usage: /spy
+  Revive:
+    description: Revive
+    default: false
+    usage: /revive
   InvSee:
     description: InvSee
     default: false
@@ -44,18 +47,10 @@ commands:
     description: Freeze
     default: false
     usage: /freeze
-  Revive:
-    description: Revive
+  ViewEnderChest:
+    description: ViewEnderChest
     default: false
-    usage: /revive
-  Spy:
-    description: Spy
-    default: false
-    usage: /spy
-  CommandSpy:
-    description: CommandSpy
-    default: false
-    usage: /commandspy
+    usage: /ViewEnderChest
   Ban:
     description: Ban
     default: false

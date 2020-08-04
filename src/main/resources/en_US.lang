@@ -51,7 +51,7 @@ event:
     yourduration: '&7. &7Your punishment will be lifted in &6%duration%'
   ban:
     success: '&7You have banned &6%player%'
-    message: '&7You have been banned'
+    message: '&7You have been banned for &6%reason%&7. Your ban will expire after &6%duration%&7.'
     already: '&cThis user is already banned.'
   unban:
     success: '&7You have unbanned &6%player%'
@@ -63,7 +63,7 @@ event:
     success: '&7You have unmuted &6%player%'
   kick:
     success: '&7You have kicked &6%player%'
-    message: '&7You have been kicked'
+    message: '&7You have been kicked for &6%reason%&7.'
   warning:
     success: '&7You have warned &6%player%'
     message: '&7You have been warned'
@@ -194,7 +194,7 @@ gui:
     what: '&6What would you like to say in your first ticket post?'
     subject: Ticket Subject
   ticket:
-    title: '&8Tickets > %id%'
+    title: '&8Tickets > %subject% %id%'
     type: '&7Type &6%type%&7.'
     picktype: '&8Pick a ticket type.'
     clicktotele: '&6Teleport to ticket location.'

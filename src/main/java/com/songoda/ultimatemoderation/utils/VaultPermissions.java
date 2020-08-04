@@ -17,8 +17,8 @@ public class VaultPermissions {
         }
     }
 
-    public static boolean hasPermission(String world, OfflinePlayer offlinePlayer, String perm) {
-        if (vaultPermission != null) return vaultPermission.playerHas(world, offlinePlayer, perm);
+    public static boolean hasPermission(OfflinePlayer offlinePlayer, String perm) {
+        if (vaultPermission != null) return vaultPermission.playerHas(Bukkit.getWorlds().get(0).getName(), offlinePlayer, perm);
         return false;
     }
 }

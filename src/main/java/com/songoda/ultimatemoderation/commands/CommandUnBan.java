@@ -72,6 +72,6 @@ public class CommandUnBan extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Allows you to ban players.";
+        return "Allows you to unban players.";
     }
 }

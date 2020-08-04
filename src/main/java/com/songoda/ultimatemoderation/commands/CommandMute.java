@@ -54,7 +54,7 @@ public class CommandMute extends AbstractCommand {
             return ReturnType.FAILURE;
         }
 
-        if (sender instanceof Player && VaultPermissions.hasPermission(Bukkit.getWorlds().get(0).getName(), player, "um.mute.exempt")) {
+        if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.mute.exempt")) {
             instance.getLocale().newMessage("You cannot mute that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }

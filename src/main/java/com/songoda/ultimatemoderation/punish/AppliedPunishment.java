@@ -8,8 +8,8 @@ public class AppliedPunishment extends Punishment {
     private final UUID punisher;
     private long expiration;
 
-    public AppliedPunishment(PunishmentType punishmentType, long duration, String reason, UUID victim, UUID punisher, long expiration, UUID uuid) {
-        super(punishmentType, duration, reason, uuid);
+    public AppliedPunishment(PunishmentType punishmentType, long duration, String reason, UUID victim, UUID punisher, long expiration, int id) {
+        super(punishmentType, duration, reason, id);
         this.victim = victim;
         this.punisher = punisher;
         this.expiration = expiration;

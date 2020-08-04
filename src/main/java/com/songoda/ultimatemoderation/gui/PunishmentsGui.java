@@ -1,23 +1,24 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.ServerVersion;
+import com.songoda.core.compatibility.CompatibleMaterial;
+import com.songoda.core.gui.Gui;
+import com.songoda.core.gui.GuiUtils;
+import com.songoda.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
+import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.utils.gui.AbstractGUI;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GUIPunishments extends AbstractGUI {
+public class PunishmentsGui extends Gui {
 
     private final UltimateModeration plugin;
     private final OfflinePlayer toModerate;
@@ -25,22 +26,40 @@ public class GUIPunishments extends AbstractGUI {
     private Activity currentActivity = Activity.BOTH;
     private PunishmentType punishmentType = PunishmentType.ALL;
 
-    private int page = 0;
-
-    public GUIPunishments(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
-        super(player);
+    public PunishmentsGui(UltimateModeration plugin, OfflinePlayer toModerate) {
+        super(6);
+        setDefaultItem(null);
         this.plugin = plugin;
         this.toModerate = toModerate;
 
-        init(plugin.getLocale().getMessage("gui.punishments.title")
-                .processPlaceholder("toModerate", toModerate.getName()).getMessage(), 54);
+        setTitle(plugin.getLocale().getMessage("gui.punishments.title")
+                .processPlaceholder("toModerate", toModerate.getName()).getMessage());
+
+        showPage();
     }
 
-    @Override
-    protected void constructGUI() {
-        inventory.clear();
-        resetClickables();
-        registerClickables();
+    protected void showPage() {
+        if (inventory != null)
+            inventory.clear();
+        setActionForRange(0, 53, null);
+
+
+        setNextPage(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setOnPage((event) -> showPage());
+
+        // decorate the edges
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+
+        // edges will be type 3
+        GuiUtils.mirrorFill(this, 0, 2, true, true, glass3);
+        GuiUtils.mirrorFill(this, 1, 1, true, true, glass3);
+
+        // decorate corners with type 2
+        GuiUtils.mirrorFill(this, 0, 0, true, true, glass2);
+        GuiUtils.mirrorFill(this, 1, 0, true, true, glass2);
+        GuiUtils.mirrorFill(this, 0, 1, true, true, glass2);
 
         PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(toModerate);
 
@@ -67,39 +86,33 @@ public class GUIPunishments extends AbstractGUI {
         }
 
         int numNotes = punishments.size();
-        int maxPage = (int) Math.floor(numNotes / 36.0);
+        this.pages = (int) Math.floor(numNotes / 28.0);
 
-        punishments = punishments.stream().skip(page * 36).limit(36)
+        punishments = punishments.stream().skip((page - 1) * 28).limit(28)
                 .collect(Collectors.toList());
 
-        if (page != 0) {
-            createButton(1, Material.ARROW, plugin.getLocale().getMessage("gui.general.previous").getMessage());
-            registerClickable(1, ((player1, inventory1, cursor, slot, type) -> {
-                page--;
-                constructGUI();
-            }));
-        }
+        setButton(5,4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+                plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                (event) -> guiManager.showGUI(event.player, new PlayerGui(plugin, toModerate, event.player)));
 
-        if (page != maxPage) {
-            createButton(6, Material.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage());
-            registerClickable(6, ((player1, inventory1, cursor, slot, type) -> {
-                page++;
-                constructGUI();
-            }));
-        }
+        setButton(5,3, GuiUtils.createButtonItem(CompatibleMaterial.APPLE, Methods.formatText("&6" + currentActivity.getTranslation())),
+                (event) -> {
+                    this.currentActivity = currentActivity.next();
+                    this.page = 1;
+                    showPage();
+                });
 
-        createButton(8, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)
-                ? Material.OAK_DOOR
-                : Material.valueOf("WOOD_DOOR"), plugin.getLocale().getMessage("gui.general.back").getMessage());
+        setButton(5,5, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name())),
+                (event) -> {
+                    this.punishmentType = punishmentType.nextFilter();
+                    this.page = 1;
+                    showPage();
+                });
 
-        createButton(3, Material.APPLE, Methods.formatText("&6" + currentActivity.getTranslation()));
-        createButton(4, Material.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name()));
-
-        for (int i = 0; i < 9; i++)
-            createButton(9 + i, ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13) ? Material.GRAY_STAINED_GLASS_PANE : new ItemStack(Material.valueOf("STAINED_GLASS_PANE")), "&1");
-
-        int currentSlot = 18;
+        int num = 11;
         for (PunishmentHolder punishmentHolder : punishments) {
+            if (num == 16 || num == 36)
+                num = num + 2;
             AppliedPunishment appliedPunishment = punishmentHolder.getAppliedPunishment();
             Activity activity = punishmentHolder.getActivity();
 
@@ -112,7 +125,7 @@ public class GUIPunishments extends AbstractGUI {
                 lore.add(plugin.getLocale().getMessage("gui.punishments.duration").getMessage());
                 lore.add("&7" + (appliedPunishment.getDuration() != -1
                         ? Methods.makeReadable(appliedPunishment.getDuration())
-                        : plugin.getLocale().getMessage("gui.general.permanent")));
+                        : plugin.getLocale().getMessage("gui.general.permanent").getMessage()));
                 lore.add("");
                 lore.add(plugin.getLocale().getMessage("gui.punishments.punisher").getMessage());
                 lore.add("&7" + (appliedPunishment.getPunisher() == null ? "Console" : Bukkit.getOfflinePlayer(appliedPunishment.getPunisher()).getName()));
@@ -124,43 +137,26 @@ public class GUIPunishments extends AbstractGUI {
                         lore.add("");
                     }
                     lore.add(plugin.getLocale().getMessage("gui.punishments.click").getMessage());
-
-                    registerClickable(currentSlot, ((player1, inventory1, cursor, slot, type) -> {
-                        appliedPunishment.expire();
-                        constructGUI();
-                    }));
                 }
             }
             lore.add("");
-            createButton(currentSlot, Material.MAP,
-                    "&6&l" + appliedPunishment.getPunishmentType().getTranslation() + " - &7&l" + activity.getTranslation(), lore);
+            setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+                    TextUtils.formatText("&6&l" + appliedPunishment.getPunishmentType().getTranslation() + " - &7&l" + activity.getTranslation()),
+                    TextUtils.formatText(lore)),
+                    (event) -> {
+                        if (appliedPunishment.getPunishmentType() != PunishmentType.KICK
+                                && activity == Activity.ACTIVE) {
+                            appliedPunishment.expire();
+                            plugin.getDataManager().updateAppliedPunishment(appliedPunishment);
+                            showPage();
+                        }
+                    });
 
-            currentSlot++;
+            num ++;
         }
 
     }
 
-    @Override
-    protected void registerClickables() {
-        registerClickable(8, ((player1, inventory1, cursor, slot, type) ->
-                new GUIPlayer(plugin, toModerate, player)));
-
-        registerClickable(3, ((player1, inventory1, cursor, slot, type) -> {
-            this.currentActivity = currentActivity.next();
-            this.page = 0;
-            constructGUI();
-        }));
-
-        registerClickable(4, ((player1, inventory1, cursor, slot, type) -> {
-            this.punishmentType = punishmentType.nextFilter();
-            this.page = 0;
-            constructGUI();
-        }));
-    }
-
-    @Override
-    protected void registerOnCloses() {
-    }
 
     private class PunishmentHolder {
 
