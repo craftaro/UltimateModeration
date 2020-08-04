@@ -1,36 +1,33 @@
 package com.songoda.ultimatemoderation.punish.template;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TemplateManager {
 
-    private static final Map<UUID, Template> templates = new HashMap<>();
+    private static final Map<Integer, Template> templates = new HashMap<>();
 
     public Template getTemplate(String name) {
         for (Template template : templates.values()) {
-            if (formatName(template.getTemplateName()).equals(formatName(name)))
+            if (formatName(template.getName()).equals(formatName(name)))
                 return template;
         }
         return null;
     }
 
     public Template addTemplate(Template template) {
-        return templates.put(template.getUUID(), template);
+        return templates.put(template.getId(), template);
     }
 
-    public Template removeTemplate(UUID uuid) {
-        return templates.remove(uuid);
+    public Template removeTemplate(Template template) {
+        return templates.remove(template.getId());
     }
 
-    public Template updateTemplate(UUID uuid, Template template) {
-        templates.remove(uuid);
+    public Template updateTemplate(int id, Template template) {
+        templates.remove(id);
         return addTemplate(template);
     }
 
-    public Map<UUID, Template> getTemplates() {
+    public Map<Integer, Template> getTemplates() {
         return Collections.unmodifiableMap(templates);
     }
 
@@ -40,5 +37,4 @@ public class TemplateManager {
         name = name.replace(" ", "_");
         return name;
     }
-
 }

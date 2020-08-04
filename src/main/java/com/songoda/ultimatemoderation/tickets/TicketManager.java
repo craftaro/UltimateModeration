@@ -1,7 +1,6 @@
 package com.songoda.ultimatemoderation.tickets;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,8 +10,8 @@ public class TicketManager {
     private final TreeMap<Integer, Ticket> registeredTickets = new TreeMap<>();
 
     public Ticket addTicket(Ticket ticket) {
-        int id = registeredTickets.isEmpty() ? 1 : registeredTickets.lastEntry().getValue().getTicketId() + 1;
-        ticket.setTicketId(id);
+        int id = registeredTickets.isEmpty() ? 1 : registeredTickets.lastEntry().getValue().getId() + 1;
+        ticket.setId(id);
         return addTicket(ticket, id);
     }
 

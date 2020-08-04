@@ -4,15 +4,15 @@ import java.util.UUID;
 
 public class PunishmentNote {
 
-    private final UUID uuid;
+    private int id;
 
     private final String note;
     private final UUID author;
     private final UUID subject;
     private final long creationDate;
 
-    public PunishmentNote(UUID uuid, String note, UUID author, UUID subject, long creationDate) {
-        this.uuid = uuid;
+    public PunishmentNote(int id, String note, UUID author, UUID subject, long creationDate) {
+        this.id = id;
         this.note = note;
         this.author = author;
         this.subject = subject;
@@ -20,15 +20,18 @@ public class PunishmentNote {
     }
 
     public PunishmentNote(String note, UUID author, UUID subject, long creationDate) {
-        this.uuid = UUID.randomUUID();
         this.note = note;
         this.author = author;
         this.subject = subject;
         this.creationDate = creationDate;
     }
 
-    public UUID getUUID() {
-        return uuid;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNote() {

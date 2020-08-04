@@ -2,7 +2,7 @@ package com.songoda.ultimatemoderation.commands;
 
 import com.songoda.core.commands.AbstractCommand;
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.gui.GUIPlayers;
+import com.songoda.ultimatemoderation.gui.MainGui;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,7 +19,7 @@ public class CommandUltimateModeration extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        new GUIPlayers(instance, (Player) sender);
+        instance.getGuiManager().showGUI((Player) sender, new MainGui(instance, (Player) sender));
         return ReturnType.SUCCESS;
     }
 
@@ -40,6 +40,6 @@ public class CommandUltimateModeration extends AbstractCommand {
 
     @Override
     public String getDescription() {
-        return "Displays this page.";
+        return "Displays the moderation panel.";
     }
 }

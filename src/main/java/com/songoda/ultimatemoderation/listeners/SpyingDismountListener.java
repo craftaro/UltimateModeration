@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.listeners;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.commands.CommandSpy;
+import com.songoda.ultimatemoderation.moderate.moderations.SpyModeration;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public class SpyingDismountListener implements Listener {
     public void onEntityDismountEvent(EntityDismountEvent event) {
         if (!(event.getDismounted() instanceof Player)) return;
         if (!(event.getEntity() instanceof Player)) return;
-        if (CommandSpy.isSpying((((Player) event.getEntity()).getPlayer()))) {
+        if (SpyModeration.isSpying((((Player) event.getEntity()).getPlayer()))) {
             Player player = (Player) event.getEntity();
             gamemodes.put(player.getUniqueId(), player.getGameMode());
             player.setGameMode(GameMode.SPECTATOR);
@@ -39,8 +39,8 @@ public class SpyingDismountListener implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
-        if (player.isSneaking() || !CommandSpy.isSpying(player) || player.getGameMode() != GameMode.SPECTATOR) return;
-        CommandSpy.spy(null, player);
+        if (player.isSneaking() || !SpyModeration.isSpying(player) || player.getGameMode() != GameMode.SPECTATOR) return;
+        SpyModeration.spy(null, player);
     }
 
     public static Map<UUID, GameMode> getGamemodes() {

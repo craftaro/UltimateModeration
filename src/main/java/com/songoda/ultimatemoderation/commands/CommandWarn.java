@@ -49,12 +49,12 @@ public class CommandWarn extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (player == null) {
+        if (!player.hasPlayedBefore()) {
             instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        if (sender instanceof Player && VaultPermissions.hasPermission(Bukkit.getWorlds().get(0).getName(), player, "um.warning.exempt")) {
+        if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.warning.exempt")) {
             instance.getLocale().newMessage("You cannot warn that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }

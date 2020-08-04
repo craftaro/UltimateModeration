@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Ticket {
 
-    private int ticketId;
+    private int id;
 
     private TicketStatus status = TicketStatus.OPEN;
     private Location location = null;
@@ -32,26 +32,21 @@ public class Ticket {
         this.type = type;
     }
 
-    public Ticket(OfflinePlayer victim, String subject, String type, TicketResponse response) {
-        this.victim = victim.getUniqueId();
-        this.subject = subject;
-        this.type = type;
-        this.tickets.add(response);
-    }
-
-    public Ticket(UUID victim, String subject, String type, TicketResponse response) {
+    public Ticket(int id, UUID victim, String subject, String type, TicketStatus status, Location location) {
+        this.id = id;
         this.victim = victim;
         this.subject = subject;
         this.type = type;
-        this.tickets.add(response);
+        this.status = status;
+        this.location = location;
     }
 
-    public int getTicketId() {
-        return ticketId;
+    public int getId() {
+        return id;
     }
 
-    public void setTicketId(int ticketId) {
-        this.ticketId = ticketId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public List<TicketResponse> getResponses() {
@@ -59,7 +54,7 @@ public class Ticket {
     }
 
     public TicketResponse addResponse(TicketResponse response) {
-        response.setTicketId(ticketId);
+        response.setTicketId(id);
         tickets.add(response);
         return response;
     }

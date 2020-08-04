@@ -67,7 +67,7 @@ public class CommandBan extends AbstractCommand {
 
         long durationFinal = duration;
         Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
-            if (sender instanceof Player && VaultPermissions.hasPermission(Bukkit.getWorlds().get(0).getName(), player, "um.ban.exempt")) {
+            if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.ban.exempt")) {
                 instance.getLocale().newMessage("You cannot ban this player.").sendPrefixedMessage(sender);
                 return;
             }

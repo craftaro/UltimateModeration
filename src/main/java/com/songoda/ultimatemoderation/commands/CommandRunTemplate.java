@@ -62,7 +62,7 @@ public class CommandRunTemplate extends AbstractCommand {
         } else if (args.length == 2) {
             List<String> lines = new ArrayList<>();
             for (Template template : instance.getTemplateManager().getTemplates().values()) {
-                lines.add(template.getTemplateName());
+                lines.add(template.getName());
             }
         }
         return null;
