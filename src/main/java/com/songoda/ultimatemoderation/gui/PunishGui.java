@@ -284,7 +284,7 @@ public class PunishGui extends Gui {
         });
 
         ItemStack item = GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
-                template.getName() == null ? plugin.getLocale().getMessage("gui.general.templatename").getMessage() : template.getName());
+                template == null ? plugin.getLocale().getMessage("gui.general.templatename").getMessage() : template.getName());
 
         gui.setInput(item);
         guiManager.showGUI(player, gui);
