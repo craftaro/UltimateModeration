@@ -55,6 +55,7 @@ public class UltimateModeration extends SongodaPlugin {
     private ModerationManager moderationManager;
 
     private DatabaseConnector databaseConnector;
+    private DataMigrationManager dataMigrationManager;
     private DataManager dataManager;
 
     public static UltimateModeration getInstance() {
@@ -109,7 +110,7 @@ public class UltimateModeration extends SongodaPlugin {
         this.staffChatManager = new StaffChatManager();
         this.moderationManager = new ModerationManager(this);
 
-        // Database stuff, go!
+
         try {
             if (Settings.MYSQL_ENABLED.getBoolean()) {
                 String hostname = Settings.MYSQL_HOSTNAME.getString();
@@ -125,15 +126,18 @@ public class UltimateModeration extends SongodaPlugin {
                 this.databaseConnector = new SQLiteConnector(this);
                 this.getLogger().info("Data handler connected using SQLite.");
             }
-        } catch (Exception ex) {
-            this.getLogger().severe("Fatal error trying to connect to database. Please make sure all your connection settings are correct and try again. Plugin has been disabled.");
-            this.emergencyStop();
-        }
 
-        this.dataManager = new DataManager(this.databaseConnector, this);
-        DataMigrationManager dataMigrationManager = new DataMigrationManager(this.databaseConnector, this.dataManager,
-                new _1_InitialMigration());
-        dataMigrationManager.runMigrations();
+            this.dataManager = new DataManager(this.databaseConnector, this);
+            this.dataMigrationManager = new DataMigrationManager(this.databaseConnector, this.dataManager,
+                    new _1_InitialMigration());
+            this.dataMigrationManager.runMigrations();
+
+        } catch (Exception ex) {
+            this.getLogger().severe("Fatal error trying to connect to database. " +
+                    "Please make sure all your connection settings are correct and try again. Plugin has been disabled.");
+            emergencyStop();
+            return;
+        }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> {
             // Legacy Data
