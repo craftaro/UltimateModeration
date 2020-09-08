@@ -12,11 +12,11 @@ import java.util.List;
 
 public class CommandRandomPlayer extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandRandomPlayer(UltimateModeration instance) {
+    public CommandRandomPlayer(UltimateModeration plugin) {
         super(CommandType.PLAYER_ONLY, "RandomPlayer");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class CommandRandomPlayer extends AbstractCommand {
         players.remove(sender);
 
         if (players.size() == 0) {
-            instance.getLocale().newMessage("&cYou are the only one online!").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("&cYou are the only one online!").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

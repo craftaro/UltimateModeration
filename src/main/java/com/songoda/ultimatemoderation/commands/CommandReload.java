@@ -8,17 +8,17 @@ import java.util.List;
 
 public class CommandReload extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandReload(UltimateModeration instance) {
+    public CommandReload(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "reload");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        instance.reloadConfig();
-        instance.getLocale().newMessage("&7Configuration and Language files reloaded.").sendPrefixedMessage(sender);
+        plugin.reloadConfig();
+        plugin.getLocale().newMessage("&7Configuration and Language files reloaded.").sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }
 

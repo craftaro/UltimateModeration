@@ -3,7 +3,6 @@ package com.songoda.ultimatemoderation.staffchat;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -52,11 +51,11 @@ public class StaffChannel {
 
     public void processMessage(String message, Player player) {
         messageAll(UltimateModeration.getInstance().getLocale()
-            .getMessage("event.staffchat.format")
-            .processPlaceholder("color", chatChar)
-            .processPlaceholder("channel", channelName)
-            .processPlaceholder("player", player.getDisplayName())
-            .processPlaceholder("message", message).getMessage());
+                .getMessage("event.staffchat.format")
+                .processPlaceholder("color", chatChar)
+                .processPlaceholder("channel", channelName)
+                .processPlaceholder("player", player.getDisplayName())
+                .processPlaceholder("message", message).getMessage());
     }
 
     public void messageAll(String message) {

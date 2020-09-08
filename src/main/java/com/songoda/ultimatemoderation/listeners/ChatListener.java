@@ -3,16 +3,18 @@ package com.songoda.ultimatemoderation.listeners;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
+import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.staffchat.StaffChannel;
 import com.songoda.ultimatemoderation.utils.Methods;
-import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ChatListener implements Listener {

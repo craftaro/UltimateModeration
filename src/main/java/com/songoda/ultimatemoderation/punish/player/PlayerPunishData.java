@@ -1,8 +1,8 @@
 package com.songoda.ultimatemoderation.punish.player;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
+import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 
 import java.util.ArrayList;

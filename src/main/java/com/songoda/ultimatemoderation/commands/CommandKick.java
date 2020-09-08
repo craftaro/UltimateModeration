@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class  CommandKick extends AbstractCommand {
+public class CommandKick extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandKick(UltimateModeration instance) {
+    public CommandKick(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "Kick");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -40,12 +40,12 @@ public class  CommandKick extends AbstractCommand {
         OfflinePlayer player = Bukkit.getPlayer(args[0]);
 
         if (player == null) {
-            instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (sender instanceof Player && player.getPlayer().hasPermission("um.kick.exempt")) {
-            instance.getLocale().newMessage("You cannot kick this player.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("You cannot kick this player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

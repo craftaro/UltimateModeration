@@ -14,11 +14,11 @@ import java.util.List;
 
 public class CommandUnMute extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandUnMute(UltimateModeration instance) {
+    public CommandUnMute(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "UnMute");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -28,22 +28,22 @@ public class CommandUnMute extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (player == null) {
-            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
+        if (!player.hasPlayedBefore()) {
+            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        if (!instance.getPunishmentManager().getPlayer(player).getActivePunishments()
+        if (!plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
-            instance.getLocale().newMessage("That player isn't muted.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player isn't muted.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        PlayerPunishData playerPunishData = instance.getPunishmentManager().getPlayer(player);
+        PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(player);
 
         playerPunishData.expirePunishments(PunishmentType.MUTE);
 
-        instance.getLocale().newMessage(instance.getLocale().getMessage("event.unmute.success")
+        plugin.getLocale().newMessage(plugin.getLocale().getMessage("event.unmute.success")
                 .processPlaceholder("player", player.getName()).getMessage()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }

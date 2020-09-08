@@ -292,7 +292,8 @@ public class PunishGui extends Gui {
 
     private void updateTemplate() {
         Template template = new Template(this.type, this.duration, this.reason, this.template.getCreator(), this.templateName);
-        plugin.getTemplateManager().updateTemplate(this.template.getId(), template);
+        plugin.getTemplateManager().removeTemplate(this.template);
+        plugin.getTemplateManager().addTemplate(template);
         plugin.getDataManager().deleteTemplate(this.template);
         plugin.getDataManager().createTemplate(template);
         justSaved = true;

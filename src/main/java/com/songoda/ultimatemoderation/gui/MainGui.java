@@ -29,7 +29,7 @@ public class MainGui extends Gui {
 
     private Online currentOnline = Online.ONLINE;
 
-    private List<UUID> players = new ArrayList<>();
+    private final List<UUID> players = new ArrayList<>();
     private final Player viewer;
 
     public MainGui(UltimateModeration plugin, Player viewer) {
@@ -83,7 +83,8 @@ public class MainGui extends Gui {
                         List<UUID> found = players.stream().filter(uuid -> Bukkit.getOfflinePlayer(uuid).getName().toLowerCase().contains(gui.getInputText().toLowerCase())).collect(Collectors.toList());
 
                         if (found.size() >= 1) {
-                            this.players = found;
+                            this.players.clear();
+                            this.players.addAll(found);
                             showPage();
                         } else {
                             plugin.getLocale().getMessage("gui.players.nonefound").sendMessage(event.player);
@@ -126,52 +127,54 @@ public class MainGui extends Gui {
 
         this.pages = (int) Math.max(1, Math.ceil(toUse.size() / ((double) 28)));
 
-        toUse = toUse.stream().skip((page - 1) * 28).limit(28).collect(Collectors.toList());
+        final List<UUID> toUseFinal = toUse.stream().skip((page - 1) * 28).limit(28).collect(Collectors.toList());
 
-        int num = 11;
-        for (UUID uuid : toUse) {
-            if (num == 16 || num == 36)
-                num = num + 2;
-            OfflinePlayer pl = Bukkit.getOfflinePlayer(uuid);
-            ItemStack skull = ItemUtils.getPlayerSkull(pl);
-            setItem(num, skull);
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            int num = 11;
+            for (UUID uuid : toUseFinal) {
+                if (num == 16 || num == 36)
+                    num = num + 2;
+                OfflinePlayer pl = Bukkit.getOfflinePlayer(uuid);
+                ItemStack skull = ItemUtils.getPlayerSkull(pl);
+                setItem(num, skull);
 
-            PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(pl);
+                PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(pl);
 
-            ArrayList<String> lore = new ArrayList<>();
-            lore.add(plugin.getLocale().getMessage("gui.players.click").getMessage());
-            lore.add("");
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add(plugin.getLocale().getMessage("gui.players.click").getMessage());
+                lore.add("");
 
-            int ticketAmt = (int) plugin.getTicketManager().getTicketsAbout(pl).stream()
-                    .filter(t -> t.getStatus() == TicketStatus.OPEN).count();
+                int ticketAmt = (int) plugin.getTicketManager().getTicketsAbout(pl).stream()
+                        .filter(t -> t.getStatus() == TicketStatus.OPEN).count();
 
-            if (ticketAmt == 0)
-                lore.add(plugin.getLocale().getMessage("gui.players.notickets").getMessage());
-            else {
-                if (ticketAmt == 1)
-                    lore.add(plugin.getLocale().getMessage("gui.players.ticketsone").getMessage());
-                else
-                    lore.add(plugin.getLocale().getMessage("gui.players.tickets")
-                            .processPlaceholder("amount", ticketAmt).getMessage());
+                if (ticketAmt == 0)
+                    lore.add(plugin.getLocale().getMessage("gui.players.notickets").getMessage());
+                else {
+                    if (ticketAmt == 1)
+                        lore.add(plugin.getLocale().getMessage("gui.players.ticketsone").getMessage());
+                    else
+                        lore.add(plugin.getLocale().getMessage("gui.players.tickets")
+                                .processPlaceholder("amount", ticketAmt).getMessage());
+                }
+
+                int warningAmt = playerPunishData.getActivePunishments(PunishmentType.WARNING).size();
+
+                if (warningAmt == 0)
+                    lore.add(plugin.getLocale().getMessage("gui.players.nowarnings").getMessage());
+                else {
+                    if (warningAmt == 1)
+                        lore.add(plugin.getLocale().getMessage("gui.players.warningsone").getMessage());
+                    else
+                        lore.add(plugin.getLocale().getMessage("gui.players.warnings")
+                                .processPlaceholder("amount", warningAmt).getMessage());
+                }
+
+                setButton(num, GuiUtils.createButtonItem(skull, TextUtils.formatText("&7&l" + pl.getName()), lore),
+                        (event) -> guiManager.showGUI(event.player, new PlayerGui(plugin, pl, viewer)));
+
+                num++;
             }
-
-            int warningAmt = playerPunishData.getActivePunishments(PunishmentType.WARNING).size();
-
-            if (warningAmt == 0)
-                lore.add(plugin.getLocale().getMessage("gui.players.nowarnings").getMessage());
-            else {
-                if (warningAmt == 1)
-                    lore.add(plugin.getLocale().getMessage("gui.players.warningsone").getMessage());
-                else
-                    lore.add(plugin.getLocale().getMessage("gui.players.warnings")
-                            .processPlaceholder("amount", warningAmt).getMessage());
-            }
-
-            setButton(num, GuiUtils.createButtonItem(skull, TextUtils.formatText("&7&l" + pl.getName()), lore),
-                    (event) -> guiManager.showGUI(event.player, new PlayerGui(plugin, pl, viewer)));
-
-            num++;
-        }
+        });
 
         // enable page events
         setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));

@@ -13,11 +13,11 @@ import java.util.List;
 
 public class CommandRunTemplate extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandRunTemplate(UltimateModeration instance) {
+    public CommandRunTemplate(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "RunTemplate");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -27,8 +27,8 @@ public class CommandRunTemplate extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (player == null) {
-            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
+        if (!player.hasPlayedBefore()) {
+            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
@@ -39,7 +39,7 @@ public class CommandRunTemplate extends AbstractCommand {
         }
         String templateStr = templateBuilder.toString().trim();
 
-        Template template = instance.getTemplateManager().getTemplate(templateStr);
+        Template template = plugin.getTemplateManager().getTemplate(templateStr);
 
         if (template == null) {
             sender.sendMessage("That template does not exist...");
@@ -61,7 +61,7 @@ public class CommandRunTemplate extends AbstractCommand {
             return players;
         } else if (args.length == 2) {
             List<String> lines = new ArrayList<>();
-            for (Template template : instance.getTemplateManager().getTemplates().values()) {
+            for (Template template : plugin.getTemplateManager().getTemplates()) {
                 lines.add(template.getName());
             }
         }

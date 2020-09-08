@@ -12,24 +12,24 @@ import java.util.List;
 
 public class CommandToggleChat extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
     /*
      * Chat is enabled by default ;)
      */
     private boolean toggled = true;
 
-    public CommandToggleChat(UltimateModeration instance) {
+    public CommandToggleChat(UltimateModeration plugin) {
         super(CommandType.PLAYER_ONLY, "togglechat");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         toggled = !toggled;
 
-        Message message = toggled ? instance.getLocale().getMessage("command.togglechat.toggledOn")
-                : instance.getLocale().getMessage("command.togglechat.toggledOff");
+        Message message = toggled ? plugin.getLocale().getMessage("command.togglechat.toggledOn")
+                : plugin.getLocale().getMessage("command.togglechat.toggledOff");
 
         ChatListener.setChatToggled(toggled);
 
@@ -40,7 +40,7 @@ public class CommandToggleChat extends AbstractCommand {
             if (!player.hasPermission(getPermissionNode() + ".bypass"))
                 continue;
 
-            instance.getLocale().getMessage("command.togglechat.bypass").sendMessage(player);
+            plugin.getLocale().getMessage("command.togglechat.bypass").sendMessage(player);
         }
 
         if (!(sender instanceof Player))

@@ -12,11 +12,11 @@ import java.util.List;
 
 public class CommandClearChat extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandClearChat(UltimateModeration instance) {
+    public CommandClearChat(UltimateModeration plugin) {
         super(CommandType.PLAYER_ONLY, "ClearChat");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -32,11 +32,11 @@ public class CommandClearChat extends AbstractCommand {
                 player.sendMessage(toSend);
             }
 
-            instance.getLocale().getMessage("command.clearchat.cleared")
+            plugin.getLocale().getMessage("command.clearchat.cleared")
                     .processPlaceholder("player", sender.getName()).sendPrefixedMessage(player);
 
             if (player.hasPermission("um.clearchat.bypass") && !isForced(args)) {
-                instance.getLocale().getMessage("command.clearchat.immune").sendMessage(player);
+                plugin.getLocale().getMessage("command.clearchat.immune").sendMessage(player);
             }
         }
         return ReturnType.SUCCESS;

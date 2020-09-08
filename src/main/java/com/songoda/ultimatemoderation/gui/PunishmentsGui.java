@@ -91,18 +91,18 @@ public class PunishmentsGui extends Gui {
         punishments = punishments.stream().skip((page - 1) * 28).limit(28)
                 .collect(Collectors.toList());
 
-        setButton(5,4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
                 plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> guiManager.showGUI(event.player, new PlayerGui(plugin, toModerate, event.player)));
 
-        setButton(5,3, GuiUtils.createButtonItem(CompatibleMaterial.APPLE, Methods.formatText("&6" + currentActivity.getTranslation())),
+        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.APPLE, Methods.formatText("&6" + currentActivity.getTranslation())),
                 (event) -> {
                     this.currentActivity = currentActivity.next();
                     this.page = 1;
                     showPage();
                 });
 
-        setButton(5,5, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name())),
+        setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name())),
                 (event) -> {
                     this.punishmentType = punishmentType.nextFilter();
                     this.page = 1;
@@ -152,7 +152,7 @@ public class PunishmentsGui extends Gui {
                         }
                     });
 
-            num ++;
+            num++;
         }
 
     }

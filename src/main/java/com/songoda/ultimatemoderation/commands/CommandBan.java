@@ -18,11 +18,11 @@ import java.util.List;
 
 public class CommandBan extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandBan(UltimateModeration instance) {
+    public CommandBan(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "Ban");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -50,25 +50,25 @@ public class CommandBan extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (!player.hasPlayedBefore()) {
-            instance.getLocale().newMessage("That player does not exist.").sendMessage(sender);
+            plugin.getLocale().newMessage("That player does not exist.").sendMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
+        if (plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
-            instance.getLocale().newMessage("That player is already banned.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player is already banned.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (duration == 0 && !sender.hasPermission("um.ban.permanent")) {
-            instance.getLocale().getMessage("event.general.nopermission").sendPrefixedMessage(sender);
+            plugin.getLocale().getMessage("event.general.nopermission").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         long durationFinal = duration;
-        Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.ban.exempt")) {
-                instance.getLocale().newMessage("You cannot ban this player.").sendPrefixedMessage(sender);
+                plugin.getLocale().newMessage("You cannot ban this player.").sendPrefixedMessage(sender);
                 return;
             }
 

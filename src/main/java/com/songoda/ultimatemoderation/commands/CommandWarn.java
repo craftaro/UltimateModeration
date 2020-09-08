@@ -18,11 +18,11 @@ import java.util.List;
 
 public class CommandWarn extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandWarn(UltimateModeration instance) {
+    public CommandWarn(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "Warn");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -50,12 +50,12 @@ public class CommandWarn extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (!player.hasPlayedBefore()) {
-            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.warning.exempt")) {
-            instance.getLocale().newMessage("You cannot warn that player.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("You cannot warn that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

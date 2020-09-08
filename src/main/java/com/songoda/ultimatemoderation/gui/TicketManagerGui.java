@@ -9,7 +9,6 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketStatus;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class TicketManagerGui extends Gui {
@@ -84,7 +82,7 @@ public class TicketManagerGui extends Gui {
                 });
 
         if (toModerate != null && player.hasPermission("um.tickets.create"))
-            setButton(5,5, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
+            setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
                     plugin.getLocale().getMessage("gui.tickets.create").getMessage()),
                     (event) -> createNew(player, toModerate));
 
@@ -142,7 +140,7 @@ public class TicketManagerGui extends Gui {
             setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
                     TextUtils.formatText(name), TextUtils.formatText(lore)),
                     (event) -> guiManager.showGUI(player, new TicketGui(plugin, ticket, toModerate, player)));
-            num ++;
+            num++;
         }
 
     }

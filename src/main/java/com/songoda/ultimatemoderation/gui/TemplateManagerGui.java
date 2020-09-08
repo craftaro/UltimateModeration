@@ -5,7 +5,6 @@ import com.songoda.core.gui.Gui;
 import com.songoda.core.gui.GuiUtils;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.settings.Settings;
@@ -42,7 +41,7 @@ public class TemplateManagerGui extends Gui {
         int numTemplates = plugin.getTemplateManager().getTemplates().size();
         this.pages = (int) Math.floor(numTemplates / 28.0);
 
-        List<Template> templates = plugin.getTemplateManager().getTemplates().values().stream().skip((page - 1) * 28).limit(28)
+        List<Template> templates = plugin.getTemplateManager().getTemplates().stream().skip((page - 1) * 28).limit(28)
                 .collect(Collectors.toList());
 
         setNextPage(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));
@@ -92,12 +91,14 @@ public class TemplateManagerGui extends Gui {
                             if (player.hasPermission("um.templates.edit"))
                                 guiManager.showGUI(player, new PunishGui(plugin, null, template, player));
                         } else if (event.clickType == ClickType.RIGHT) {
-                            if (player.hasPermission("um.templates.destroy"))
+                            if (player.hasPermission("um.templates.destroy")) {
                                 plugin.getTemplateManager().removeTemplate(template);
+                                plugin.getDataManager().deleteTemplate(template);
+                            }
                             showPage();
                         }
                     });
-            num ++;
+            num++;
         }
     }
 

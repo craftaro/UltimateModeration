@@ -18,11 +18,11 @@ import java.util.List;
 
 public class CommandMute extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandMute(UltimateModeration instance) {
+    public CommandMute(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "Mute");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -50,18 +50,18 @@ public class CommandMute extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (!player.hasPlayedBefore()) {
-            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
         if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.mute.exempt")) {
-            instance.getLocale().newMessage("You cannot mute that player.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("You cannot mute that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        if (instance.getPunishmentManager().getPlayer(player).getActivePunishments()
+        if (plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
-            instance.getLocale().newMessage("That player is already muted.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player is already muted.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

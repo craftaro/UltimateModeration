@@ -3,11 +3,9 @@ package com.songoda.ultimatemoderation.settings;
 import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.core.configuration.Config;
 import com.songoda.core.configuration.ConfigSetting;
-import com.songoda.core.hooks.EconomyManager;
 import com.songoda.ultimatemoderation.UltimateModeration;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class Settings {
 
@@ -53,9 +51,9 @@ public class Settings {
     public static final ConfigSetting LANGUGE_MODE = new ConfigSetting(config, "System.Language Mode", "en_US",
             "The enabled language file.",
             "More language files (if available) can be found in the plugins data folder.");
-    
+
     public static final ConfigSetting NOTIFY_BLOCK = new ConfigSetting(config, "Main.Notify Blocks", true, "Notify Staff on Block Break");
-    
+
     public static final ConfigSetting NOTIFY_BLOCK_LIST = new ConfigSetting(config, "Main.Notify Blocks List", Arrays.asList("DIAMOND_ORE", "EMERALD_ORE"),
             "Blocks that will give a notification when mined.");
 

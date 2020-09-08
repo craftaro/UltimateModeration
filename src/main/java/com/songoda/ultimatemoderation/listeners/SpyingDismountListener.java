@@ -39,7 +39,8 @@ public class SpyingDismountListener implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
-        if (player.isSneaking() || !SpyModeration.isSpying(player) || player.getGameMode() != GameMode.SPECTATOR) return;
+        if (player.isSneaking() || !SpyModeration.isSpying(player) || player.getGameMode() != GameMode.SPECTATOR)
+            return;
         SpyModeration.spy(null, player);
     }
 
