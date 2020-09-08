@@ -10,18 +10,18 @@ import java.util.List;
 
 public class CommandTicket extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandTicket(UltimateModeration instance) {
+    public CommandTicket(UltimateModeration plugin) {
         super(CommandType.PLAYER_ONLY, "Ticket");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         Player senderP = ((Player) sender);
 
-        new TicketManagerGui(instance, senderP, senderP);
+        new TicketManagerGui(plugin, senderP, senderP);
         return ReturnType.SUCCESS;
     }
 

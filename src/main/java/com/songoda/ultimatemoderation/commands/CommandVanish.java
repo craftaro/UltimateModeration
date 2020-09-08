@@ -19,13 +19,10 @@ import java.util.UUID;
 
 public class CommandVanish extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private static final List<UUID> inVanish = new ArrayList<>();
 
-    private static List<UUID> inVanish = new ArrayList<>();
-
-    public CommandVanish(UltimateModeration instance) {
+    public CommandVanish() {
         super(CommandType.PLAYER_ONLY, "Vanish");
-        this.instance = instance;
     }
 
     public static void registerVanishedPlayers(Player player) {

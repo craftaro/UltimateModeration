@@ -9,23 +9,23 @@ import java.util.List;
 
 public class CommandHelp extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandHelp(UltimateModeration instance) {
+    public CommandHelp(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "help");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         sender.sendMessage("");
-        instance.getLocale().getMessage("&7Version " + instance.getDescription().getVersion() + " Created with <3 by &5&l&oSongoda")
+        plugin.getLocale().getMessage("&7Version " + plugin.getDescription().getVersion() + " Created with <3 by &5&l&oSongoda")
                 .sendPrefixedMessage(sender);
         sender.sendMessage("");
         sender.sendMessage(Methods.formatText("&7Welcome to UltimateModeration! To get started try using the /um command to access the moderation panel."));
         sender.sendMessage("");
         sender.sendMessage(Methods.formatText("&6Commands:"));
-        for (AbstractCommand command : instance.getCommandManager().getAllCommands()) {
+        for (AbstractCommand command : plugin.getCommandManager().getAllCommands()) {
             if (command.getPermissionNode() == null || sender.hasPermission(command.getPermissionNode())) {
                 sender.sendMessage(Methods.formatText("&8 - &a" + command.getSyntax() + "&7 - " + command.getDescription()));
             }

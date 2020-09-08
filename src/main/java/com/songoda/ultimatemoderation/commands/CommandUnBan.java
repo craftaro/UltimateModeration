@@ -14,11 +14,11 @@ import java.util.List;
 
 public class CommandUnBan extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandUnBan(UltimateModeration instance) {
+    public CommandUnBan(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "UnBan");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -29,21 +29,21 @@ public class CommandUnBan extends AbstractCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (!player.hasPlayedBefore()) {
-            instance.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        if (!instance.getPunishmentManager().getPlayer(player).getActivePunishments()
+        if (!plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
-            instance.getLocale().newMessage("That player isn't banned.").sendPrefixedMessage(sender);
+            plugin.getLocale().newMessage("That player isn't banned.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        PlayerPunishData playerPunishData = instance.getPunishmentManager().getPlayer(player);
+        PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(player);
 
         playerPunishData.expirePunishments(PunishmentType.BAN);
 
-        instance.getLocale().getMessage("event.unban.success")
+        plugin.getLocale().getMessage("event.unban.success")
                 .processPlaceholder("player", player.getName()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }

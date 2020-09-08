@@ -13,18 +13,18 @@ import java.util.List;
 
 public class CommandSlowMode extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandSlowMode(UltimateModeration instance) {
+    public CommandSlowMode(UltimateModeration plugin) {
         super(CommandType.CONSOLE_OK, "Slowmode");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         if (args.length == 0) {
             ChatListener.setSlowModeOverride(0);
-            instance.getLocale().getMessage("event.slowmode.disabled").sendPrefixedMessage(sender);
+            plugin.getLocale().getMessage("event.slowmode.disabled").sendPrefixedMessage(sender);
             return ReturnType.SUCCESS;
         } else if (args.length != 1)
             return ReturnType.SYNTAX_ERROR;
@@ -34,7 +34,7 @@ public class CommandSlowMode extends AbstractCommand {
         ChatListener.setSlowModeOverride(delay);
 
         Bukkit.getOnlinePlayers().forEach(player ->
-                instance.getLocale().getMessage("event.slowmode.enabled")
+                plugin.getLocale().getMessage("event.slowmode.enabled")
                         .processPlaceholder("delay", Methods.makeReadable(delay)).sendPrefixedMessage(player));
 
         return ReturnType.SUCCESS;

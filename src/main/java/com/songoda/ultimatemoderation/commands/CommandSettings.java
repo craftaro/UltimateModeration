@@ -11,19 +11,19 @@ import java.util.List;
 
 public class CommandSettings extends AbstractCommand {
 
-    final UltimateModeration instance;
-    final GuiManager guiManager;
+    private final UltimateModeration plugin;
+    private final GuiManager guiManager;
 
-    public CommandSettings(UltimateModeration instance, GuiManager manager) {
+    public CommandSettings(UltimateModeration plugin, GuiManager manager) {
         super(CommandType.PLAYER_ONLY, "settings");
-        this.instance = instance;
+        this.plugin = plugin;
         this.guiManager = manager;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         Player player = (Player) sender;
-        guiManager.showGUI((Player) sender, new PluginConfigGui(instance));
+        guiManager.showGUI((Player) sender, new PluginConfigGui(plugin));
         return ReturnType.SUCCESS;
     }
 

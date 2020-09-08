@@ -18,7 +18,6 @@ import com.songoda.ultimatemoderation.listeners.*;
 import com.songoda.ultimatemoderation.moderate.ModerationManager;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
-import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PunishmentManager;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.punish.template.TemplateManager;
@@ -27,18 +26,10 @@ import com.songoda.ultimatemoderation.staffchat.StaffChatManager;
 import com.songoda.ultimatemoderation.tasks.SlowModeTask;
 import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketManager;
-import com.songoda.ultimatemoderation.tickets.TicketResponse;
-import com.songoda.ultimatemoderation.tickets.TicketStatus;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class UltimateModeration extends SongodaPlugin {
     private static UltimateModeration INSTANCE;
@@ -97,7 +88,7 @@ public class UltimateModeration extends SongodaPlugin {
         this.commandManager.addCommand(new CommandToggleChat(this));
         this.commandManager.addCommand(new CommandUnBan(this));
         this.commandManager.addCommand(new CommandUnMute(this));
-        this.commandManager.addCommand(new CommandVanish(this));
+        this.commandManager.addCommand(new CommandVanish());
         this.commandManager.addCommand(new CommandWarn(this));
 
         // Setup Managers

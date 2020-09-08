@@ -10,16 +10,16 @@ import java.util.List;
 
 public class CommandUltimateModeration extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandUltimateModeration(UltimateModeration instance) {
+    public CommandUltimateModeration(UltimateModeration plugin) {
         super(CommandType.PLAYER_ONLY, "UltimateModeration");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        instance.getGuiManager().showGUI((Player) sender, new MainGui(instance, (Player) sender));
+        plugin.getGuiManager().showGUI((Player) sender, new MainGui(plugin, (Player) sender));
         return ReturnType.SUCCESS;
     }
 

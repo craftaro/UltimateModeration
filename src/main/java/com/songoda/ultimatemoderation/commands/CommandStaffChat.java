@@ -11,11 +11,11 @@ import java.util.List;
 
 public class CommandStaffChat extends AbstractCommand {
 
-    private UltimateModeration instance;
+    private final UltimateModeration plugin;
 
-    public CommandStaffChat(UltimateModeration instance) {
+    public CommandStaffChat(UltimateModeration plugin) {
         super(CommandType.PLAYER_ONLY, "StaffChat");
-        this.instance = instance;
+        this.plugin = plugin;
     }
 
     @Override
@@ -27,26 +27,26 @@ public class CommandStaffChat extends AbstractCommand {
         Player player = (Player) sender;
 
         if (channelName.trim().equalsIgnoreCase("leave")) {
-            for (StaffChannel channel : instance.getStaffChatManager().getChats().values()) {
+            for (StaffChannel channel : plugin.getStaffChatManager().getChats().values()) {
                 if (!channel.listMembers().contains(player.getUniqueId())) continue;
                 channel.removeMember(player);
-                instance.getLocale().getMessage("event.staffchat.leave")
+                plugin.getLocale().getMessage("event.staffchat.leave")
                         .processPlaceholder("channel", channel.getChannelName()).sendPrefixedMessage(player);
                 return ReturnType.SUCCESS;
             }
-            instance.getLocale().getMessage("event.staffchat.nochannels").sendPrefixedMessage(player);
+            plugin.getLocale().getMessage("event.staffchat.nochannels").sendPrefixedMessage(player);
             return ReturnType.FAILURE;
         }
 
-        instance.getLocale().getMessage("event.staffchat.join")
+        plugin.getLocale().getMessage("event.staffchat.join")
                 .processPlaceholder("channel", channelName).sendPrefixedMessage(player);
-        instance.getStaffChatManager().getChat(channelName).addMember(player);
+        plugin.getStaffChatManager().getChat(channelName).addMember(player);
         return ReturnType.SUCCESS;
     }
 
     @Override
     protected List<String> onTab(CommandSender sender, String... args) {
-        return new ArrayList<>(instance.getStaffChatManager().getChats().keySet());
+        return new ArrayList<>(plugin.getStaffChatManager().getChats().keySet());
     }
 
     @Override
