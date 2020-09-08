@@ -1,7 +1,11 @@
 package com.songoda.ultimatemoderation.moderate;
 
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.moderate.moderations.*;
+import com.songoda.ultimatemoderation.moderate.moderations.FreezeModeration;
+import com.songoda.ultimatemoderation.moderate.moderations.InvSeeModeration;
+import com.songoda.ultimatemoderation.moderate.moderations.ReviveModeration;
+import com.songoda.ultimatemoderation.moderate.moderations.SpyModeration;
+import com.songoda.ultimatemoderation.moderate.moderations.ViewEnderChestModeration;
 
 import java.util.Collections;
 import java.util.Map;

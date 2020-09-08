@@ -2,13 +2,6 @@ package com.songoda.ultimatemoderation.storage;
 
 import com.songoda.core.configuration.Config;
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.punish.AppliedPunishment;
-import com.songoda.ultimatemoderation.punish.PunishmentNote;
-import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
-import com.songoda.ultimatemoderation.punish.template.Template;
-import com.songoda.ultimatemoderation.tickets.Ticket;
-import com.songoda.ultimatemoderation.tickets.TicketResponse;
-import com.songoda.ultimatemoderation.utils.Methods;
 
 import java.util.List;
 

@@ -5,7 +5,6 @@ import com.songoda.core.gui.Gui;
 import com.songoda.core.gui.GuiUtils;
 import com.songoda.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.settings.Settings;
@@ -97,7 +96,7 @@ public class TemplateManagerGui extends Gui {
                             showPage();
                         }
                     });
-            num ++;
+            num++;
         }
     }
 

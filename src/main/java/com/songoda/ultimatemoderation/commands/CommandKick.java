@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class  CommandKick extends AbstractCommand {
+public class CommandKick extends AbstractCommand {
 
     private UltimateModeration instance;
 

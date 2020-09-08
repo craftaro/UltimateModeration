@@ -99,7 +99,7 @@ public class TicketGui extends Gui {
                     (event) -> player.teleport(ticket.getLocation()));
 
         if (player.hasPermission("um.tickets.respond"))
-            setButton(5,4, GuiUtils.createButtonItem(CompatibleMaterial.WRITABLE_BOOK, plugin.getLocale().getMessage("gui.ticket.respond").getMessage()),
+            setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.WRITABLE_BOOK, plugin.getLocale().getMessage("gui.ticket.respond").getMessage()),
                     (event) -> {
                         ChatPrompt.showPrompt(plugin, player, plugin.getLocale().getMessage("gui.ticket.what").getMessage(), (evnt) -> {
                             TicketResponse response = ticket.addResponse(new TicketResponse(player, evnt.getMessage(), System.currentTimeMillis()));
@@ -147,7 +147,7 @@ public class TicketGui extends Gui {
                     .processPlaceholder("sent", format.format(new Date(ticketResponse.getPostedDate()))).getMessage());
 
             setItem(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText(name), lore));
-            num ++;
+            num++;
         }
     }
 }

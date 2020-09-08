@@ -1,11 +1,8 @@
 package com.songoda.ultimatemoderation.storage;
 
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class StorageItem {
 
@@ -42,7 +39,7 @@ public class StorageItem {
     public long asLong() {
         if (object == null) return -1;
         if (object instanceof Integer) {
-            return (long)((int)object);
+            return (long) ((int) object);
         }
         return (long) object;
     }
