@@ -24,9 +24,6 @@ import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.punish.template.TemplateManager;
 import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.staffchat.StaffChatManager;
-import com.songoda.ultimatemoderation.storage.Storage;
-import com.songoda.ultimatemoderation.storage.StorageRow;
-import com.songoda.ultimatemoderation.storage.types.StorageYaml;
 import com.songoda.ultimatemoderation.tasks.SlowModeTask;
 import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketManager;
@@ -139,108 +136,6 @@ public class UltimateModeration extends SongodaPlugin {
             return;
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> {
-            // Legacy Data
-            File folder = getDataFolder();
-            File dataFile = new File(folder, "data.yml");
-
-            boolean converted = false;
-            if (dataFile.exists()) {
-                converted = true;
-                Storage storage = new StorageYaml(this);
-                console.sendMessage("[" + getDescription().getName() + "] " + ChatColor.RED + "Conversion process starting DO NOT turn off your server... " +
-                        "UltimateModeration hasn't fully loaded yet so its best users don't interact with the plugin until conversion completes.");
-                if (storage.containsGroup("templates")) {
-                    for (StorageRow row : storage.getRowsByGroup("templates")) {
-                        Template template = new Template(PunishmentType.valueOf(row.get("type").asString()),
-                                row.get("duration").asLong(),
-                                row.get("reason").asString(),
-                                UUID.fromString(row.get("creator").asString()),
-                                row.get("name").asString());
-                        dataManager.createTemplate(template);
-                    }
-                }
-
-                if (storage.containsGroup("punishments")) {
-                    for (StorageRow row : storage.getRowsByGroup("punishments")) {
-                        AppliedPunishment appliedPunishment = new AppliedPunishment(PunishmentType.valueOf(row.get("type").asString()),
-                                row.get("duration").asLong(),
-                                row.get("reason").asString(),
-                                UUID.fromString(row.get("victim").asString()),
-                                row.get("punisher").asObject() == null ? null : UUID.fromString(row.get("punisher").asString()),
-                                row.get("expiration").asLong());
-                        dataManager.createAppliedPunishment(appliedPunishment);
-                    }
-                }
-
-                if (storage.containsGroup("notes")) {
-                    for (StorageRow row : storage.getRowsByGroup("notes")) {
-                        PunishmentNote note = new PunishmentNote(row.get("note").asString(),
-                                UUID.fromString(row.get("author").asString()),
-                                UUID.fromString(row.get("subject").asString()),
-                                row.get("creation").asLong());
-                        dataManager.createNote(note);
-                    }
-                }
-
-                Map<Integer, Ticket> tickets = new HashMap<>();
-                if (storage.containsGroup("tickets")) {
-                    for (StorageRow row : storage.getRowsByGroup("tickets")) {
-
-                        int id = Integer.parseInt(row.get("id").asString());
-                        Ticket ticket = new Ticket(
-                                UUID.fromString(row.get("player").asString()),
-                                row.get("subject").asString(),
-                                row.get("type").asString());
-                        ticket.setId(id);
-                        ticket.setLocation(Methods.unserializeLocation(row.get("location").asString()));
-                        ticket.setStatus(TicketStatus.valueOf(row.get("status").asString()));
-                        tickets.put(id, ticket);
-                    }
-                }
-
-                if (storage.containsGroup("ticketresponses")) {
-                    for (StorageRow row : storage.getRowsByGroup("ticketresponses")) {
-                        int id = row.get("ticketid").asInt();
-                        TicketResponse ticketResponse = new TicketResponse(
-                                UUID.fromString(row.get("author").asString()),
-                                row.get("message").asString(),
-                                Long.parseLong(row.get("posted").asString()));
-
-                        tickets.get(id).addResponse(ticketResponse);
-                        ticketResponse.setTicketId(id);
-                    }
-                }
-                for (Ticket ticket : tickets.values())
-                    dataManager.createTicket(ticket);
-            }
-            dataFile.delete();
-
-            final boolean convrted = converted;
-            getDataManager().queueAsync(() -> {
-                if (convrted)
-                    console.sendMessage("[" + getDescription().getName() + "] " + ChatColor.GREEN + "Conversion complete :)");
-                // Load data from DB
-                this.dataManager.getTemplates((templates) -> {
-                    for (Template template : templates) {
-                        this.templateManager.addTemplate(template);
-                    }
-                });
-                this.dataManager.getAppliedPunishments((appliedPunishments) -> {
-                    for (AppliedPunishment punishment : appliedPunishments)
-                        this.punishmentManager.getPlayer(punishment.getVictim()).addPunishment(punishment);
-                });
-                this.dataManager.getNotes((notes) -> {
-                    for (PunishmentNote note : notes)
-                        this.punishmentManager.getPlayer(note.getSubject()).addNotes(note);
-                });
-                this.dataManager.getTickets((tickets) -> {
-                    for (Ticket ticket : tickets.values())
-                        this.ticketManager.addTicket(ticket);
-                });
-            }, "create");
-        }, 20);
-
         // Register Listeners
         guiManager.init();
         PluginManager pluginManager = Bukkit.getPluginManager();
@@ -261,6 +156,30 @@ public class UltimateModeration extends SongodaPlugin {
 
         // Start tasks
         SlowModeTask.startTask(this);
+    }
+
+    @Override
+    public void onDataLoad() {
+        getDataManager().queueAsync(() -> {
+            // Load data from DB
+            this.dataManager.getTemplates((templates) -> {
+                for (Template template : templates) {
+                    this.templateManager.addTemplate(template);
+                }
+            });
+            this.dataManager.getAppliedPunishments((appliedPunishments) -> {
+                for (AppliedPunishment punishment : appliedPunishments)
+                    this.punishmentManager.getPlayer(punishment.getVictim()).addPunishment(punishment);
+            });
+            this.dataManager.getNotes((notes) -> {
+                for (PunishmentNote note : notes)
+                    this.punishmentManager.getPlayer(note.getSubject()).addNotes(note);
+            });
+            this.dataManager.getTickets((tickets) -> {
+                for (Ticket ticket : tickets.values())
+                    this.ticketManager.addTicket(ticket);
+            });
+        }, "create");
     }
 
     @Override
