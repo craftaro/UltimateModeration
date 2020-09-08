@@ -61,7 +61,7 @@ public class CommandRunTemplate extends AbstractCommand {
             return players;
         } else if (args.length == 2) {
             List<String> lines = new ArrayList<>();
-            for (Template template : plugin.getTemplateManager().getTemplates().values()) {
+            for (Template template : plugin.getTemplateManager().getTemplates()) {
                 lines.add(template.getName());
             }
         }

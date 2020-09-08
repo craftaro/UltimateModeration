@@ -2,14 +2,16 @@ package com.songoda.ultimatemoderation.punish.template;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class TemplateManager {
 
-    private static final Map<Integer, Template> templates = new HashMap<>();
+    private static final List<Template> templates = new LinkedList<>();
 
     public Template getTemplate(String name) {
-        for (Template template : templates.values()) {
+        for (Template template : templates) {
             if (formatName(template.getName()).equals(formatName(name)))
                 return template;
         }
@@ -17,20 +19,17 @@ public class TemplateManager {
     }
 
     public Template addTemplate(Template template) {
-        return templates.put(template.getId(), template);
+        templates.add(template);
+        return template;
     }
 
     public Template removeTemplate(Template template) {
-        return templates.remove(template.getId());
+        templates.remove(template);
+        return template;
     }
 
-    public Template updateTemplate(int id, Template template) {
-        templates.remove(id);
-        return addTemplate(template);
-    }
-
-    public Map<Integer, Template> getTemplates() {
-        return Collections.unmodifiableMap(templates);
+    public List<Template> getTemplates() {
+        return Collections.unmodifiableList(templates);
     }
 
     private String formatName(String name) {

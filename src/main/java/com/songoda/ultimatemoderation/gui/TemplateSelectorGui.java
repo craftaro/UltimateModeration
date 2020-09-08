@@ -33,7 +33,7 @@ public class TemplateSelectorGui extends Gui {
                     punish.runTask();
                 });
 
-        ArrayList<Template> templates = new ArrayList<>(plugin.getTemplateManager().getTemplates().values());
+        ArrayList<Template> templates = new ArrayList<>(plugin.getTemplateManager().getTemplates());
         for (int i = 0; i < templates.size(); i++) {
             Template template = templates.get(i);
             setButton(18 + i, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
