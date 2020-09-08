@@ -1,6 +1,7 @@
 package com.songoda.ultimatemoderation.commands;
 
 import com.songoda.core.commands.AbstractCommand;
+import com.songoda.core.gui.GuiManager;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.gui.TicketManagerGui;
 import org.bukkit.command.CommandSender;
@@ -11,17 +12,18 @@ import java.util.List;
 public class CommandTicket extends AbstractCommand {
 
     private final UltimateModeration plugin;
+    private final GuiManager guiManager;
 
-    public CommandTicket(UltimateModeration plugin) {
+    public CommandTicket(UltimateModeration plugin, GuiManager guiManager) {
         super(CommandType.PLAYER_ONLY, "Ticket");
         this.plugin = plugin;
+        this.guiManager = guiManager;
     }
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         Player senderP = ((Player) sender);
-
-        new TicketManagerGui(plugin, senderP, senderP);
+        guiManager.showGUI(senderP, new TicketManagerGui(plugin, senderP, senderP));
         return ReturnType.SUCCESS;
     }
 

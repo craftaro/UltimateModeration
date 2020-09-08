@@ -43,7 +43,6 @@ public class UltimateModeration extends SongodaPlugin {
     private ModerationManager moderationManager;
 
     private DatabaseConnector databaseConnector;
-    private DataMigrationManager dataMigrationManager;
     private DataManager dataManager;
 
     public static UltimateModeration getInstance() {
@@ -84,7 +83,7 @@ public class UltimateModeration extends SongodaPlugin {
         this.commandManager.addCommand(new CommandRunTemplate(this));
         this.commandManager.addCommand(new CommandSlowMode(this));
         this.commandManager.addCommand(new CommandStaffChat(this));
-        this.commandManager.addCommand(new CommandTicket(this));
+        this.commandManager.addCommand(new CommandTicket(this, guiManager));
         this.commandManager.addCommand(new CommandToggleChat(this));
         this.commandManager.addCommand(new CommandUnBan(this));
         this.commandManager.addCommand(new CommandUnMute(this));
@@ -116,9 +115,9 @@ public class UltimateModeration extends SongodaPlugin {
             }
 
             this.dataManager = new DataManager(this.databaseConnector, this);
-            this.dataMigrationManager = new DataMigrationManager(this.databaseConnector, this.dataManager,
+            DataMigrationManager dataMigrationManager = new DataMigrationManager(this.databaseConnector, this.dataManager,
                     new _1_InitialMigration());
-            this.dataMigrationManager.runMigrations();
+            dataMigrationManager.runMigrations();
 
         } catch (Exception ex) {
             this.getLogger().severe("Fatal error trying to connect to database. " +
