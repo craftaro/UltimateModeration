@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class TemplateSelectorGui extends Gui {
 
     private final UltimateModeration plugin;
-    private PunishGui punish;
+    private final PunishGui punish;
 
     public TemplateSelectorGui(UltimateModeration plugin, PunishGui punish, Player player) {
         super(6);

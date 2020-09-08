@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class TicketGui extends Gui {
 
     private final UltimateModeration plugin;
-    private StaffChatManager chatManager = UltimateModeration.getInstance().getStaffChatManager();
+    private final StaffChatManager chatManager = UltimateModeration.getInstance().getStaffChatManager();
 
     private final Ticket ticket;
 
