@@ -27,11 +27,6 @@ public class CommandRunTemplate extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (!player.hasPlayedBefore()) {
-            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
         StringBuilder templateBuilder = new StringBuilder();
         for (int i = 1; i < args.length; i++) {
             String line = args[i];

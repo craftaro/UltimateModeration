@@ -39,11 +39,6 @@ public class CommandKick extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getPlayer(args[0]);
 
-        if (player == null) {
-            plugin.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
         if (sender instanceof Player && player.getPlayer().hasPermission("um.kick.exempt")) {
             plugin.getLocale().newMessage("You cannot kick this player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;

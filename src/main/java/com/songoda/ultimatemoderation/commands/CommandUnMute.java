@@ -28,11 +28,6 @@ public class CommandUnMute extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (!player.hasPlayedBefore()) {
-            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
         if (!plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
             plugin.getLocale().newMessage("That player isn't muted.").sendPrefixedMessage(sender);

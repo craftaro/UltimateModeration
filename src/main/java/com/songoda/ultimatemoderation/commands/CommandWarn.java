@@ -49,11 +49,6 @@ public class CommandWarn extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (!player.hasPlayedBefore()) {
-            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
         if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.warning.exempt")) {
             plugin.getLocale().newMessage("You cannot warn that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
