@@ -49,11 +49,6 @@ public class CommandBan extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (!player.hasPlayedBefore()) {
-            plugin.getLocale().newMessage("That player does not exist.").sendMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
         if (plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
             plugin.getLocale().newMessage("That player is already banned.").sendPrefixedMessage(sender);

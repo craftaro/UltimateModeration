@@ -86,13 +86,11 @@ public class SpyModeration extends AbstractModeration {
             return;
         }
 
-        if (oPlayer == null) return;
-        Player player = oPlayer.getPlayer();
-
-        if (player == null) {
+        if (oPlayer == null || !oPlayer.isOnline()) {
             instance.getLocale().newMessage("That player does not exist or is not online.").sendPrefixedMessage(senderP);
             return;
         }
+        Player player = oPlayer.getPlayer();
 
         if (player == senderP) {
             instance.getLocale().getMessage("command.spy.cant").sendPrefixedMessage(senderP);

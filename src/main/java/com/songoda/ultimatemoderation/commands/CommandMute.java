@@ -49,11 +49,6 @@ public class CommandMute extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (!player.hasPlayedBefore()) {
-            plugin.getLocale().newMessage("That player does not exist.").sendPrefixedMessage(sender);
-            return ReturnType.FAILURE;
-        }
-
         if (sender instanceof Player && VaultPermissions.hasPermission(player, "um.mute.exempt")) {
             plugin.getLocale().newMessage("You cannot mute that player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
