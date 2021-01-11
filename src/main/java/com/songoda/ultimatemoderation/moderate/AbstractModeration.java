@@ -27,7 +27,7 @@ public abstract class AbstractModeration {
     public abstract String getDescription();
 
     public String getPermission() {
-        return "ultimatemoderation." + getType().name().toLowerCase();
+        return "um." + getProper().toLowerCase();
     }
 
     public boolean hasPermission(Player player) {
@@ -35,7 +35,7 @@ public abstract class AbstractModeration {
     }
 
     public boolean isExempt(OfflinePlayer player) {
-        return VaultPermissions.hasPermission(player, "ultimatemoderation." + getType().name().toLowerCase() + ".exempt");
+        return VaultPermissions.hasPermission(player, getPermission() + ".exempt");
     }
 
     protected void registerCommand(UltimateModeration plugin) {
