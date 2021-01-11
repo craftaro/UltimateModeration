@@ -60,13 +60,13 @@ public class MainGui extends Gui {
         ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
-        GuiUtils.mirrorFill(this, 0, 2, true, true, glass3);
-        GuiUtils.mirrorFill(this, 1, 1, true, true, glass3);
+        mirrorFill(0, 2, true, true, glass3);
+        mirrorFill(1, 1, true, true, glass3);
 
         // decorate corners with type 2
-        GuiUtils.mirrorFill(this, 0, 0, true, true, glass2);
-        GuiUtils.mirrorFill(this, 1, 0, true, true, glass2);
-        GuiUtils.mirrorFill(this, 0, 1, true, true, glass2);
+        mirrorFill(0, 0, true, true, glass2);
+        mirrorFill(1, 0, true, true, glass2);
+        mirrorFill(0, 1, true, true, glass2);
 
         setButton(5, 2, GuiUtils.createButtonItem(CompatibleMaterial.ENDER_PEARL,
                 plugin.getLocale().getMessage("gui.players.search").getMessage()),
