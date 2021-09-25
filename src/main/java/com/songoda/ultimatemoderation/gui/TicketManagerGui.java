@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// FIXME: Pagination not working (probably in other GUIs too) (copy own one from TemplateManagerGui)
 public class TicketManagerGui extends Gui {
 
     private final UltimateModeration plugin;
@@ -142,7 +143,6 @@ public class TicketManagerGui extends Gui {
                     (event) -> guiManager.showGUI(player, new TicketGui(plugin, ticket, toModerate, player)));
             num++;
         }
-
     }
 
     public static void createNew(Player player, OfflinePlayer toModerate) {

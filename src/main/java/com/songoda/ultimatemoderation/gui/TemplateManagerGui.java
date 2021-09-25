@@ -23,6 +23,8 @@ public class TemplateManagerGui extends Gui {
     private PunishmentType punishmentType = PunishmentType.ALL;
     private final Player player;
 
+    private int page = 1;
+
     public TemplateManagerGui(UltimateModeration plugin, Player player) {
         super(6);
         setDefaultItem(null);
@@ -30,23 +32,34 @@ public class TemplateManagerGui extends Gui {
         this.player = player;
 
         setTitle(plugin.getLocale().getMessage("gui.templatemanager.title").getMessage());
-        showPage();
+        toCurrentPage();
     }
 
-    protected void showPage() {
-        if (inventory != null)
+    private void toPrevPage() {
+        if (this.page <= 1) {
+            return;
+        }
+
+        --this.page;
+        toCurrentPage();
+    }
+
+    private void toNextPage() {
+        if (findTemplates(this.page + 1, this.punishmentType).size() > 0) {
+            ++this.page;
+            toCurrentPage();
+        }
+    }
+
+    private void toCurrentPage() {
+        if (inventory != null) {
             inventory.clear();
+        }
+
         setActionForRange(0, 53, null);
 
         int numTemplates = plugin.getTemplateManager().getTemplates().size();
         this.pages = (int) Math.floor(numTemplates / 28.0);
-
-        List<Template> templates = plugin.getTemplateManager().getTemplates().stream().skip((page - 1) * 28).limit(28)
-                .collect(Collectors.toList());
-
-        setNextPage(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.back").getMessage()));
-        setOnPage((event) -> showPage());
 
         // decorate the edges
         ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
@@ -65,27 +78,30 @@ public class TemplateManagerGui extends Gui {
                 (event) -> {
                     this.punishmentType = punishmentType.nextFilter();
                     this.page = 1;
-                    showPage();
+                    toCurrentPage();
                 });
 
         setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                        plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> guiManager.showGUI(event.player, new MainGui(plugin, event.player)));
 
-        if (player.hasPermission("um.templates.create"))
+        if (player.hasPermission("um.templates.create")) {
             setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
-                    plugin.getLocale().getMessage("gui.templatemanager.create").getMessage()),
+                            plugin.getLocale().getMessage("gui.templatemanager.create").getMessage()),
                     (event) -> guiManager.showGUI(event.player, new PunishGui(plugin, null, null, player)));
+        }
 
-        if (punishmentType != PunishmentType.ALL)
-            templates.removeIf(template -> template.getPunishmentType() != punishmentType);
+        List<Template> templates = findTemplates(this.page, this.punishmentType);
+
         int num = 11;
         for (Template template : templates) {
-            if (num == 16 || num == 36)
+            if (num == 16 || num == 36) {
                 num = num + 2;
+            }
+
             setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
-                    plugin.getLocale().getMessage("gui.templatemanager.leftclick").getMessage(),
-                    plugin.getLocale().getMessage("gui.templatemanager.rightclick").getMessage()),
+                            plugin.getLocale().getMessage("gui.templatemanager.leftclick").getMessage(),
+                            plugin.getLocale().getMessage("gui.templatemanager.rightclick").getMessage()),
                     (event) -> {
                         if (event.clickType == ClickType.LEFT) {
                             if (player.hasPermission("um.templates.edit"))
@@ -95,11 +111,23 @@ public class TemplateManagerGui extends Gui {
                                 plugin.getTemplateManager().removeTemplate(template);
                                 plugin.getDataManager().deleteTemplate(template);
                             }
-                            showPage();
+
+                            toCurrentPage();
                         }
                     });
-            num++;
+
+            ++num;
         }
+
+        setButton(0, 3, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.back").getMessage()), (event) -> toPrevPage());
+        setButton(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()), (event) -> toNextPage());
     }
 
+    private List<Template> findTemplates(int page, PunishmentType punishmentType) {
+        return plugin.getTemplateManager().getTemplates().stream()
+                .filter(template -> punishmentType == PunishmentType.ALL || template.getPunishmentType() == punishmentType)
+                .skip((page - 1) * 28L)
+                .limit(28)
+                .collect(Collectors.toList());
+    }
 }
