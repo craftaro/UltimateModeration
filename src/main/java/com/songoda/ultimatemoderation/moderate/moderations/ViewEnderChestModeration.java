@@ -39,7 +39,7 @@ public class ViewEnderChestModeration extends AbstractModeration {
     protected boolean runModeration(CommandSender runner, OfflinePlayer toModerate) {
         Player toModeratePlayer = (Player) toModerate;
 
-        ((Player) runner).openInventory(toModeratePlayer.getInventory());
+        ((Player) runner).openInventory(toModeratePlayer.getEnderChest());
         return false;
     }
 }
