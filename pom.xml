@@ -108,6 +108,11 @@
         </repository>
 
         <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
         </repository>
@@ -116,8 +121,9 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.17</version>
+            <artifactId>spigot-api</artifactId>
+            <version>1.18-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
