@@ -106,8 +106,9 @@ public class UltimateModeration extends SongodaPlugin {
                 String username = Settings.MYSQL_USERNAME.getString();
                 String password = Settings.MYSQL_PASSWORD.getString();
                 boolean useSSL = Settings.MYSQL_USE_SSL.getBoolean();
+                int poolSize = Settings.MYSQL_POOL_SIZE.getInt();
 
-                this.databaseConnector = new MySQLConnector(this, hostname, port, database, username, password, useSSL);
+                this.databaseConnector = new MySQLConnector(this, hostname, port, database, username, password, useSSL, poolSize);
                 this.getLogger().info("Data handler connected using MySQL.");
             } else {
                 this.databaseConnector = new SQLiteConnector(this);
@@ -150,7 +151,7 @@ public class UltimateModeration extends SongodaPlugin {
 
     @Override
     public void onDataLoad() {
-        getDataManager().queueAsync(() -> {
+        getDataManager().runAsync(() -> {
             // Load data from DB
             this.dataManager.getTemplates((templates) -> {
                 for (Template template : templates) {
@@ -169,7 +170,7 @@ public class UltimateModeration extends SongodaPlugin {
                 for (Ticket ticket : tickets.values())
                     this.ticketManager.addTicket(ticket);
             });
-        }, "create");
+        });
     }
 
     @Override
