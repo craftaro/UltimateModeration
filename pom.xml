@@ -2,7 +2,7 @@
     <groupId>com.songoda</groupId>
     <artifactId>UltimateModeration</artifactId>
     <modelVersion>4.0.0</modelVersion>
-    <version>2.0.12</version>
+    <version>2.0.13</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>com.songoda</groupId>
             <artifactId>SongodaCore</artifactId>
-            <version>2.6.16</version>
+            <version>2.6.17</version>
             <scope>compile</scope>
         </dependency>
 
