@@ -1,9 +1,9 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.template.Template;
@@ -60,8 +60,8 @@ public class TemplateManagerGui extends Gui {
         this.pages = (int) Math.floor(numTemplates / 28.0);
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -72,19 +72,19 @@ public class TemplateManagerGui extends Gui {
         mirrorFill(1, 0, true, true, glass2);
         mirrorFill(0, 1, true, true, glass2);
 
-        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD, TextUtils.formatText("&6" + this.punishmentType.name())),
+        setButton(5, 3, GuiUtils.createButtonItem(XMaterial.DIAMOND_SWORD, TextUtils.formatText("&6" + this.punishmentType.name())),
                 (event) -> {
                     this.punishmentType = this.punishmentType.nextFilter();
                     this.page = 1;
                     toCurrentPage();
                 });
 
-        setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(5, 4, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> this.guiManager.showGUI(event.player, new MainGui(this.plugin, event.player)));
 
         if (this.player.hasPermission("um.templates.create")) {
-            setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
+            setButton(5, 5, GuiUtils.createButtonItem(XMaterial.REDSTONE,
                             this.plugin.getLocale().getMessage("gui.templatemanager.create").getMessage()),
                     (event) -> this.guiManager.showGUI(event.player, new PunishGui(this.plugin, null, null, this.player)));
         }
@@ -97,7 +97,7 @@ public class TemplateManagerGui extends Gui {
                 num = num + 2;
             }
 
-            setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
+            setButton(num, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
                             this.plugin.getLocale().getMessage("gui.templatemanager.leftclick").getMessage(),
                             this.plugin.getLocale().getMessage("gui.templatemanager.rightclick").getMessage()),
                     (event) -> {
@@ -117,8 +117,8 @@ public class TemplateManagerGui extends Gui {
             ++num;
         }
 
-        setButton(0, 3, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()), (event) -> toPrevPage());
-        setButton(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()), (event) -> toNextPage());
+        setButton(0, 3, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()), (event) -> toPrevPage());
+        setButton(0, 5, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()), (event) -> toNextPage());
     }
 
     private List<Template> findTemplates(int page, PunishmentType punishmentType) {

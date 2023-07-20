@@ -1,9 +1,9 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class TemplateSelectorGui extends Gui {
     }
 
     private void paint() {
-        setButton(8, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(8, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> {
                     this.guiManager.showGUI(event.player, this.punish);
@@ -35,7 +35,7 @@ public class TemplateSelectorGui extends Gui {
         ArrayList<Template> templates = new ArrayList<>(this.plugin.getTemplateManager().getTemplates());
         for (int i = 0; i < templates.size(); i++) {
             Template template = templates.get(i);
-            setButton(18 + i, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
+            setButton(18 + i, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
                             this.plugin.getLocale().getMessage("gui.templateselector.click").getMessage()),
                     (event) -> {
                         this.punish.setType(template.getPunishmentType());

@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.input.ChatPrompt;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.input.ChatPrompt;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.staffchat.StaffChatManager;
@@ -61,8 +61,8 @@ public class TicketGui extends Gui {
                 .collect(Collectors.toList());
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -74,12 +74,12 @@ public class TicketGui extends Gui {
         mirrorFill(0, 1, true, true, glass2);
 
         // enable page event
-        setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(4, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(4, 7, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(4, 1, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
         if (this.player.hasPermission("um.tickets.openclose")) {
-            setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.LEVER, TextUtils.formatText("&6" + this.ticket.getStatus().getStatus())),
+            setButton(5, 3, GuiUtils.createButtonItem(XMaterial.LEVER, TextUtils.formatText("&6" + this.ticket.getStatus().getStatus())),
                     (event) -> {
                         this.ticket.setStatus(this.ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
                         this.plugin.getDataManager().updateTicket(this.ticket);
@@ -89,20 +89,20 @@ public class TicketGui extends Gui {
                     });
         }
 
-        setButton(4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(4, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> {
                     this.plugin.getGuiManager().showGUI(event.player, new TicketManagerGui(this.plugin, this.toModerate, event.player));
                 });
 
         if (this.player.hasPermission("um.ticket.clicktotele") && this.ticket.getLocation() != null) {
-            setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.ENDER_PEARL,
+            setButton(5, 5, GuiUtils.createButtonItem(XMaterial.ENDER_PEARL,
                             this.plugin.getLocale().getMessage("gui.ticket.clicktotele").getMessage()),
                     (event) -> this.player.teleport(this.ticket.getLocation()));
         }
 
         if (this.player.hasPermission("um.tickets.respond")) {
-            setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.WRITABLE_BOOK, this.plugin.getLocale().getMessage("gui.ticket.respond").getMessage()),
+            setButton(5, 4, GuiUtils.createButtonItem(XMaterial.WRITABLE_BOOK, this.plugin.getLocale().getMessage("gui.ticket.respond").getMessage()),
                     (event) -> {
                         ChatPrompt.showPrompt(this.plugin, this.player, this.plugin.getLocale().getMessage("gui.ticket.what").getMessage(), (evnt) -> {
                             TicketResponse response = this.ticket.addResponse(new TicketResponse(this.player, evnt.getMessage(), System.currentTimeMillis()));
@@ -153,7 +153,7 @@ public class TicketGui extends Gui {
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.createdon")
                     .processPlaceholder("sent", format.format(new Date(ticketResponse.getPostedDate()))).getMessage());
 
-            setItem(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText(name), lore));
+            setItem(num, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText(name), lore));
             num++;
         }
     }

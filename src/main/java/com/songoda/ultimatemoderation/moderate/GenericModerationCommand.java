@@ -1,6 +1,6 @@
 package com.songoda.ultimatemoderation.moderate;
 
-import com.songoda.core.commands.AbstractCommand;
+import com.craftaro.core.commands.AbstractCommand;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

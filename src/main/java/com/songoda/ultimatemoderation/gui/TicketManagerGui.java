@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.AnvilGui;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.AnvilGui;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.tickets.Ticket;
@@ -58,8 +58,8 @@ public class TicketManagerGui extends Gui {
         tickets = tickets.stream().skip((this.page - 1) * 28).limit(28).collect(Collectors.toList());
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -71,11 +71,11 @@ public class TicketManagerGui extends Gui {
         mirrorFill(0, 1, true, true, glass2);
 
         // enable page event
-        setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(4, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(4, 7, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(4, 1, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
-        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.LEVER, TextUtils.formatText("&6" + this.status.getStatus())),
+        setButton(5, 3, GuiUtils.createButtonItem(XMaterial.LEVER, TextUtils.formatText("&6" + this.status.getStatus())),
                 (event) -> {
                     this.status = this.status == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN;
                     this.page = 1;
@@ -83,13 +83,13 @@ public class TicketManagerGui extends Gui {
                 });
 
         if (this.toModerate != null && this.player.hasPermission("um.tickets.create")) {
-            setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
+            setButton(5, 5, GuiUtils.createButtonItem(XMaterial.REDSTONE,
                             this.plugin.getLocale().getMessage("gui.tickets.create").getMessage()),
                     (event) -> createNew(this.player, this.toModerate));
         }
 
         if (this.player.hasPermission("um.ticket")) {
-            setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+            setButton(5, 4, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                             this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                     (event) -> {
                         if (this.toModerate == null) {
@@ -145,7 +145,7 @@ public class TicketManagerGui extends Gui {
                     .processPlaceholder("sent", format.format(new Date(ticket.getCreationDate()))).getMessage());
             lore.add(this.plugin.getLocale().getMessage("gui.tickets.click").getMessage());
 
-            setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+            setButton(num, GuiUtils.createButtonItem(XMaterial.MAP,
                             TextUtils.formatText(name), TextUtils.formatText(lore)),
                     (event) -> this.guiManager.showGUI(this.player, new TicketGui(this.plugin, ticket, this.toModerate, this.player)));
             num++;
@@ -161,7 +161,7 @@ public class TicketManagerGui extends Gui {
                         plugin.getGuiManager().showGUI(player,
                                 new TicketTypeGui(plugin, toModerate, player, gui.getInputText())), 1L));
 
-        ItemStack item = GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
+        ItemStack item = GuiUtils.createButtonItem(XMaterial.PAPER,
                 plugin.getLocale().getMessage("gui.tickets.subject").getMessage());
 
         gui.setInput(item);

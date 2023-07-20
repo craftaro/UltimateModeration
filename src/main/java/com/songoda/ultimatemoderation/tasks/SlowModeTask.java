@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.tasks;
 
-import com.songoda.core.compatibility.ServerVersion;
-import com.songoda.core.utils.TimeUtils;
+import com.craftaro.core.compatibility.ServerVersion;
+import com.craftaro.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
 import com.songoda.ultimatemoderation.settings.Settings;

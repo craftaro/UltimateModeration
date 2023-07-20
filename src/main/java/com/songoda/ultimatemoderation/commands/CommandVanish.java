@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.commands;
 
-import com.songoda.core.commands.AbstractCommand;
-import com.songoda.core.compatibility.ServerVersion;
+import com.craftaro.core.commands.AbstractCommand;
+import com.craftaro.core.compatibility.ServerVersion;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Bukkit;

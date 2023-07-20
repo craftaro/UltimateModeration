@@ -1,9 +1,9 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.input.ChatPrompt;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.input.ChatPrompt;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.staffchat.StaffChatManager;
@@ -29,7 +29,7 @@ public class TicketTypeGui extends Gui {
 
         for (int i = 0; i < types.size(); i++) {
             final int fi = i;
-            setButton(i, GuiUtils.createButtonItem(CompatibleMaterial.PAPER, types.get(i)),
+            setButton(i, GuiUtils.createButtonItem(XMaterial.PAPER, types.get(i)),
                     (event) -> {
                         Ticket ticket = new Ticket(toModerate, subject, types.get(fi));
                         ChatPrompt.showPrompt(plugin,

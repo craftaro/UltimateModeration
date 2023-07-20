@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.commands;
 
-import com.songoda.core.commands.AbstractCommand;
-import com.songoda.core.utils.TimeUtils;
+import com.craftaro.core.commands.AbstractCommand;
+import com.craftaro.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
 import org.bukkit.Bukkit;

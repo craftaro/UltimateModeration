@@ -1,8 +1,8 @@
 package com.songoda.ultimatemoderation.commands;
 
-import com.songoda.core.commands.AbstractCommand;
-import com.songoda.core.configuration.editor.PluginConfigGui;
-import com.songoda.core.gui.GuiManager;
+import com.craftaro.core.commands.AbstractCommand;
+import com.craftaro.core.configuration.editor.PluginConfigGui;
+import com.craftaro.core.gui.GuiManager;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.punish;
 
-import com.songoda.core.utils.TextUtils;
-import com.songoda.core.utils.TimeUtils;
+import com.craftaro.core.utils.TextUtils;
+import com.craftaro.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import org.bukkit.Bukkit;

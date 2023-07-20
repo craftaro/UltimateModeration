@@ -1,11 +1,11 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.AnvilGui;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.ItemUtils;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.AnvilGui;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.ItemUtils;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
@@ -59,8 +59,8 @@ public class MainGui extends Gui {
         setActionForRange(0, 53, null);
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -71,7 +71,7 @@ public class MainGui extends Gui {
         mirrorFill(1, 0, true, true, glass2);
         mirrorFill(0, 1, true, true, glass2);
 
-        setButton(5, 2, GuiUtils.createButtonItem(CompatibleMaterial.ENDER_PEARL,
+        setButton(5, 2, GuiUtils.createButtonItem(XMaterial.ENDER_PEARL,
                         this.plugin.getLocale().getMessage("gui.players.search").getMessage()),
                 (event) -> {
                     AnvilGui gui = new AnvilGui(event.player, this);
@@ -106,7 +106,7 @@ public class MainGui extends Gui {
                     this.guiManager.showGUI(event.player, gui);
                 });
 
-        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.HOPPER, TextUtils.formatText("&6" + this.currentOnline.getTranslation())),
+        setButton(5, 3, GuiUtils.createButtonItem(XMaterial.HOPPER, TextUtils.formatText("&6" + this.currentOnline.getTranslation())),
                 (event) -> {
                     this.currentOnline = this.currentOnline.next();
                     this.page = 1;
@@ -115,13 +115,13 @@ public class MainGui extends Gui {
 
 
         if (this.viewer.hasPermission("um.tickets")) {
-            setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.CHEST,
+            setButton(5, 5, GuiUtils.createButtonItem(XMaterial.CHEST,
                             this.plugin.getLocale().getMessage("gui.players.button.tickets").getMessage()),
                     (event) -> this.guiManager.showGUI(event.player, new TicketManagerGui(this.plugin, null, this.viewer)));
         }
 
         if (this.viewer.hasPermission("um.templates")) {
-            setButton(5, 6, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+            setButton(5, 6, GuiUtils.createButtonItem(XMaterial.MAP,
                             this.plugin.getLocale().getMessage("gui.players.button.templatemanager").getMessage()),
                     (events) -> this.guiManager.showGUI(events.player, new TemplateManagerGui(this.plugin, this.viewer)));
         }
@@ -187,8 +187,8 @@ public class MainGui extends Gui {
         });
 
         // enable page events
-        setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(4, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(4, 7, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(4, 1, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
     }
 

@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.TextUtils;
-import com.songoda.core.utils.TimeUtils;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
+import com.craftaro.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
@@ -44,13 +44,13 @@ public class PunishmentsGui extends Gui {
         setActionForRange(0, 53, null);
 
 
-        setNextPage(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(0, 5, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(0, 1, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -93,18 +93,18 @@ public class PunishmentsGui extends Gui {
         punishments = punishments.stream().skip((this.page - 1) * 28).limit(28)
                 .collect(Collectors.toList());
 
-        setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(5, 4, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> this.guiManager.showGUI(event.player, new PlayerGui(this.plugin, this.toModerate, event.player)));
 
-        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.APPLE, TextUtils.formatText("&6" + this.currentActivity.getTranslation())),
+        setButton(5, 3, GuiUtils.createButtonItem(XMaterial.APPLE, TextUtils.formatText("&6" + this.currentActivity.getTranslation())),
                 (event) -> {
                     this.currentActivity = this.currentActivity.next();
                     this.page = 1;
                     showPage();
                 });
 
-        setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD, TextUtils.formatText("&6" + this.punishmentType.name())),
+        setButton(5, 5, GuiUtils.createButtonItem(XMaterial.DIAMOND_SWORD, TextUtils.formatText("&6" + this.punishmentType.name())),
                 (event) -> {
                     this.punishmentType = this.punishmentType.nextFilter();
                     this.page = 1;
@@ -143,7 +143,7 @@ public class PunishmentsGui extends Gui {
                 }
             }
             lore.add("");
-            setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+            setButton(num, GuiUtils.createButtonItem(XMaterial.MAP,
                             TextUtils.formatText("&6&l" + appliedPunishment.getPunishmentType().getTranslation() + " - &7&l" + activity.getTranslation()),
                             TextUtils.formatText(lore)),
                     (event) -> {
@@ -157,9 +157,7 @@ public class PunishmentsGui extends Gui {
 
             num++;
         }
-
     }
-
 
     private static class PunishmentHolder {
         private final Activity activity;

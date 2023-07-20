@@ -1,6 +1,6 @@
 package com.songoda.ultimatemoderation.listeners;
 
-import com.songoda.core.utils.TimeUtils;
+import com.craftaro.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.commands.CommandVanish;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;

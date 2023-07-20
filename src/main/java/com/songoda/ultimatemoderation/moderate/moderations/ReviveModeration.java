@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.moderate.moderations;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.utils.PlayerUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.PlayerUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.listeners.DeathListener;
 import com.songoda.ultimatemoderation.moderate.AbstractModeration;
@@ -29,8 +29,8 @@ public class ReviveModeration extends AbstractModeration {
     }
 
     @Override
-    public CompatibleMaterial getIcon() {
-        return CompatibleMaterial.POTION;
+    public XMaterial getIcon() {
+        return XMaterial.POTION;
     }
 
     @Override

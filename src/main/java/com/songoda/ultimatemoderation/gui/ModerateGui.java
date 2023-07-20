@@ -1,9 +1,9 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.moderate.AbstractModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
@@ -23,8 +23,8 @@ public class ModerateGui extends Gui {
                 .processPlaceholder("toModerate", toModerate.getName()).getMessage());
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -36,7 +36,7 @@ public class ModerateGui extends Gui {
         mirrorFill(2, 0, false, true, glass2);
         mirrorFill(0, 1, true, true, glass2);
 
-        setButton(8, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(8, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> this.guiManager.showGUI(event.player, new PlayerGui(plugin, toModerate, event.player)));
 

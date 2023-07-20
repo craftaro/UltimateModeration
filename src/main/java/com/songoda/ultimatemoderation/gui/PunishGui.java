@@ -1,12 +1,12 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.AnvilGui;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.ItemUtils;
-import com.songoda.core.utils.TextUtils;
-import com.songoda.core.utils.TimeUtils;
+import com.craftaro.core.gui.AnvilGui;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.ItemUtils;
+import com.craftaro.core.utils.TextUtils;
+import com.craftaro.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.Punishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
@@ -70,8 +70,8 @@ public class PunishGui extends Gui {
         setActionForRange(0, 53, null);
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -89,7 +89,7 @@ public class PunishGui extends Gui {
         }
 
         if (this.player.hasPermission("um." + this.type.toString().toLowerCase())) {
-            setButton(22, GuiUtils.createButtonItem(CompatibleMaterial.EMERALD_BLOCK,
+            setButton(22, GuiUtils.createButtonItem(XMaterial.EMERALD_BLOCK,
                             this.plugin.getLocale().getMessage("gui.punish.submit").getMessage()),
                     (event) -> {
                         if (!this.player.hasPermission("um." + this.type.toString().toLowerCase())) {
@@ -127,7 +127,7 @@ public class PunishGui extends Gui {
                     });
         }
 
-        setButton(8, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(8, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> {
                     if (this.toModerate != null) {
@@ -137,7 +137,7 @@ public class PunishGui extends Gui {
                     }
                 });
 
-        setButton(28, GuiUtils.createButtonItem(CompatibleMaterial.ANVIL,
+        setButton(28, GuiUtils.createButtonItem(XMaterial.ANVIL,
                         this.plugin.getLocale().getMessage("gui.punish.type.punishment").getMessage(),
                         TextUtils.formatText("&7" + this.type.getTranslation()),
                         "",
@@ -148,7 +148,7 @@ public class PunishGui extends Gui {
                     paint();
                 });
 
-        ItemStack templateItem = this.toModerate != null ? GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+        ItemStack templateItem = this.toModerate != null ? GuiUtils.createButtonItem(XMaterial.MAP,
                 this.plugin.getLocale().getMessage("gui.punish.type.template").getMessage(),
                 this.plugin.getLocale().getMessage("gui.punish.type.template.current")
                         .processPlaceholder("template",
@@ -159,7 +159,7 @@ public class PunishGui extends Gui {
                 this.plugin.getLocale().getMessage(this.plugin.getTemplateManager().getTemplates().size() == 0
                         ? "gui.punish.type.template.none"
                         : "gui.punish.type.template.click").getMessage())
-                : GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+                : GuiUtils.createButtonItem(XMaterial.MAP,
                 this.plugin.getLocale().getMessage("gui.punish.type.name").getMessage(),
                 this.plugin.getLocale().getMessage("gui.punish.type.name.current")
                         .processPlaceholder("name",
@@ -184,7 +184,7 @@ public class PunishGui extends Gui {
         });
 
         if (this.type != PunishmentType.KICK) {
-            setButton(32, GuiUtils.createButtonItem(CompatibleMaterial.CLOCK,
+            setButton(32, GuiUtils.createButtonItem(XMaterial.CLOCK,
                             this.plugin.getLocale().getMessage("gui.punish.type.duration").getMessage(),
                             this.plugin.getLocale().getMessage("gui.punish.type.duration.leftclick").getMessage(),
                             this.plugin.getLocale().getMessage("gui.punish.type.duration.rightclick").getMessage(),
@@ -220,7 +220,7 @@ public class PunishGui extends Gui {
                     });
         }
 
-        setButton(34, GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
+        setButton(34, GuiUtils.createButtonItem(XMaterial.PAPER,
                 this.plugin.getLocale().getMessage("gui.punish.type.reason").getMessage(),
                 this.plugin.getLocale().getMessage("gui.punish.type.reason.click").getMessage(),
                 "",
@@ -235,7 +235,7 @@ public class PunishGui extends Gui {
                 paint();
             });
 
-            ItemStack item = GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
+            ItemStack item = GuiUtils.createButtonItem(XMaterial.PAPER,
                     this.reason == null ? this.plugin.getLocale().getMessage("gui.general.reason").getMessage() : this.reason);
 
             gui.setInput(item);
@@ -249,7 +249,7 @@ public class PunishGui extends Gui {
             return;
         }
 
-        CompatibleMaterial material = CompatibleMaterial.WHITE_WOOL;
+        XMaterial material = XMaterial.WHITE_WOOL;
         String name = this.plugin.getLocale().getMessage("gui.punish.template.create").getMessage();
         ArrayList<String> lore = new ArrayList<>();
         lore.add(this.plugin.getLocale().getMessage("gui.punish.template.create2").getMessage());
@@ -263,8 +263,8 @@ public class PunishGui extends Gui {
             lore.add(this.plugin.getLocale().getMessage("gui.punish.template.rightclick").getMessage());
         }
 
-        if (getItem(4) != null && CompatibleMaterial.getMaterial(getItem(4)) == CompatibleMaterial.WHITE_WOOL) {
-            material = CompatibleMaterial.YELLOW_WOOL;
+        if (getItem(4) != null && XMaterial.WHITE_WOOL.isSimilar(getItem(4))) {
+            material = XMaterial.YELLOW_WOOL;
         }
 
         setButton(4, GuiUtils.createButtonItem(material, name, lore), (event) -> {
@@ -303,7 +303,7 @@ public class PunishGui extends Gui {
             paint();
         });
 
-        ItemStack item = GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
+        ItemStack item = GuiUtils.createButtonItem(XMaterial.PAPER,
                 this.template == null ? this.plugin.getLocale().getMessage("gui.general.templatename").getMessage() : this.template.getName());
 
         gui.setInput(item);

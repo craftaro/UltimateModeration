@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.utils.ItemUtils;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.ItemUtils;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.OfflinePlayer;
@@ -27,8 +27,8 @@ public class PlayerGui extends Gui {
                 .processPlaceholder("toModerate", toModerate.getName()).getMessage());
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -46,39 +46,39 @@ public class PlayerGui extends Gui {
                         + plugin.getLocale().getMessage("gui.players.online.online").getMessage()
                         : "&c" + plugin.getLocale().getMessage("gui.players.online.offline").getMessage())));
 
-        setButton(8, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(8, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> this.guiManager.showGUI(event.player, new MainGui(plugin, event.player)));
 
         if (punish) {
-            setButton(38, GuiUtils.createButtonItem(CompatibleMaterial.ANVIL,
+            setButton(38, GuiUtils.createButtonItem(XMaterial.ANVIL,
                             plugin.getLocale().getMessage("gui.player.punish").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player,
                             new PunishGui(plugin, toModerate, null, event.player)));
         }
 
         if (tickets) {
-            setButton(30, GuiUtils.createButtonItem(CompatibleMaterial.CHEST,
+            setButton(30, GuiUtils.createButtonItem(XMaterial.CHEST,
                             plugin.getLocale().getMessage("gui.player.tickets").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player,
                             new TicketManagerGui(plugin, toModerate, event.player)));
         }
 
         if (toModerate.isOnline() && punishments) {
-            setButton(32, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD,
+            setButton(32, GuiUtils.createButtonItem(XMaterial.DIAMOND_SWORD,
                             plugin.getLocale().getMessage("gui.player.punishments").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player, new PunishmentsGui(plugin, toModerate)));
         }
 
         if (notes) {
-            setButton(42, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+            setButton(42, GuiUtils.createButtonItem(XMaterial.MAP,
                             plugin.getLocale().getMessage("gui.player.notes").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player,
                             new NotesManagerGui(plugin, toModerate, event.player)));
         }
 
         if (moderate) {
-            setButton(40, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_CHESTPLATE,
+            setButton(40, GuiUtils.createButtonItem(XMaterial.DIAMOND_CHESTPLATE,
                             plugin.getLocale().getMessage("gui.player.moderate").getMessage()),
                     (event) -> this.guiManager.showGUI(player, new ModerateGui(plugin, toModerate, event.player)));
         }

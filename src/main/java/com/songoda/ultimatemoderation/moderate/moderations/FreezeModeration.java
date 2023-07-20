@@ -1,6 +1,6 @@
 package com.songoda.ultimatemoderation.moderate.moderations;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.moderate.AbstractModeration;
 import com.songoda.ultimatemoderation.moderate.ModerationType;
@@ -25,8 +25,8 @@ public class FreezeModeration extends AbstractModeration {
     }
 
     @Override
-    public CompatibleMaterial getIcon() {
-        return CompatibleMaterial.BLUE_ICE;
+    public XMaterial getIcon() {
+        return XMaterial.BLUE_ICE;
     }
 
     @Override

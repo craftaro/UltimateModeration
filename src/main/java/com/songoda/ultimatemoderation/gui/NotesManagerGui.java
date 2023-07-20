@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.gui;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
-import com.songoda.core.gui.Gui;
-import com.songoda.core.gui.GuiUtils;
-import com.songoda.core.input.ChatPrompt;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.gui.Gui;
+import com.craftaro.core.gui.GuiUtils;
+import com.craftaro.core.input.ChatPrompt;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
 import com.songoda.ultimatemoderation.settings.Settings;
@@ -53,13 +53,13 @@ public class NotesManagerGui extends Gui {
                 .skip((this.page - 1) * 28).limit(28).collect(Collectors.toList());
 
         // enable page events
-        setNextPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(0, 3, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(0, 1, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(0, 3, GuiUtils.createButtonItem(XMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
         // decorate the edges
-        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
-        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(CompatibleMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
+        ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(XMaterial.BLUE_STAINED_GLASS_PANE));
+        ItemStack glass3 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_3.getMaterial(XMaterial.LIGHT_BLUE_STAINED_GLASS_PANE));
 
         // edges will be type 3
         mirrorFill(0, 2, true, true, glass3);
@@ -70,12 +70,12 @@ public class NotesManagerGui extends Gui {
         mirrorFill(1, 0, true, true, glass2);
         mirrorFill(0, 1, true, true, glass2);
 
-        setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
+        setButton(5, 5, GuiUtils.createButtonItem(XMaterial.OAK_DOOR,
                         this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> this.guiManager.showGUI(event.player, new PlayerGui(this.plugin, this.toModerate, event.player)));
 
         if (this.create) {
-            setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
+            setButton(5, 3, GuiUtils.createButtonItem(XMaterial.REDSTONE,
                             this.plugin.getLocale().getMessage("gui.notes.create").getMessage()),
                     (event) -> {
                         ChatPrompt.showPrompt(this.plugin, event.player,
@@ -133,7 +133,7 @@ public class NotesManagerGui extends Gui {
                 lore.add(this.plugin.getLocale().getMessage("gui.notes.remove").getMessage());
             }
 
-            setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText(name), TextUtils.formatText(lore)),
+            setButton(num, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText(name), TextUtils.formatText(lore)),
                     (event) -> {
                         if (this.delete) {
                             this.plugin.getPunishmentManager().getPlayer(this.toModerate).removeNotes(note);

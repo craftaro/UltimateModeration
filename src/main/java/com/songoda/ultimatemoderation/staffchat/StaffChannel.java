@@ -1,6 +1,6 @@
 package com.songoda.ultimatemoderation.staffchat;
 
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Bukkit;

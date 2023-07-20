@@ -1,6 +1,6 @@
 package com.songoda.ultimatemoderation.moderate;
 
-import com.songoda.core.compatibility.CompatibleMaterial;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.utils.VaultPermissions;
 import org.bukkit.OfflinePlayer;
@@ -19,7 +19,7 @@ public abstract class AbstractModeration {
 
     public abstract ModerationType getType();
 
-    public abstract CompatibleMaterial getIcon();
+    public abstract XMaterial getIcon();
 
     public abstract String getProper();
 

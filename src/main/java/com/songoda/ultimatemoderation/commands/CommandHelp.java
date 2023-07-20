@@ -1,7 +1,7 @@
 package com.songoda.ultimatemoderation.commands;
 
-import com.songoda.core.commands.AbstractCommand;
-import com.songoda.core.utils.TextUtils;
+import com.craftaro.core.commands.AbstractCommand;
+import com.craftaro.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import org.bukkit.command.CommandSender;
 
