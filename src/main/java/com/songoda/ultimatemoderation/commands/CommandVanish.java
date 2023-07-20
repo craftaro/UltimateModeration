@@ -2,11 +2,11 @@ package com.songoda.ultimatemoderation.commands;
 
 import com.craftaro.core.commands.AbstractCommand;
 import com.craftaro.core.compatibility.ServerVersion;
+import com.craftaro.core.third_party.com.cryptomorin.xseries.XSound;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -60,7 +60,7 @@ public class CommandVanish extends AbstractCommand {
 
         }
         if (Settings.VANISH_EFFECTS.getBoolean()) {
-            player.getWorld().playSound(player.getLocation(), Sound.valueOf(Settings.VANISH_SOUND.getString()), 1L, 1L);
+            XSound.matchXSound(Settings.VANISH_SOUND.getString()).ifPresent(sound -> sound.play(player));
 
             if (Settings.VANISH_BATS.getBoolean()) {
                 List<Entity> entities = new ArrayList<>();
