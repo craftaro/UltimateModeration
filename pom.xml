@@ -93,8 +93,8 @@
 
     <repositories>
         <repository>
-            <id>songoda-public</id>
-            <url>https://repo.songoda.com/repository/public/</url>
+            <id>craftaro-minecraft-plugins</id>
+            <url>https://repo.craftaro.com/repository/minecraft-plugins/</url>
         </repository>
 
         <repository>
@@ -105,6 +105,11 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
+        </repository>
+
+        <repository>
+            <id>songoda-public</id>
+            <url>https://repo.craftaro.com/repository/public/</url>
         </repository>
     </repositories>
 
