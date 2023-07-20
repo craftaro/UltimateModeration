@@ -1,6 +1,5 @@
 package com.songoda.ultimatemoderation.listeners;
 
-import com.songoda.ultimatemoderation.UltimateModeration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,14 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class DeathListener implements Listener {
-
-    private static Map<UUID, List<ItemStack>> playerDrops = new HashMap<>();
-
-    private UltimateModeration instance;
-
-    public DeathListener(UltimateModeration ultimateModeration) {
-        this.instance = ultimateModeration;
-    }
+    private static final Map<UUID, List<ItemStack>> playerDrops = new HashMap<>();
 
     public static List<ItemStack> getLastDrop(Player player) {
         return playerDrops.get(player.getUniqueId());

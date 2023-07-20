@@ -1,19 +1,17 @@
 package com.songoda.ultimatemoderation.punish.template;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class TemplateManager {
-
     private static final List<Template> templates = new LinkedList<>();
 
     public Template getTemplate(String name) {
         for (Template template : templates) {
-            if (formatName(template.getName()).equals(formatName(name)))
+            if (formatName(template.getName()).equals(formatName(name))) {
                 return template;
+            }
         }
         return null;
     }
@@ -33,7 +31,9 @@ public class TemplateManager {
     }
 
     private String formatName(String name) {
-        if (name == null) return null;
+        if (name == null) {
+            return null;
+        }
         name = name.toUpperCase().trim();
         name = name.replace(" ", "_");
         return name;

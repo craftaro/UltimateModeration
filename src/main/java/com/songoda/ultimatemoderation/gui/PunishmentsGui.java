@@ -4,12 +4,12 @@ import com.songoda.core.compatibility.CompatibleMaterial;
 import com.songoda.core.gui.Gui;
 import com.songoda.core.gui.GuiUtils;
 import com.songoda.core.utils.TextUtils;
+import com.songoda.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.player.PlayerPunishData;
 import com.songoda.ultimatemoderation.settings.Settings;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PunishmentsGui extends Gui {
-
     private final UltimateModeration plugin;
     private final OfflinePlayer toModerate;
 
@@ -39,13 +38,14 @@ public class PunishmentsGui extends Gui {
     }
 
     protected void showPage() {
-        if (inventory != null)
-            inventory.clear();
+        if (this.inventory != null) {
+            this.inventory.clear();
+        }
         setActionForRange(0, 53, null);
 
 
-        setNextPage(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(0, 5, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
         // decorate the edges
@@ -61,25 +61,27 @@ public class PunishmentsGui extends Gui {
         mirrorFill(1, 0, true, true, glass2);
         mirrorFill(0, 1, true, true, glass2);
 
-        PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(toModerate);
+        PlayerPunishData playerPunishData = this.plugin.getPunishmentManager().getPlayer(this.toModerate);
 
         List<PunishmentHolder> punishments = new ArrayList<>();
 
-        if (currentActivity == Activity.ACTIVE || currentActivity == Activity.BOTH) {
+        if (this.currentActivity == Activity.ACTIVE || this.currentActivity == Activity.BOTH) {
             for (AppliedPunishment punishment : playerPunishData.getActivePunishments()) {
-                if (punishmentType != PunishmentType.ALL) {
-                    if (punishment.getPunishmentType() != punishmentType)
+                if (this.punishmentType != PunishmentType.ALL) {
+                    if (punishment.getPunishmentType() != this.punishmentType) {
                         continue;
+                    }
                 }
                 punishments.add(new PunishmentHolder(Activity.ACTIVE, punishment));
             }
         }
 
-        if (currentActivity == Activity.EXPIRED || currentActivity == Activity.BOTH) {
+        if (this.currentActivity == Activity.EXPIRED || this.currentActivity == Activity.BOTH) {
             for (AppliedPunishment punishment : playerPunishData.getExpiredPunishments()) {
-                if (punishmentType != PunishmentType.ALL) {
-                    if (punishment.getPunishmentType() != punishmentType)
+                if (this.punishmentType != PunishmentType.ALL) {
+                    if (punishment.getPunishmentType() != this.punishmentType) {
                         continue;
+                    }
                 }
                 punishments.add(new PunishmentHolder(Activity.EXPIRED, punishment));
             }
@@ -88,66 +90,67 @@ public class PunishmentsGui extends Gui {
         int numNotes = punishments.size();
         this.pages = (int) Math.floor(numNotes / 28.0);
 
-        punishments = punishments.stream().skip((page - 1) * 28).limit(28)
+        punishments = punishments.stream().skip((this.page - 1) * 28).limit(28)
                 .collect(Collectors.toList());
 
         setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                plugin.getLocale().getMessage("gui.general.back").getMessage()),
-                (event) -> guiManager.showGUI(event.player, new PlayerGui(plugin, toModerate, event.player)));
+                        this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                (event) -> this.guiManager.showGUI(event.player, new PlayerGui(this.plugin, this.toModerate, event.player)));
 
-        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.APPLE, Methods.formatText("&6" + currentActivity.getTranslation())),
+        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.APPLE, TextUtils.formatText("&6" + this.currentActivity.getTranslation())),
                 (event) -> {
-                    this.currentActivity = currentActivity.next();
+                    this.currentActivity = this.currentActivity.next();
                     this.page = 1;
                     showPage();
                 });
 
-        setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD, Methods.formatText("&6" + punishmentType.name())),
+        setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD, TextUtils.formatText("&6" + this.punishmentType.name())),
                 (event) -> {
-                    this.punishmentType = punishmentType.nextFilter();
+                    this.punishmentType = this.punishmentType.nextFilter();
                     this.page = 1;
                     showPage();
                 });
 
         int num = 11;
         for (PunishmentHolder punishmentHolder : punishments) {
-            if (num == 16 || num == 36)
+            if (num == 16 || num == 36) {
                 num = num + 2;
+            }
             AppliedPunishment appliedPunishment = punishmentHolder.getAppliedPunishment();
             Activity activity = punishmentHolder.getActivity();
 
             ArrayList<String> lore = new ArrayList<>();
             lore.add("");
-            lore.add(plugin.getLocale().getMessage("gui.punishments.reason").getMessage());
+            lore.add(this.plugin.getLocale().getMessage("gui.punishments.reason").getMessage());
             lore.add("&7" + appliedPunishment.getReason());
             if (appliedPunishment.getPunishmentType() != PunishmentType.KICK) {
                 lore.add("");
-                lore.add(plugin.getLocale().getMessage("gui.punishments.duration").getMessage());
+                lore.add(this.plugin.getLocale().getMessage("gui.punishments.duration").getMessage());
                 lore.add("&7" + (appliedPunishment.getDuration() != -1
-                        ? Methods.makeReadable(appliedPunishment.getDuration())
-                        : plugin.getLocale().getMessage("gui.general.permanent").getMessage()));
+                        ? TimeUtils.makeReadable(appliedPunishment.getDuration())
+                        : this.plugin.getLocale().getMessage("gui.general.permanent").getMessage()));
                 lore.add("");
-                lore.add(plugin.getLocale().getMessage("gui.punishments.punisher").getMessage());
+                lore.add(this.plugin.getLocale().getMessage("gui.punishments.punisher").getMessage());
                 lore.add("&7" + (appliedPunishment.getPunisher() == null ? "Console" : Bukkit.getOfflinePlayer(appliedPunishment.getPunisher()).getName()));
                 if (activity == Activity.ACTIVE) {
                     lore.add("");
                     if (appliedPunishment.getDuration() != -1) {
-                        lore.add(plugin.getLocale().getMessage("gui.punishments.remaining").getMessage());
-                        lore.add("&7" + Methods.makeReadable(appliedPunishment.getTimeRemaining()));
+                        lore.add(this.plugin.getLocale().getMessage("gui.punishments.remaining").getMessage());
+                        lore.add("&7" + TimeUtils.makeReadable(appliedPunishment.getTimeRemaining()));
                         lore.add("");
                     }
-                    lore.add(plugin.getLocale().getMessage("gui.punishments.click").getMessage());
+                    lore.add(this.plugin.getLocale().getMessage("gui.punishments.click").getMessage());
                 }
             }
             lore.add("");
             setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
-                    TextUtils.formatText("&6&l" + appliedPunishment.getPunishmentType().getTranslation() + " - &7&l" + activity.getTranslation()),
-                    TextUtils.formatText(lore)),
+                            TextUtils.formatText("&6&l" + appliedPunishment.getPunishmentType().getTranslation() + " - &7&l" + activity.getTranslation()),
+                            TextUtils.formatText(lore)),
                     (event) -> {
                         if (appliedPunishment.getPunishmentType() != PunishmentType.KICK
                                 && activity == Activity.ACTIVE) {
                             appliedPunishment.expire();
-                            plugin.getDataManager().updateAppliedPunishment(appliedPunishment);
+                            this.plugin.getDataManager().updateAppliedPunishment(appliedPunishment);
                             showPage();
                         }
                     });
@@ -158,8 +161,7 @@ public class PunishmentsGui extends Gui {
     }
 
 
-    private class PunishmentHolder {
-
+    private static class PunishmentHolder {
         private final Activity activity;
         private final AppliedPunishment appliedPunishment;
 
@@ -169,26 +171,26 @@ public class PunishmentsGui extends Gui {
         }
 
         public Activity getActivity() {
-            return activity;
+            return this.activity;
         }
 
         public AppliedPunishment getAppliedPunishment() {
-            return appliedPunishment;
+            return this.appliedPunishment;
         }
     }
 
     private enum Activity {
-
         BOTH, ACTIVE, EXPIRED;
 
-        private static Activity[] vals = values();
-
         public Activity next() {
-            return vals[(this.ordinal() != vals.length - 1 ? this.ordinal() + 1 : 0)];
+            return values()[(this.ordinal() != values().length - 1 ? this.ordinal() + 1 : 0)];
         }
 
         public String getTranslation() {
-            return UltimateModeration.getInstance().getLocale().getMessage("gui.punishments.activity." + this.name().toLowerCase()).getMessage();
+            return UltimateModeration.getPlugin(UltimateModeration.class)
+                    .getLocale()
+                    .getMessage("gui.punishments.activity." + this.name().toLowerCase())
+                    .getMessage();
         }
     }
 }

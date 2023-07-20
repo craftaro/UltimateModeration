@@ -11,10 +11,37 @@ import com.songoda.core.database.DatabaseConnector;
 import com.songoda.core.database.MySQLConnector;
 import com.songoda.core.database.SQLiteConnector;
 import com.songoda.core.gui.GuiManager;
-import com.songoda.ultimatemoderation.commands.*;
+import com.songoda.ultimatemoderation.commands.CommandBan;
+import com.songoda.ultimatemoderation.commands.CommandClearChat;
+import com.songoda.ultimatemoderation.commands.CommandHelp;
+import com.songoda.ultimatemoderation.commands.CommandKick;
+import com.songoda.ultimatemoderation.commands.CommandMute;
+import com.songoda.ultimatemoderation.commands.CommandRandomPlayer;
+import com.songoda.ultimatemoderation.commands.CommandReload;
+import com.songoda.ultimatemoderation.commands.CommandRunTemplate;
+import com.songoda.ultimatemoderation.commands.CommandSettings;
+import com.songoda.ultimatemoderation.commands.CommandSlowMode;
+import com.songoda.ultimatemoderation.commands.CommandStaffChat;
+import com.songoda.ultimatemoderation.commands.CommandTicket;
+import com.songoda.ultimatemoderation.commands.CommandToggleChat;
+import com.songoda.ultimatemoderation.commands.CommandUltimateModeration;
+import com.songoda.ultimatemoderation.commands.CommandUnBan;
+import com.songoda.ultimatemoderation.commands.CommandUnMute;
+import com.songoda.ultimatemoderation.commands.CommandVanish;
+import com.songoda.ultimatemoderation.commands.CommandWarn;
 import com.songoda.ultimatemoderation.database.DataManager;
 import com.songoda.ultimatemoderation.database.migrations._1_InitialMigration;
-import com.songoda.ultimatemoderation.listeners.*;
+import com.songoda.ultimatemoderation.listeners.BlockListener;
+import com.songoda.ultimatemoderation.listeners.ChatListener;
+import com.songoda.ultimatemoderation.listeners.CommandListener;
+import com.songoda.ultimatemoderation.listeners.DeathListener;
+import com.songoda.ultimatemoderation.listeners.DropListener;
+import com.songoda.ultimatemoderation.listeners.InventoryListener;
+import com.songoda.ultimatemoderation.listeners.LoginListener;
+import com.songoda.ultimatemoderation.listeners.MobTargetLister;
+import com.songoda.ultimatemoderation.listeners.MoveListener;
+import com.songoda.ultimatemoderation.listeners.SkyBlockListener;
+import com.songoda.ultimatemoderation.listeners.SpyingDismountListener;
 import com.songoda.ultimatemoderation.moderate.ModerationManager;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentNote;
@@ -28,12 +55,11 @@ import com.songoda.ultimatemoderation.tickets.Ticket;
 import com.songoda.ultimatemoderation.tickets.TicketManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
 public class UltimateModeration extends SongodaPlugin {
-    private static UltimateModeration INSTANCE;
-
     private final GuiManager guiManager = new GuiManager(this);
     private TicketManager ticketManager;
     private TemplateManager templateManager;
@@ -45,13 +71,16 @@ public class UltimateModeration extends SongodaPlugin {
     private DatabaseConnector databaseConnector;
     private DataManager dataManager;
 
+    /**
+     * @deprecated Use {@link JavaPlugin#getPlugin(Class)} instead.
+     */
+    @Deprecated
     public static UltimateModeration getInstance() {
-        return INSTANCE;
+        return getPlugin(UltimateModeration.class);
     }
 
     @Override
     public void onPluginLoad() {
-        INSTANCE = this;
     }
 
     @Override
@@ -72,7 +101,7 @@ public class UltimateModeration extends SongodaPlugin {
         this.commandManager.addCommand(new CommandUltimateModeration(this))
                 .addSubCommands(
                         new CommandReload(this),
-                        new CommandSettings(this, guiManager),
+                        new CommandSettings(this, this.guiManager),
                         new CommandHelp(this)
                 );
         this.commandManager.addCommand(new CommandBan(this));
@@ -83,7 +112,7 @@ public class UltimateModeration extends SongodaPlugin {
         this.commandManager.addCommand(new CommandRunTemplate(this));
         this.commandManager.addCommand(new CommandSlowMode(this));
         this.commandManager.addCommand(new CommandStaffChat(this));
-        this.commandManager.addCommand(new CommandTicket(this, guiManager));
+        this.commandManager.addCommand(new CommandTicket(this, this.guiManager));
         this.commandManager.addCommand(new CommandToggleChat(this));
         this.commandManager.addCommand(new CommandUnBan(this));
         this.commandManager.addCommand(new CommandUnMute(this));
@@ -116,8 +145,7 @@ public class UltimateModeration extends SongodaPlugin {
             }
 
             this.dataManager = new DataManager(this.databaseConnector, this);
-            DataMigrationManager dataMigrationManager = new DataMigrationManager(this.databaseConnector, this.dataManager,
-                    new _1_InitialMigration());
+            DataMigrationManager dataMigrationManager = new DataMigrationManager(this.databaseConnector, this.dataManager, new _1_InitialMigration(this));
             dataMigrationManager.runMigrations();
 
         } catch (Exception ex) {
@@ -128,10 +156,10 @@ public class UltimateModeration extends SongodaPlugin {
         }
 
         // Register Listeners
-        guiManager.init();
+        this.guiManager.init();
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new CommandListener(this), this);
-        pluginManager.registerEvents(new DeathListener(this), this);
+        pluginManager.registerEvents(new DeathListener(), this);
         pluginManager.registerEvents(new MoveListener(this), this);
         pluginManager.registerEvents(new DropListener(this), this);
         pluginManager.registerEvents(new InventoryListener(this), this);
@@ -139,11 +167,13 @@ public class UltimateModeration extends SongodaPlugin {
         pluginManager.registerEvents(new LoginListener(this), this);
         pluginManager.registerEvents(new MobTargetLister(), this);
         pluginManager.registerEvents(new BlockListener(this), this);
-        if (pluginManager.isPluginEnabled("FabledSkyBlock"))
-            pluginManager.registerEvents(new SkyBlockListener(this), this);
+        if (pluginManager.isPluginEnabled("FabledSkyBlock")) {
+            pluginManager.registerEvents(new SkyBlockListener(), this);
+        }
 
-        if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13))
-            pluginManager.registerEvents(new SpyingDismountListener(), this);
+        if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)) {
+            pluginManager.registerEvents(new SpyingDismountListener(this), this);
+        }
 
         // Start tasks
         SlowModeTask.startTask(this);
@@ -159,16 +189,19 @@ public class UltimateModeration extends SongodaPlugin {
                 }
             });
             this.dataManager.getAppliedPunishments((appliedPunishments) -> {
-                for (AppliedPunishment punishment : appliedPunishments)
+                for (AppliedPunishment punishment : appliedPunishments) {
                     this.punishmentManager.getPlayer(punishment.getVictim()).addPunishment(punishment);
+                }
             });
             this.dataManager.getNotes((notes) -> {
-                for (PunishmentNote note : notes)
+                for (PunishmentNote note : notes) {
                     this.punishmentManager.getPlayer(note.getSubject()).addNotes(note);
+                }
             });
             this.dataManager.getTickets((tickets) -> {
-                for (Ticket ticket : tickets.values())
+                for (Ticket ticket : tickets.values()) {
                     this.ticketManager.addTicket(ticket);
+                }
             });
         });
     }
@@ -185,38 +218,38 @@ public class UltimateModeration extends SongodaPlugin {
     }
 
     public CommandManager getCommandManager() {
-        return commandManager;
+        return this.commandManager;
     }
 
     public TemplateManager getTemplateManager() {
-        return templateManager;
+        return this.templateManager;
     }
 
     public PunishmentManager getPunishmentManager() {
-        return punishmentManager;
+        return this.punishmentManager;
     }
 
     public TicketManager getTicketManager() {
-        return ticketManager;
+        return this.ticketManager;
     }
 
     public StaffChatManager getStaffChatManager() {
-        return staffChatManager;
+        return this.staffChatManager;
     }
 
     public DataManager getDataManager() {
-        return dataManager;
+        return this.dataManager;
     }
 
     public DatabaseConnector getDatabaseConnector() {
-        return databaseConnector;
+        return this.databaseConnector;
     }
 
     public GuiManager getGuiManager() {
-        return guiManager;
+        return this.guiManager;
     }
 
     public ModerationManager getModerationManager() {
-        return moderationManager;
+        return this.moderationManager;
     }
 }

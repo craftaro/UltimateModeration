@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class ModerationManager {
-
     private static final Map<ModerationType, AbstractModeration> moderations = new TreeMap<>();
 
     public ModerationManager(UltimateModeration plugin) {

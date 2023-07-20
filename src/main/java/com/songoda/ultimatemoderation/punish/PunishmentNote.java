@@ -3,7 +3,6 @@ package com.songoda.ultimatemoderation.punish;
 import java.util.UUID;
 
 public class PunishmentNote {
-
     private int id;
 
     private final String note;
@@ -27,7 +26,7 @@ public class PunishmentNote {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -35,18 +34,18 @@ public class PunishmentNote {
     }
 
     public String getNote() {
-        return note;
+        return this.note;
     }
 
     public UUID getAuthor() {
-        return author;
+        return this.author;
     }
 
     public UUID getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public long getCreationDate() {
-        return creationDate;
+        return this.creationDate;
     }
 }

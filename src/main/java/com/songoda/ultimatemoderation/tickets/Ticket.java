@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Ticket {
-
     private int id;
 
     private TicketStatus status = TicketStatus.OPEN;

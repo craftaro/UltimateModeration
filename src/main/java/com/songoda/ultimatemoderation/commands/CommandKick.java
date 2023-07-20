@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandKick extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandKick(UltimateModeration plugin) {
@@ -24,8 +23,9 @@ public class CommandKick extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length < 1)
+        if (args.length < 1) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
         StringBuilder reasonBuilder = new StringBuilder();
         if (args.length > 1) {
@@ -40,7 +40,7 @@ public class CommandKick extends AbstractCommand {
         OfflinePlayer player = Bukkit.getPlayer(args[0]);
 
         if (sender instanceof Player && player.getPlayer().hasPermission("um.kick.exempt")) {
-            plugin.getLocale().newMessage("You cannot kick this player.").sendPrefixedMessage(sender);
+            this.plugin.getLocale().newMessage("You cannot kick this player.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

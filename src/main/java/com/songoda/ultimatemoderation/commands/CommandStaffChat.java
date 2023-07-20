@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandStaffChat extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandStaffChat(UltimateModeration plugin) {
@@ -20,33 +19,36 @@ public class CommandStaffChat extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length != 1)
+        if (args.length != 1) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
         String channelName = args[0];
         Player player = (Player) sender;
 
         if (channelName.trim().equalsIgnoreCase("leave")) {
-            for (StaffChannel channel : plugin.getStaffChatManager().getChats().values()) {
-                if (!channel.listMembers().contains(player.getUniqueId())) continue;
+            for (StaffChannel channel : this.plugin.getStaffChatManager().getChats().values()) {
+                if (!channel.listMembers().contains(player.getUniqueId())) {
+                    continue;
+                }
                 channel.removeMember(player);
-                plugin.getLocale().getMessage("event.staffchat.leave")
+                this.plugin.getLocale().getMessage("event.staffchat.leave")
                         .processPlaceholder("channel", channel.getChannelName()).sendPrefixedMessage(player);
                 return ReturnType.SUCCESS;
             }
-            plugin.getLocale().getMessage("event.staffchat.nochannels").sendPrefixedMessage(player);
+            this.plugin.getLocale().getMessage("event.staffchat.nochannels").sendPrefixedMessage(player);
             return ReturnType.FAILURE;
         }
 
-        plugin.getLocale().getMessage("event.staffchat.join")
+        this.plugin.getLocale().getMessage("event.staffchat.join")
                 .processPlaceholder("channel", channelName).sendPrefixedMessage(player);
-        plugin.getStaffChatManager().getChat(channelName).addMember(player);
+        this.plugin.getStaffChatManager().getChat(channelName).addMember(player);
         return ReturnType.SUCCESS;
     }
 
     @Override
     protected List<String> onTab(CommandSender sender, String... args) {
-        return new ArrayList<>(plugin.getStaffChatManager().getChats().keySet());
+        return new ArrayList<>(this.plugin.getStaffChatManager().getChats().keySet());
     }
 
     @Override

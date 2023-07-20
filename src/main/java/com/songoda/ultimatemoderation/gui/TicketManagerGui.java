@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 // FIXME: Pagination not working (probably in other GUIs too) (copy own one from TemplateManagerGui)
 public class TicketManagerGui extends Gui {
-
     private final UltimateModeration plugin;
 
     private final OfflinePlayer toModerate;
@@ -44,18 +43,19 @@ public class TicketManagerGui extends Gui {
     }
 
     private void showPage() {
-        if (inventory != null)
-            inventory.clear();
+        if (this.inventory != null) {
+            this.inventory.clear();
+        }
         setActionForRange(0, 53, null);
 
-        List<Ticket> tickets = toModerate != null
-                ? plugin.getTicketManager().getTicketsAbout(toModerate, status)
-                : plugin.getTicketManager().getTickets(status);
+        List<Ticket> tickets = this.toModerate != null
+                ? this.plugin.getTicketManager().getTicketsAbout(this.toModerate, this.status)
+                : this.plugin.getTicketManager().getTickets(this.status);
 
         int numTickets = tickets.size();
         this.pages = (int) Math.floor(numTickets / 28.0);
 
-        tickets = tickets.stream().skip((page - 1) * 28).limit(28).collect(Collectors.toList());
+        tickets = tickets.stream().skip((this.page - 1) * 28).limit(28).collect(Collectors.toList());
 
         // decorate the edges
         ItemStack glass2 = GuiUtils.getBorderItem(Settings.GLASS_TYPE_2.getMaterial(CompatibleMaterial.BLUE_STAINED_GLASS_PANE));
@@ -71,44 +71,49 @@ public class TicketManagerGui extends Gui {
         mirrorFill(0, 1, true, true, glass2);
 
         // enable page event
-        setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(4, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(4, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
-        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.LEVER, TextUtils.formatText("&6" + status.getStatus())),
+        setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.LEVER, TextUtils.formatText("&6" + this.status.getStatus())),
                 (event) -> {
-                    this.status = status == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN;
+                    this.status = this.status == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN;
                     this.page = 1;
                     showPage();
                 });
 
-        if (toModerate != null && player.hasPermission("um.tickets.create"))
+        if (this.toModerate != null && this.player.hasPermission("um.tickets.create")) {
             setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
-                    plugin.getLocale().getMessage("gui.tickets.create").getMessage()),
-                    (event) -> createNew(player, toModerate));
+                            this.plugin.getLocale().getMessage("gui.tickets.create").getMessage()),
+                    (event) -> createNew(this.player, this.toModerate));
+        }
 
-        if (player.hasPermission("um.ticket"))
+        if (this.player.hasPermission("um.ticket")) {
             setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                    plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                            this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                     (event) -> {
-                        if (toModerate == null)
-                            plugin.getGuiManager().showGUI(player, new MainGui(plugin, player));
-                        else
-                            plugin.getGuiManager().showGUI(event.player, new PlayerGui(plugin, toModerate, event.player));
+                        if (this.toModerate == null) {
+                            this.plugin.getGuiManager().showGUI(this.player, new MainGui(this.plugin, this.player));
+                        } else {
+                            this.plugin.getGuiManager().showGUI(event.player, new PlayerGui(this.plugin, this.toModerate, event.player));
+                        }
                     });
+        }
 
         int num = 11;
         for (Ticket ticket : tickets) {
-            if (num == 16 || num == 36)
+            if (num == 16 || num == 36) {
                 num = num + 2;
+            }
 
             String subjectStr = ticket.getSubject();
 
             ArrayList<String> lore = new ArrayList<>();
             int lastIndex = 0;
             for (int n = 0; n < subjectStr.length(); n++) {
-                if (n - lastIndex < 20)
+                if (n - lastIndex < 20) {
                     continue;
+                }
 
                 if (subjectStr.charAt(n) == ' ') {
                     lore.add("&6" + subjectStr.substring(lastIndex, n).trim());
@@ -116,8 +121,9 @@ public class TicketManagerGui extends Gui {
                 }
             }
 
-            if (lastIndex - subjectStr.length() < 20)
+            if (lastIndex - subjectStr.length() < 20) {
                 lore.add("&6" + subjectStr.substring(lastIndex).trim() + " &7- " + ticket.getId());
+            }
 
             String name = lore.get(0);
             lore.remove(0);
@@ -126,27 +132,28 @@ public class TicketManagerGui extends Gui {
 
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
-            lore.add(plugin.getLocale().getMessage("gui.ticket.status")
+            lore.add(this.plugin.getLocale().getMessage("gui.ticket.status")
                     .processPlaceholder("status", ticket.getStatus().getStatus()).getMessage());
 
-            if (toModerate != null)
-                lore.add(plugin.getLocale().getMessage("gui.tickets.player")
+            if (this.toModerate != null) {
+                lore.add(this.plugin.getLocale().getMessage("gui.tickets.player")
                         .processPlaceholder("player", Bukkit.getOfflinePlayer(ticket.getVictim()).getName()).getMessage());
-            lore.add(plugin.getLocale().getMessage("gui.ticket.type")
+            }
+            lore.add(this.plugin.getLocale().getMessage("gui.ticket.type")
                     .processPlaceholder("type", ticket.getType()).getMessage());
-            lore.add(plugin.getLocale().getMessage("gui.ticket.createdon")
+            lore.add(this.plugin.getLocale().getMessage("gui.ticket.createdon")
                     .processPlaceholder("sent", format.format(new Date(ticket.getCreationDate()))).getMessage());
-            lore.add(plugin.getLocale().getMessage("gui.tickets.click").getMessage());
+            lore.add(this.plugin.getLocale().getMessage("gui.tickets.click").getMessage());
 
             setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
-                    TextUtils.formatText(name), TextUtils.formatText(lore)),
-                    (event) -> guiManager.showGUI(player, new TicketGui(plugin, ticket, toModerate, player)));
+                            TextUtils.formatText(name), TextUtils.formatText(lore)),
+                    (event) -> this.guiManager.showGUI(this.player, new TicketGui(this.plugin, ticket, this.toModerate, this.player)));
             num++;
         }
     }
 
     public static void createNew(Player player, OfflinePlayer toModerate) {
-        UltimateModeration plugin = UltimateModeration.getInstance();
+        UltimateModeration plugin = UltimateModeration.getPlugin(UltimateModeration.class);
 
         AnvilGui gui = new AnvilGui(player);
         gui.setAction((event) ->

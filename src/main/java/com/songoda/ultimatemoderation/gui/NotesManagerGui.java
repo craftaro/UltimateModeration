@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class NotesManagerGui extends Gui {
-
     private final UltimateModeration plugin;
 
     private final OfflinePlayer toModerate;
@@ -42,19 +41,20 @@ public class NotesManagerGui extends Gui {
     }
 
     private void showPage() {
-        if (inventory != null)
-            inventory.clear();
+        if (this.inventory != null) {
+            this.inventory.clear();
+        }
         setActionForRange(0, 53, null);
 
-        int numNotes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().size();
+        int numNotes = this.plugin.getPunishmentManager().getPlayer(this.toModerate).getNotes().size();
         this.pages = (int) Math.max(1, Math.ceil(numNotes / ((double) 28)));
 
-        List<PunishmentNote> notes = plugin.getPunishmentManager().getPlayer(toModerate).getNotes().stream()
-                .skip((page - 1) * 28).limit(28).collect(Collectors.toList());
+        List<PunishmentNote> notes = this.plugin.getPunishmentManager().getPlayer(this.toModerate).getNotes().stream()
+                .skip((this.page - 1) * 28).limit(28).collect(Collectors.toList());
 
         // enable page events
-        setNextPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(0, 3, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(0, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(0, 3, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
         // decorate the edges
@@ -71,37 +71,40 @@ public class NotesManagerGui extends Gui {
         mirrorFill(0, 1, true, true, glass2);
 
         setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                plugin.getLocale().getMessage("gui.general.back").getMessage()),
-                (event) -> guiManager.showGUI(event.player, new PlayerGui(plugin, toModerate, event.player)));
+                        this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                (event) -> this.guiManager.showGUI(event.player, new PlayerGui(this.plugin, this.toModerate, event.player)));
 
-        if (create)
+        if (this.create) {
             setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.REDSTONE,
-                    plugin.getLocale().getMessage("gui.notes.create").getMessage()),
+                            this.plugin.getLocale().getMessage("gui.notes.create").getMessage()),
                     (event) -> {
-                        ChatPrompt.showPrompt(plugin, event.player,
-                                plugin.getLocale().getMessage("gui.notes.type").getMessage(),
+                        ChatPrompt.showPrompt(this.plugin, event.player,
+                                this.plugin.getLocale().getMessage("gui.notes.type").getMessage(),
                                 (response) -> {
                                     PunishmentNote note = new PunishmentNote(response.getMessage(),
-                                            event.player.getUniqueId(), toModerate.getUniqueId(),
+                                            event.player.getUniqueId(), this.toModerate.getUniqueId(),
                                             System.currentTimeMillis());
-                                    plugin.getPunishmentManager().getPlayer(toModerate).addNotes(note);
-                                    plugin.getDataManager().createNote(note);
+                                    this.plugin.getPunishmentManager().getPlayer(this.toModerate).addNotes(note);
+                                    this.plugin.getDataManager().createNote(note);
 
                                     showPage();
-                                }).setOnClose(() -> guiManager.showGUI(event.player, new NotesManagerGui(plugin, toModerate, event.player)));
+                                }).setOnClose(() -> this.guiManager.showGUI(event.player, new NotesManagerGui(this.plugin, this.toModerate, event.player)));
                     });
+        }
 
         int num = 11;
         for (PunishmentNote note : notes) {
-            if (num == 16 || num == 36)
+            if (num == 16 || num == 36) {
                 num = num + 2;
+            }
             String noteStr = note.getNote();
 
             ArrayList<String> lore = new ArrayList<>();
             int lastIndex = 0;
             for (int n = 0; n < noteStr.length(); n++) {
-                if (n - lastIndex < 20)
+                if (n - lastIndex < 20) {
                     continue;
+                }
 
                 if (noteStr.charAt(n) == ' ') {
                     lore.add("&6" + noteStr.substring(lastIndex, n).trim());
@@ -109,8 +112,9 @@ public class NotesManagerGui extends Gui {
                 }
             }
 
-            if (lastIndex - noteStr.length() < 20)
+            if (lastIndex - noteStr.length() < 20) {
                 lore.add("&6" + noteStr.substring(lastIndex).trim());
+            }
 
             String name = lore.get(0);
             lore.remove(0);
@@ -119,25 +123,26 @@ public class NotesManagerGui extends Gui {
 
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
-            lore.add(plugin.getLocale().getMessage("gui.notes.createdby")
+            lore.add(this.plugin.getLocale().getMessage("gui.notes.createdby")
                     .processPlaceholder("player", Bukkit.getOfflinePlayer(note.getAuthor()).getName())
                     .getMessage());
-            lore.add(plugin.getLocale().getMessage("gui.notes.createdon")
+            lore.add(this.plugin.getLocale().getMessage("gui.notes.createdon")
                     .processPlaceholder("sent", format.format(new Date(note.getCreationDate())))
                     .getMessage());
-            if (delete) lore.add(plugin.getLocale().getMessage("gui.notes.remove").getMessage());
+            if (this.delete) {
+                lore.add(this.plugin.getLocale().getMessage("gui.notes.remove").getMessage());
+            }
 
             setButton(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText(name), TextUtils.formatText(lore)),
                     (event) -> {
-                        if (delete) {
-                            plugin.getPunishmentManager().getPlayer(toModerate).removeNotes(note);
-                            plugin.getDataManager().deleteNote(note);
+                        if (this.delete) {
+                            this.plugin.getPunishmentManager().getPlayer(this.toModerate).removeNotes(note);
+                            this.plugin.getDataManager().deleteNote(note);
                             showPage();
                         }
                     });
 
             num++;
         }
-
     }
 }

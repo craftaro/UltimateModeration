@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class CommandUltimateModeration extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandUltimateModeration(UltimateModeration plugin) {
@@ -19,7 +18,7 @@ public class CommandUltimateModeration extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        plugin.getGuiManager().showGUI((Player) sender, new MainGui(plugin, (Player) sender));
+        this.plugin.getGuiManager().showGUI((Player) sender, new MainGui(this.plugin, (Player) sender));
         return ReturnType.SUCCESS;
     }
 

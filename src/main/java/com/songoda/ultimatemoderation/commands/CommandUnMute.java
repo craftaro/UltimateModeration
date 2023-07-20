@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandUnMute extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandUnMute(UltimateModeration plugin) {
@@ -28,17 +27,17 @@ public class CommandUnMute extends AbstractCommand {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (!plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
+        if (!this.plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.MUTE)) {
-            plugin.getLocale().newMessage("That player isn't muted.").sendPrefixedMessage(sender);
+            this.plugin.getLocale().newMessage("That player isn't muted.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(player);
+        PlayerPunishData playerPunishData = this.plugin.getPunishmentManager().getPlayer(player);
 
         playerPunishData.expirePunishments(PunishmentType.MUTE);
 
-        plugin.getLocale().newMessage(plugin.getLocale().getMessage("event.unmute.success")
+        this.plugin.getLocale().newMessage(this.plugin.getLocale().getMessage("event.unmute.success")
                 .processPlaceholder("player", player.getName()).getMessage()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }

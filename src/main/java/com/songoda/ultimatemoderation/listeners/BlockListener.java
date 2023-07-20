@@ -13,29 +13,35 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.List;
 
 public class BlockListener implements Listener {
-
-    private UltimateModeration instance;
-    private StaffChatManager chat = UltimateModeration.getInstance().getStaffChatManager();
+    private final UltimateModeration instance;
+    private final StaffChatManager chat;
 
     public BlockListener(UltimateModeration ultimateModeration) {
         this.instance = ultimateModeration;
+        this.chat = ultimateModeration.getStaffChatManager();
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-
         Player player = event.getPlayer();
         Block block = event.getBlock();
         Material material = block.getType();
 
-        List<String> blocks = instance.getConfig().getStringList("Main.Notify Blocks List");
+        List<String> blocks = this.instance.getConfig().getStringList("Main.Notify Blocks List");
 
         for (String broken : blocks) {
-            if (!broken.equalsIgnoreCase(material.name())) continue;
+            if (!broken.equalsIgnoreCase(material.name())) {
+                continue;
+            }
 
-            if (player.hasPermission("um.trackblockbreaks") && instance.getConfig().getBoolean("Main.Notify Blocks")) {
-                chat.getChat("notify").messageAll("&7[UM] &a" + Bukkit.getPlayer(player.getUniqueId()).getDisplayName()
-                        + UltimateModeration.getInstance().getLocale().getMessage("notify.block.main").getMessage().replace("%material%", material.name()) + "(" + block.getX() + ", " + block.getY() + ", " + block.getZ() + ")&a!");
+            if (player.hasPermission("um.trackblockbreaks") && this.instance.getConfig().getBoolean("Main.Notify Blocks")) {
+                this.chat.getChat("notify").messageAll("&7[UM] &a" + Bukkit.getPlayer(player.getUniqueId()).getDisplayName()
+                        + this.instance
+                        .getLocale()
+                        .getMessage("notify.block.main")
+                        .getMessage()
+                        .replace("%material%", material.name())
+                        + "(" + block.getX() + ", " + block.getY() + ", " + block.getZ() + ")&a!");
             }
         }
     }

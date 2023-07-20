@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class CommandSettings extends AbstractCommand {
-
     private final UltimateModeration plugin;
     private final GuiManager guiManager;
 
@@ -22,8 +21,7 @@ public class CommandSettings extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        Player player = (Player) sender;
-        guiManager.showGUI((Player) sender, new PluginConfigGui(plugin));
+        this.guiManager.showGUI((Player) sender, new PluginConfigGui(this.plugin));
         return ReturnType.SUCCESS;
     }
 

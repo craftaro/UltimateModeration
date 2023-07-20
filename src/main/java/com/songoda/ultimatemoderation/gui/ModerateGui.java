@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModerateGui extends Gui {
-
     public ModerateGui(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(5);
         setDefaultItem(null);
@@ -38,8 +37,8 @@ public class ModerateGui extends Gui {
         mirrorFill(0, 1, true, true, glass2);
 
         setButton(8, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                plugin.getLocale().getMessage("gui.general.back").getMessage()),
-                (event) -> guiManager.showGUI(event.player, new PlayerGui(plugin, toModerate, event.player)));
+                        plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                (event) -> this.guiManager.showGUI(event.player, new PlayerGui(plugin, toModerate, event.player)));
 
         int[] slots = new int[]{11, 13, 15, 29, 31, 33};
 
@@ -47,11 +46,14 @@ public class ModerateGui extends Gui {
 
         int i = 0;
         for (AbstractModeration moderation : moderations) {
-            if (!moderation.hasPermission(player) || moderation.isExempt(toModerate)) continue;
+            if (!moderation.hasPermission(player) || moderation.isExempt(toModerate)) {
+                continue;
+            }
+
             int slot = slots[i];
             setButton(slot, GuiUtils.createButtonItem(moderation.getIcon(),
-                    TextUtils.formatText("&6&l" + moderation.getProper()),
-                    TextUtils.formatText("&7" + moderation.getDescription())),
+                            TextUtils.formatText("&6&l" + moderation.getProper()),
+                            TextUtils.formatText("&7" + moderation.getDescription())),
                     (event) -> moderation.runPreModeration(player, toModerate));
             i++;
         }

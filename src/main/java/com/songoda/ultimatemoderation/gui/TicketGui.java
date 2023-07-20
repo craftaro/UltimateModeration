@@ -23,9 +23,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TicketGui extends Gui {
-
     private final UltimateModeration plugin;
-    private final StaffChatManager chatManager = UltimateModeration.getInstance().getStaffChatManager();
+    private final StaffChatManager chatManager;
 
     private final Ticket ticket;
 
@@ -38,6 +37,7 @@ public class TicketGui extends Gui {
         setDefaultItem(null);
         this.ticket = ticket;
         this.plugin = plugin;
+        this.chatManager = plugin.getStaffChatManager();
         this.player = player;
         this.toModerate = toModerate;
 
@@ -49,14 +49,15 @@ public class TicketGui extends Gui {
     }
 
     private void showPage() {
-        if (inventory != null)
-            inventory.clear();
+        if (this.inventory != null) {
+            this.inventory.clear();
+        }
         setActionForRange(0, 53, null);
 
-        int numNotes = ticket.getResponses().size();
+        int numNotes = this.ticket.getResponses().size();
         this.pages = (int) Math.floor(numNotes / 28.0);
 
-        List<TicketResponse> responses = ticket.getResponses().stream().skip((page - 1) * 28).limit(28)
+        List<TicketResponse> responses = this.ticket.getResponses().stream().skip((this.page - 1) * 28).limit(28)
                 .collect(Collectors.toList());
 
         // decorate the edges
@@ -73,56 +74,61 @@ public class TicketGui extends Gui {
         mirrorFill(0, 1, true, true, glass2);
 
         // enable page event
-        setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.next").getMessage()));
-        setPrevPage(4, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, plugin.getLocale().getMessage("gui.general.back").getMessage()));
+        setNextPage(4, 7, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.next").getMessage()));
+        setPrevPage(4, 1, GuiUtils.createButtonItem(CompatibleMaterial.ARROW, this.plugin.getLocale().getMessage("gui.general.back").getMessage()));
         setOnPage((event) -> showPage());
 
-        if (player.hasPermission("um.tickets.openclose"))
-            setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.LEVER, TextUtils.formatText("&6" + ticket.getStatus().getStatus())),
+        if (this.player.hasPermission("um.tickets.openclose")) {
+            setButton(5, 3, GuiUtils.createButtonItem(CompatibleMaterial.LEVER, TextUtils.formatText("&6" + this.ticket.getStatus().getStatus())),
                     (event) -> {
-                        ticket.setStatus(ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
-                        plugin.getDataManager().updateTicket(ticket);
+                        this.ticket.setStatus(this.ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
+                        this.plugin.getDataManager().updateTicket(this.ticket);
                         // Notify staff of ticket status
-                        chatManager.getChat("ticket").messageAll(UltimateModeration.getInstance().getLocale().getMessage("notify.ticket.status").getMessage().replace("%tid%", "" + ticket.getId()).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()).replace("%status%", ticket.getStatus().toString()));
+                        this.chatManager.getChat("ticket").messageAll(this.plugin.getLocale().getMessage("notify.ticket.status").getMessage().replace("%tid%", String.valueOf(this.ticket.getId())).replace("%type%", this.ticket.getType()).replace("%player%", Bukkit.getPlayer(this.ticket.getVictim()).getDisplayName()).replace("%status%", this.ticket.getStatus().toString()));
                         showPage();
                     });
+        }
 
         setButton(4, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                        this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> {
-                    plugin.getGuiManager().showGUI(event.player, new TicketManagerGui(plugin, toModerate, event.player));
+                    this.plugin.getGuiManager().showGUI(event.player, new TicketManagerGui(this.plugin, this.toModerate, event.player));
                 });
 
-        if (player.hasPermission("um.ticket.clicktotele") && ticket.getLocation() != null)
+        if (this.player.hasPermission("um.ticket.clicktotele") && this.ticket.getLocation() != null) {
             setButton(5, 5, GuiUtils.createButtonItem(CompatibleMaterial.ENDER_PEARL,
-                    plugin.getLocale().getMessage("gui.ticket.clicktotele").getMessage()),
-                    (event) -> player.teleport(ticket.getLocation()));
+                            this.plugin.getLocale().getMessage("gui.ticket.clicktotele").getMessage()),
+                    (event) -> this.player.teleport(this.ticket.getLocation()));
+        }
 
-        if (player.hasPermission("um.tickets.respond"))
-            setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.WRITABLE_BOOK, plugin.getLocale().getMessage("gui.ticket.respond").getMessage()),
+        if (this.player.hasPermission("um.tickets.respond")) {
+            setButton(5, 4, GuiUtils.createButtonItem(CompatibleMaterial.WRITABLE_BOOK, this.plugin.getLocale().getMessage("gui.ticket.respond").getMessage()),
                     (event) -> {
-                        ChatPrompt.showPrompt(plugin, player, plugin.getLocale().getMessage("gui.ticket.what").getMessage(), (evnt) -> {
-                            TicketResponse response = ticket.addResponse(new TicketResponse(player, evnt.getMessage(), System.currentTimeMillis()));
-                            plugin.getDataManager().createTicketResponse(response);
+                        ChatPrompt.showPrompt(this.plugin, this.player, this.plugin.getLocale().getMessage("gui.ticket.what").getMessage(), (evnt) -> {
+                            TicketResponse response = this.ticket.addResponse(new TicketResponse(this.player, evnt.getMessage(), System.currentTimeMillis()));
+                            this.plugin.getDataManager().createTicketResponse(response);
                             // Notify staff of ticket response.
-                            chatManager.getChat("ticket").messageAll(UltimateModeration.getInstance().getLocale().getMessage("notify.ticket.response").getMessage().replace("%tid%", "" + ticket.getId()).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()));
+                            this.chatManager.getChat("ticket").messageAll(this.plugin.getLocale().getMessage("notify.ticket.response").getMessage().replace("%tid%", "" + this.ticket.getId()).replace("%type%", this.ticket.getType()).replace("%player%", Bukkit.getPlayer(this.ticket.getVictim()).getDisplayName()));
                             showPage();
-                        }).setOnClose(() -> guiManager.showGUI(event.player, this));
+                        }).setOnClose(() -> this.guiManager.showGUI(event.player, this));
                     });
+        }
 
 
         int num = 11;
         for (TicketResponse ticketResponse : responses) {
-            if (num == 16 || num == 36)
+            if (num == 16 || num == 36) {
                 num = num + 2;
+            }
 
             String subjectStr = ticketResponse.getMessage();
 
             ArrayList<String> lore = new ArrayList<>();
             int lastIndex = 0;
             for (int n = 0; n < subjectStr.length(); n++) {
-                if (n - lastIndex < 20)
+                if (n - lastIndex < 20) {
                     continue;
+                }
 
                 if (subjectStr.charAt(n) == ' ') {
                     lore.add(TextUtils.formatText("&6" + subjectStr.substring(lastIndex, n).trim()));
@@ -130,8 +136,9 @@ public class TicketGui extends Gui {
                 }
             }
 
-            if (lastIndex - subjectStr.length() < 20)
+            if (lastIndex - subjectStr.length() < 20) {
                 lore.add(TextUtils.formatText("&6" + subjectStr.substring(lastIndex).trim()));
+            }
 
             String name = lore.get(0);
             lore.remove(0);
@@ -141,9 +148,9 @@ public class TicketGui extends Gui {
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
 
-            lore.add(plugin.getLocale().getMessage("gui.ticket.postedby")
+            lore.add(this.plugin.getLocale().getMessage("gui.ticket.postedby")
                     .processPlaceholder("player", Bukkit.getOfflinePlayer(ticketResponse.getAuthor()).getName()).getMessage());
-            lore.add(plugin.getLocale().getMessage("gui.ticket.createdon")
+            lore.add(this.plugin.getLocale().getMessage("gui.ticket.createdon")
                     .processPlaceholder("sent", format.format(new Date(ticketResponse.getPostedDate()))).getMessage());
 
             setItem(num, GuiUtils.createButtonItem(CompatibleMaterial.MAP, TextUtils.formatText(name), lore));

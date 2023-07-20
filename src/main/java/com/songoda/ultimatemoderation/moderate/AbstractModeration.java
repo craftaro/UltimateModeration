@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public abstract class AbstractModeration {
-
     protected final UltimateModeration plugin;
     private final boolean requireOnline, allowConsole;
 
@@ -43,12 +42,12 @@ public abstract class AbstractModeration {
     }
 
     public boolean runPreModeration(CommandSender runner, OfflinePlayer toModerate) {
-        if (requireOnline && !toModerate.isOnline()) {
-            plugin.getLocale().newMessage(toModerate.getName() + " must be online for this moderation.").sendPrefixedMessage(runner);
+        if (this.requireOnline && !toModerate.isOnline()) {
+            this.plugin.getLocale().newMessage(toModerate.getName() + " must be online for this moderation.").sendPrefixedMessage(runner);
         }
 
         if (isExempt(toModerate)) {
-            plugin.getLocale().newMessage(toModerate.getName() + " is exempt from this moderation.").sendPrefixedMessage(runner);
+            this.plugin.getLocale().newMessage(toModerate.getName() + " is exempt from this moderation.").sendPrefixedMessage(runner);
             return false;
         }
 
@@ -58,10 +57,10 @@ public abstract class AbstractModeration {
     protected abstract boolean runModeration(CommandSender runner, OfflinePlayer toModerate);
 
     public boolean isRequireOnline() {
-        return requireOnline;
+        return this.requireOnline;
     }
 
     public boolean isAllowConsole() {
-        return allowConsole;
+        return this.allowConsole;
     }
 }

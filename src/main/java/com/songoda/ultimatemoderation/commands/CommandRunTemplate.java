@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandRunTemplate extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandRunTemplate(UltimateModeration plugin) {
@@ -34,7 +33,7 @@ public class CommandRunTemplate extends AbstractCommand {
         }
         String templateStr = templateBuilder.toString().trim();
 
-        Template template = plugin.getTemplateManager().getTemplate(templateStr);
+        Template template = this.plugin.getTemplateManager().getTemplate(templateStr);
 
         if (template == null) {
             sender.sendMessage("That template does not exist...");
@@ -56,7 +55,7 @@ public class CommandRunTemplate extends AbstractCommand {
             return players;
         } else if (args.length == 2) {
             List<String> lines = new ArrayList<>();
-            for (Template template : plugin.getTemplateManager().getTemplates()) {
+            for (Template template : this.plugin.getTemplateManager().getTemplates()) {
                 lines.add(template.getName());
             }
         }

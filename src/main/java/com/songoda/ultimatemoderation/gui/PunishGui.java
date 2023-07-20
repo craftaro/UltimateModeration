@@ -6,12 +6,12 @@ import com.songoda.core.gui.Gui;
 import com.songoda.core.gui.GuiUtils;
 import com.songoda.core.utils.ItemUtils;
 import com.songoda.core.utils.TextUtils;
+import com.songoda.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.Punishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.punish.template.Template;
 import com.songoda.ultimatemoderation.settings.Settings;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -23,7 +23,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 
 public class PunishGui extends Gui {
-
     private final UltimateModeration plugin;
     private final Player player;
     private final OfflinePlayer toModerate;
@@ -56,15 +55,18 @@ public class PunishGui extends Gui {
         setTitle(toModerate == null ? plugin.getLocale().getMessage("gui.punish.title.template").getMessage()
                 : plugin.getLocale().getMessage("gui.punish.title")
                 .processPlaceholder("toModerate", toModerate.getName()).getMessage());
-        if (toModerate != null) runTask();
+        if (toModerate != null) {
+            runTask();
+        }
 
-        setOnClose((event) -> Bukkit.getScheduler().cancelTask(task));
+        setOnClose((event) -> Bukkit.getScheduler().cancelTask(this.task));
         paint();
     }
 
     public void paint() {
-        if (inventory != null)
-            inventory.clear();
+        if (this.inventory != null) {
+            this.inventory.clear();
+        }
         setActionForRange(0, 53, null);
 
         // decorate the edges
@@ -81,180 +83,197 @@ public class PunishGui extends Gui {
         mirrorFill(2, 0, false, true, glass2);
         mirrorFill(0, 1, true, true, glass2);
 
-        if (toModerate != null)
-            setItem(13, GuiUtils.createButtonItem(ItemUtils.getPlayerSkull(toModerate),
-                    TextUtils.formatText("&6&l" + toModerate.getName())));
+        if (this.toModerate != null) {
+            setItem(13, GuiUtils.createButtonItem(ItemUtils.getPlayerSkull(this.toModerate),
+                    TextUtils.formatText("&6&l" + this.toModerate.getName())));
+        }
 
-        if (player.hasPermission("um." + type.toString().toLowerCase()))
+        if (this.player.hasPermission("um." + this.type.toString().toLowerCase())) {
             setButton(22, GuiUtils.createButtonItem(CompatibleMaterial.EMERALD_BLOCK,
-                    plugin.getLocale().getMessage("gui.punish.submit").getMessage()),
+                            this.plugin.getLocale().getMessage("gui.punish.submit").getMessage()),
                     (event) -> {
-                        if (!player.hasPermission("um." + type.toString().toLowerCase())) return;
-                        if (duration == -1 && type == PunishmentType.BAN && !player.hasPermission("um.ban.permanent"))
+                        if (!this.player.hasPermission("um." + this.type.toString().toLowerCase())) {
                             return;
+                        }
+                        if (this.duration == -1 && this.type == PunishmentType.BAN && !this.player.hasPermission("um.ban.permanent")) {
+                            return;
+                        }
 
-                        if (toModerate == null) {
-                            if (reason == null || templateName == null) return;
+                        if (this.toModerate == null) {
+                            if (this.reason == null || this.templateName == null) {
+                                return;
+                            }
 
-                            if (template == null)
+                            if (this.template == null) {
                                 finishTemplate();
-                            else
+                            } else {
                                 updateTemplate();
+                            }
                             return;
                         }
 
 
-                        switch (type) {
+                        switch (this.type) {
                             case BAN:
                             case MUTE:
                             case WARNING:
-                                new Punishment(type, duration, reason).execute(player, toModerate);
+                                new Punishment(this.type, this.duration, this.reason).execute(this.player, this.toModerate);
                                 break;
                             case KICK:
-                                new Punishment(type, reason).execute(player, toModerate);
+                                new Punishment(this.type, this.reason).execute(this.player, this.toModerate);
                                 break;
                         }
-                        player.closeInventory();
+                        this.player.closeInventory();
                     });
+        }
 
         setButton(8, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                        this.plugin.getLocale().getMessage("gui.general.back").getMessage()),
                 (event) -> {
-                    if (toModerate != null)
-                        guiManager.showGUI(player, new PlayerGui(plugin, toModerate, player));
-                    else
-                        guiManager.showGUI(player, new TemplateManagerGui(plugin, player));
+                    if (this.toModerate != null) {
+                        this.guiManager.showGUI(this.player, new PlayerGui(this.plugin, this.toModerate, this.player));
+                    } else {
+                        this.guiManager.showGUI(this.player, new TemplateManagerGui(this.plugin, this.player));
+                    }
                 });
 
         setButton(28, GuiUtils.createButtonItem(CompatibleMaterial.ANVIL,
-                plugin.getLocale().getMessage("gui.punish.type.punishment").getMessage(),
-                TextUtils.formatText("&7" + type.getTranslation()),
-                "",
-                plugin.getLocale().getMessage("gui.punish.type.punishment.click").getMessage()),
+                        this.plugin.getLocale().getMessage("gui.punish.type.punishment").getMessage(),
+                        TextUtils.formatText("&7" + this.type.getTranslation()),
+                        "",
+                        this.plugin.getLocale().getMessage("gui.punish.type.punishment.click").getMessage()),
                 (event) -> {
                     this.type = this.type.next();
-                    justSaved = false;
+                    this.justSaved = false;
                     paint();
                 });
 
-        ItemStack templateItem = toModerate != null ? GuiUtils.createButtonItem(CompatibleMaterial.MAP,
-                plugin.getLocale().getMessage("gui.punish.type.template").getMessage(),
-                plugin.getLocale().getMessage("gui.punish.type.template.current")
+        ItemStack templateItem = this.toModerate != null ? GuiUtils.createButtonItem(CompatibleMaterial.MAP,
+                this.plugin.getLocale().getMessage("gui.punish.type.template").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.template.current")
                         .processPlaceholder("template",
-                                template == null
-                                        ? plugin.getLocale().getMessage("gui.general.none").getMessage()
-                                        : template.getName()).getMessage(),
+                                this.template == null
+                                        ? this.plugin.getLocale().getMessage("gui.general.none").getMessage()
+                                        : this.template.getName()).getMessage(),
                 "",
-                plugin.getLocale().getMessage(plugin.getTemplateManager().getTemplates().size() == 0
+                this.plugin.getLocale().getMessage(this.plugin.getTemplateManager().getTemplates().size() == 0
                         ? "gui.punish.type.template.none"
                         : "gui.punish.type.template.click").getMessage())
                 : GuiUtils.createButtonItem(CompatibleMaterial.MAP,
-                plugin.getLocale().getMessage("gui.punish.type.name").getMessage(),
-                plugin.getLocale().getMessage("gui.punish.type.name.current")
+                this.plugin.getLocale().getMessage("gui.punish.type.name").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.name.current")
                         .processPlaceholder("name",
-                                templateName == null
-                                        ? plugin.getLocale().getMessage("gui.punish.type.name.current").getMessage()
-                                        : templateName).getMessage(),
+                                this.templateName == null
+                                        ? this.plugin.getLocale().getMessage("gui.punish.type.name.current").getMessage()
+                                        : this.templateName).getMessage(),
                 "",
-                plugin.getLocale().getMessage("gui.punish.type.name.current.click").getMessage());
+                this.plugin.getLocale().getMessage("gui.punish.type.name.current.click").getMessage());
 
         setButton(30, templateItem, (event) -> {
-            if (toModerate == null) {
+            if (this.toModerate == null) {
                 nameTemplate();
                 return;
             }
-            if (plugin.getTemplateManager().getTemplates().size() == 0) return;
+            if (this.plugin.getTemplateManager().getTemplates().size() == 0) {
+                return;
+            }
 
-            if (player.hasPermission("um.templates.use"))
-                guiManager.showGUI(player, new TemplateSelectorGui(plugin, this, player));
+            if (this.player.hasPermission("um.templates.use")) {
+                this.guiManager.showGUI(this.player, new TemplateSelectorGui(this.plugin, this, this.player));
+            }
         });
 
-        if (type != PunishmentType.KICK) {
+        if (this.type != PunishmentType.KICK) {
             setButton(32, GuiUtils.createButtonItem(CompatibleMaterial.CLOCK,
-                    plugin.getLocale().getMessage("gui.punish.type.duration").getMessage(),
-                    plugin.getLocale().getMessage("gui.punish.type.duration.leftclick").getMessage(),
-                    plugin.getLocale().getMessage("gui.punish.type.duration.rightclick").getMessage(),
-                    "",
-                    plugin.getLocale().getMessage("gui.punish.type.duration.current").getMessage(),
-                    TextUtils.formatText("&6" + (duration == -1 ? plugin.getLocale().getMessage("gui.general.permanent").getMessage()
-                            : Methods.makeReadable(duration)))),
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration").getMessage(),
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration.leftclick").getMessage(),
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration.rightclick").getMessage(),
+                            "",
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration.current").getMessage(),
+                            TextUtils.formatText("&6" + (this.duration == -1 ? this.plugin.getLocale().getMessage("gui.general.permanent").getMessage()
+                                    : TimeUtils.makeReadable(this.duration)))),
                     (event) -> {
-                        if (this.type == PunishmentType.KICK) return;
+                        if (this.type == PunishmentType.KICK) {
+                            return;
+                        }
                         if (event.clickType == ClickType.LEFT) {
-                            AnvilGui gui = new AnvilGui(player, this);
+                            AnvilGui gui = new AnvilGui(this.player, this);
                             gui.setAction(evt -> {
-                                this.duration = Methods.parseTime(gui.getInputText());
-                                justSaved = false;
-                                guiManager.showGUI(player, this);
+                                this.duration = TimeUtils.parseTime(gui.getInputText());
+                                this.justSaved = false;
+                                this.guiManager.showGUI(this.player, this);
                                 paint();
                             });
 
                             ItemStack item = new ItemStack(Material.PAPER);
                             ItemMeta meta = item.getItemMeta();
 
-                            meta.setDisplayName(duration == -1 || duration == 0 ? "1d 1h 1m" : Methods.makeReadable(duration));
+                            meta.setDisplayName(this.duration == -1 || this.duration == 0 ? "1d 1h 1m" : TimeUtils.makeReadable(this.duration));
                             item.setItemMeta(meta);
 
                             gui.setInput(item);
-                            guiManager.showGUI(player, gui);
+                            this.guiManager.showGUI(this.player, gui);
                         } else {
-                            duration = -1;
+                            this.duration = -1;
                             paint();
                         }
                     });
         }
 
         setButton(34, GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
-                plugin.getLocale().getMessage("gui.punish.type.reason").getMessage(),
-                plugin.getLocale().getMessage("gui.punish.type.reason.click").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.reason").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.reason.click").getMessage(),
                 "",
-                plugin.getLocale().getMessage("gui.punish.type.reason.current").getMessage(),
-                TextUtils.formatText("&6" + reason)), (event) -> {
+                this.plugin.getLocale().getMessage("gui.punish.type.reason.current").getMessage(),
+                TextUtils.formatText("&6" + this.reason)), (event) -> {
 
-            AnvilGui gui = new AnvilGui(player, this);
+            AnvilGui gui = new AnvilGui(this.player, this);
             gui.setAction(evnt -> {
                 this.reason = gui.getInputText();
-                justSaved = false;
-                guiManager.showGUI(player, this);
+                this.justSaved = false;
+                this.guiManager.showGUI(this.player, this);
                 paint();
             });
 
             ItemStack item = GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
-                    reason == null ? plugin.getLocale().getMessage("gui.general.reason").getMessage() : reason);
+                    this.reason == null ? this.plugin.getLocale().getMessage("gui.general.reason").getMessage() : this.reason);
 
             gui.setInput(item);
-            guiManager.showGUI(player, gui);
+            this.guiManager.showGUI(this.player, gui);
         });
     }
 
     private void notifyTemplate() {
-        if (reason == null || (justSaved && template != null)) {
-            inventory.setItem(4, null);
+        if (this.reason == null || (this.justSaved && this.template != null)) {
+            this.inventory.setItem(4, null);
             return;
         }
 
         CompatibleMaterial material = CompatibleMaterial.WHITE_WOOL;
-        String name = plugin.getLocale().getMessage("gui.punish.template.create").getMessage();
+        String name = this.plugin.getLocale().getMessage("gui.punish.template.create").getMessage();
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(plugin.getLocale().getMessage("gui.punish.template.create2").getMessage());
+        lore.add(this.plugin.getLocale().getMessage("gui.punish.template.create2").getMessage());
 
-        if (!justSaved && template != null) {
-            name = plugin.getLocale().getMessage("gui.punish.template.leftclick").getMessage();
+        if (!this.justSaved && this.template != null) {
+            name = this.plugin.getLocale().getMessage("gui.punish.template.leftclick").getMessage();
             lore.clear();
-            lore.add(plugin.getLocale().getMessage("gui.punish.template.leftclick2")
-                    .processPlaceholder("template", template.getName()).getMessage());
+            lore.add(this.plugin.getLocale().getMessage("gui.punish.template.leftclick2")
+                    .processPlaceholder("template", this.template.getName()).getMessage());
             lore.add("");
-            lore.add(plugin.getLocale().getMessage("gui.punish.template.rightclick").getMessage());
+            lore.add(this.plugin.getLocale().getMessage("gui.punish.template.rightclick").getMessage());
         }
 
-        if (getItem(4) != null && CompatibleMaterial.getMaterial(getItem(4)) == CompatibleMaterial.WHITE_WOOL)
+        if (getItem(4) != null && CompatibleMaterial.getMaterial(getItem(4)) == CompatibleMaterial.WHITE_WOOL) {
             material = CompatibleMaterial.YELLOW_WOOL;
+        }
 
         setButton(4, GuiUtils.createButtonItem(material, name, lore), (event) -> {
 
-            if (reason == null || duration == 0) return;
+            if (this.reason == null || this.duration == 0) {
+                return;
+            }
 
-            if (template != null && event.clickType == ClickType.LEFT) {
+            if (this.template != null && event.clickType == ClickType.LEFT) {
                 updateTemplate();
                 return;
             }
@@ -263,51 +282,54 @@ public class PunishGui extends Gui {
     }
 
     public void runTask() {
-        task = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::notifyTemplate, 10L, 10L);
+        this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, this::notifyTemplate, 10L, 10L);
     }
 
     private void nameTemplate() {
-        AnvilGui gui = new AnvilGui(player, this);
+        AnvilGui gui = new AnvilGui(this.player, this);
         gui.setAction(event -> {
             this.templateName = gui.getInputText();
 
-            if (reason != null && templateName != null) {
-                if (template == null)
+            if (this.reason != null && this.templateName != null) {
+                if (this.template == null) {
                     finishTemplate();
-                else
+                } else {
                     updateTemplate();
+                }
             }
 
-            justSaved = true;
-            guiManager.showGUI(player, this);
+            this.justSaved = true;
+            this.guiManager.showGUI(this.player, this);
             paint();
         });
 
         ItemStack item = GuiUtils.createButtonItem(CompatibleMaterial.PAPER,
-                template == null ? plugin.getLocale().getMessage("gui.general.templatename").getMessage() : template.getName());
+                this.template == null ? this.plugin.getLocale().getMessage("gui.general.templatename").getMessage() : this.template.getName());
 
         gui.setInput(item);
-        guiManager.showGUI(player, gui);
+        this.guiManager.showGUI(this.player, gui);
     }
 
     private void updateTemplate() {
         Template template = new Template(this.type, this.duration, this.reason, this.template.getCreator(), this.templateName);
-        plugin.getTemplateManager().removeTemplate(this.template);
-        plugin.getTemplateManager().addTemplate(template);
-        plugin.getDataManager().deleteTemplate(this.template);
-        plugin.getDataManager().createTemplate(template);
-        justSaved = true;
-        if (toModerate == null)
-            guiManager.showGUI(player, new TemplateManagerGui(plugin, player));
+        this.plugin.getTemplateManager().removeTemplate(this.template);
+        this.plugin.getTemplateManager().addTemplate(template);
+        this.plugin.getDataManager().deleteTemplate(this.template);
+        this.plugin.getDataManager().createTemplate(template);
+        this.justSaved = true;
+        if (this.toModerate == null) {
+            this.guiManager.showGUI(this.player, new TemplateManagerGui(this.plugin, this.player));
+        }
     }
 
     private void finishTemplate() {
-        Template template = new Template(this.type, this.duration, this.reason, player, templateName);
-        plugin.getTemplateManager().addTemplate(template);
-        plugin.getDataManager().createTemplate(template);
+        Template template = new Template(this.type, this.duration, this.reason, this.player, this.templateName);
+        this.plugin.getTemplateManager().addTemplate(template);
+        this.plugin.getDataManager().createTemplate(template);
         this.template = template;
-        if (toModerate == null)
-            guiManager.showGUI(player, new TemplateManagerGui(plugin, player));
+        if (this.toModerate == null) {
+            this.guiManager.showGUI(this.player, new TemplateManagerGui(this.plugin, this.player));
+        }
     }
 
     public void setTemplate(Template template) {

@@ -14,9 +14,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class ReviveModeration extends AbstractModeration {
+    private final UltimateModeration plugin;
 
     public ReviveModeration(UltimateModeration plugin) {
         super(plugin, true, true);
+        this.plugin = plugin;
+
         registerCommand(plugin);
     }
 
@@ -43,11 +46,10 @@ public class ReviveModeration extends AbstractModeration {
     @Override
     protected boolean runModeration(CommandSender runner, OfflinePlayer toModerate) {
         Player toModeratePlayer = (Player) toModerate;
-        UltimateModeration instance = UltimateModeration.getInstance();
         List<ItemStack> drops = DeathListener.getLastDrop(toModeratePlayer);
 
         if (drops == null) {
-            instance.getLocale().getMessage("command.revive.noloot").sendPrefixedMessage(runner);
+            this.plugin.getLocale().getMessage("command.revive.noloot").sendPrefixedMessage(runner);
             return false;
         }
 
@@ -56,8 +58,8 @@ public class ReviveModeration extends AbstractModeration {
 
         PlayerUtils.giveItem(toModeratePlayer, dropArr);
 
-        instance.getLocale().getMessage("command.revive.revived").sendPrefixedMessage(toModeratePlayer);
-        instance.getLocale().getMessage("command.revive.success")
+        this.plugin.getLocale().getMessage("command.revive.revived").sendPrefixedMessage(toModeratePlayer);
+        this.plugin.getLocale().getMessage("command.revive.success")
                 .processPlaceholder("player", toModerate.getName()).sendPrefixedMessage(runner);
         return true;
     }

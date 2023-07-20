@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandClearChat extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandClearChat(UltimateModeration plugin) {
@@ -21,9 +20,9 @@ public class CommandClearChat extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-
-        if (args.length != 0 && !args[0].equalsIgnoreCase("force"))
+        if (args.length != 0 && !args[0].equalsIgnoreCase("force")) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!player.hasPermission("um.clearchat.bypass") || isForced(args)) {
@@ -32,13 +31,14 @@ public class CommandClearChat extends AbstractCommand {
                 player.sendMessage(toSend);
             }
 
-            plugin.getLocale().getMessage("command.clearchat.cleared")
+            this.plugin.getLocale().getMessage("command.clearchat.cleared")
                     .processPlaceholder("player", sender.getName()).sendPrefixedMessage(player);
 
             if (player.hasPermission("um.clearchat.bypass") && !isForced(args)) {
-                plugin.getLocale().getMessage("command.clearchat.immune").sendMessage(player);
+                this.plugin.getLocale().getMessage("command.clearchat.immune").sendMessage(player);
             }
         }
+
         return ReturnType.SUCCESS;
     }
 

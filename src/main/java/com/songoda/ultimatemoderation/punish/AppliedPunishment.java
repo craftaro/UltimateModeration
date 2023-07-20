@@ -3,7 +3,6 @@ package com.songoda.ultimatemoderation.punish;
 import java.util.UUID;
 
 public class AppliedPunishment extends Punishment {
-
     private final UUID victim;
     private final UUID punisher;
     private long expiration;
@@ -30,15 +29,15 @@ public class AppliedPunishment extends Punishment {
     }
 
     public UUID getVictim() {
-        return victim;
+        return this.victim;
     }
 
     public UUID getPunisher() {
-        return punisher;
+        return this.punisher;
     }
 
     public long getExpiration() {
-        return expiration;
+        return this.expiration;
     }
 
     public void expire() {
@@ -46,6 +45,6 @@ public class AppliedPunishment extends Punishment {
     }
 
     public long getTimeRemaining() {
-        return expiration - System.currentTimeMillis();
+        return this.expiration - System.currentTimeMillis();
     }
 }

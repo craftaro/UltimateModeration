@@ -9,7 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ViewEnderChestModeration extends AbstractModeration {
-
     public ViewEnderChestModeration(UltimateModeration plugin) {
         super(plugin, true, false);
         registerCommand(plugin);

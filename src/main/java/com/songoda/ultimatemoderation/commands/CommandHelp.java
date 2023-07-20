@@ -1,14 +1,13 @@
 package com.songoda.ultimatemoderation.commands;
 
 import com.songoda.core.commands.AbstractCommand;
+import com.songoda.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
 public class CommandHelp extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandHelp(UltimateModeration plugin) {
@@ -19,15 +18,15 @@ public class CommandHelp extends AbstractCommand {
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         sender.sendMessage("");
-        plugin.getLocale().getMessage("&7Version " + plugin.getDescription().getVersion() + " Created with <3 by &5&l&oSongoda")
+        this.plugin.getLocale().getMessage("&7Version " + this.plugin.getDescription().getVersion() + " Created with <3 by &5&l&oSongoda")
                 .sendPrefixedMessage(sender);
         sender.sendMessage("");
-        sender.sendMessage(Methods.formatText("&7Welcome to UltimateModeration! To get started try using the /um command to access the moderation panel."));
+        sender.sendMessage(TextUtils.formatText("&7Welcome to UltimateModeration! To get started try using the /um command to access the moderation panel."));
         sender.sendMessage("");
-        sender.sendMessage(Methods.formatText("&6Commands:"));
-        for (AbstractCommand command : plugin.getCommandManager().getAllCommands()) {
+        sender.sendMessage(TextUtils.formatText("&6Commands:"));
+        for (AbstractCommand command : this.plugin.getCommandManager().getAllCommands()) {
             if (command.getPermissionNode() == null || sender.hasPermission(command.getPermissionNode())) {
-                sender.sendMessage(Methods.formatText("&8 - &a" + command.getSyntax() + "&7 - " + command.getDescription()));
+                sender.sendMessage(TextUtils.formatText("&8 - &a" + command.getSyntax() + "&7 - " + command.getDescription()));
             }
         }
         sender.sendMessage("");

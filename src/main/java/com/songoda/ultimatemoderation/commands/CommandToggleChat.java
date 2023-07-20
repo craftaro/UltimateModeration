@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class CommandToggleChat extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     /*
@@ -26,25 +25,25 @@ public class CommandToggleChat extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        toggled = !toggled;
+        this.toggled = !this.toggled;
 
-        Message message = toggled ? plugin.getLocale().getMessage("command.togglechat.toggledOn")
-                : plugin.getLocale().getMessage("command.togglechat.toggledOff");
+        Message message = this.toggled ? this.plugin.getLocale().getMessage("command.togglechat.toggledOn")
+                : this.plugin.getLocale().getMessage("command.togglechat.toggledOff");
 
-        ChatListener.setChatToggled(toggled);
+        ChatListener.setChatToggled(this.toggled);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-
             message.sendPrefixedMessage(player);
 
-            if (!player.hasPermission(getPermissionNode() + ".bypass"))
+            if (!player.hasPermission(getPermissionNode() + ".bypass")) {
                 continue;
-
-            plugin.getLocale().getMessage("command.togglechat.bypass").sendMessage(player);
+            }
+            this.plugin.getLocale().getMessage("command.togglechat.bypass").sendMessage(player);
         }
 
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player)) {
             message.sendPrefixedMessage(sender);
+        }
 
         return ReturnType.SUCCESS;
     }

@@ -8,80 +8,79 @@ import com.songoda.ultimatemoderation.UltimateModeration;
 import java.util.Arrays;
 
 public class Settings {
+    static final Config CONFIG = UltimateModeration.getPlugin(UltimateModeration.class).getCoreConfig();
 
-    static final Config config = UltimateModeration.getInstance().getCoreConfig();
-
-    public static final ConfigSetting VANISH_EFFECTS = new ConfigSetting(config, "Main.Enable Vanish Effects", true,
+    public static final ConfigSetting VANISH_EFFECTS = new ConfigSetting(CONFIG, "Main.Enable Vanish Effects", true,
             "Show particles and play sound when going in and out of vanish.");
 
-    public static final ConfigSetting VANISH_SOUND = new ConfigSetting(config, "Main.Vanish Sound", "ENTITY_GENERIC_EXPLODE",
+    public static final ConfigSetting VANISH_SOUND = new ConfigSetting(CONFIG, "Main.Vanish Sound", "ENTITY_GENERIC_EXPLODE",
             "Sound to be played when going into vanish.");
 
-    public static final ConfigSetting VANISH_BATS = new ConfigSetting(config, "Main.Release Bats On Vanish", true,
+    public static final ConfigSetting VANISH_BATS = new ConfigSetting(CONFIG, "Main.Release Bats On Vanish", true,
             "Shows bats when entering vanish.");
 
-    public static final ConfigSetting VANISH_PARTICLE = new ConfigSetting(config, "Main.Vanish Particle", "EXPLOSION_NORMAL",
+    public static final ConfigSetting VANISH_PARTICLE = new ConfigSetting(CONFIG, "Main.Vanish Particle", "EXPLOSION_NORMAL",
             "Show particles when entering vanish.");
 
-    public static final ConfigSetting SLOW_MODE = new ConfigSetting(config, "Main.SLOW_MODE", "0s",
+    public static final ConfigSetting SLOW_MODE = new ConfigSetting(CONFIG, "Main.SLOW_MODE", "0s",
             "Limits how often a player can send a chat message by the corresponding amount.");
 
-    public static final ConfigSetting BLOCKED_COMMANDS = new ConfigSetting(config, "Main.Blocked Commands", Arrays.asList("Fly", "Op", "Plugins", "Pl"),
+    public static final ConfigSetting BLOCKED_COMMANDS = new ConfigSetting(CONFIG, "Main.Blocked Commands", Arrays.asList("Fly", "Op", "Plugins", "Pl"),
             "Prevents players from running the specified commands.");
 
-    public static final ConfigSetting AUTOSAVE = new ConfigSetting(config, "Main.Auto Save Interval In Seconds", 15,
+    public static final ConfigSetting AUTOSAVE = new ConfigSetting(CONFIG, "Main.Auto Save Interval In Seconds", 15,
             "The amount of time in between saving to file.",
             "This is purely a safety function to prevent against unplanned crashes or",
             "restarts. With that said it is advised to keep this enabled.",
             "If however you enjoy living on the edge, feel free to turn it off.");
 
-    public static final ConfigSetting STAFFCHAT_COLOR_CODE = new ConfigSetting(config, "Main.Staff Chat Color Code", 'b',
+    public static final ConfigSetting STAFFCHAT_COLOR_CODE = new ConfigSetting(CONFIG, "Main.Staff Chat Color Code", 'b',
             "Color of messages sent in staff chat.");
 
-    public static final ConfigSetting TICKET_TYPES = new ConfigSetting(config, "Main.Ticket Types", Arrays.asList("Grief", "Player Report", "Bug Report", "Suggestion", "Other"),
+    public static final ConfigSetting TICKET_TYPES = new ConfigSetting(CONFIG, "Main.Ticket Types", Arrays.asList("Grief", "Player Report", "Bug Report", "Suggestion", "Other"),
             "Types of tickets players can open.");
 
-    public static final ConfigSetting MUTE_DISABLED_COMMANDS = new ConfigSetting(config, "Main.Mute Disabled Commands", Arrays.asList("minecraft:me", "minecraft:tell"),
+    public static final ConfigSetting MUTE_DISABLED_COMMANDS = new ConfigSetting(CONFIG, "Main.Mute Disabled Commands", Arrays.asList("minecraft:me", "minecraft:tell"),
             "Commands disabled when a player is muted.");
 
-    public static final ConfigSetting GLASS_TYPE_1 = new ConfigSetting(config, "Interfaces.Glass Type 1", "GRAY_STAINED_GLASS_PANE");
-    public static final ConfigSetting GLASS_TYPE_2 = new ConfigSetting(config, "Interfaces.Glass Type 2", "BLUE_STAINED_GLASS_PANE");
-    public static final ConfigSetting GLASS_TYPE_3 = new ConfigSetting(config, "Interfaces.Glass Type 3", "LIGHT_BLUE_STAINED_GLASS_PANE");
+    public static final ConfigSetting GLASS_TYPE_1 = new ConfigSetting(CONFIG, "Interfaces.Glass Type 1", "GRAY_STAINED_GLASS_PANE");
+    public static final ConfigSetting GLASS_TYPE_2 = new ConfigSetting(CONFIG, "Interfaces.Glass Type 2", "BLUE_STAINED_GLASS_PANE");
+    public static final ConfigSetting GLASS_TYPE_3 = new ConfigSetting(CONFIG, "Interfaces.Glass Type 3", "LIGHT_BLUE_STAINED_GLASS_PANE");
 
-    public static final ConfigSetting LANGUGE_MODE = new ConfigSetting(config, "System.Language Mode", "en_US",
+    public static final ConfigSetting LANGUGE_MODE = new ConfigSetting(CONFIG, "System.Language Mode", "en_US",
             "The enabled language file.",
             "More language files (if available) can be found in the plugins data folder.");
 
-    public static final ConfigSetting NOTIFY_BLOCK = new ConfigSetting(config, "Main.Notify Blocks", true, "Notify Staff on Block Break");
+    public static final ConfigSetting NOTIFY_BLOCK = new ConfigSetting(CONFIG, "Main.Notify Blocks", true, "Notify Staff on Block Break");
 
-    public static final ConfigSetting NOTIFY_BLOCK_LIST = new ConfigSetting(config, "Main.Notify Blocks List", Arrays.asList("DIAMOND_ORE", "EMERALD_ORE"),
+    public static final ConfigSetting NOTIFY_BLOCK_LIST = new ConfigSetting(CONFIG, "Main.Notify Blocks List", Arrays.asList("DIAMOND_ORE", "EMERALD_ORE"),
             "Blocks that will give a notification when mined.");
 
-    public static final ConfigSetting MYSQL_ENABLED = new ConfigSetting(config, "MySQL.Enabled", false, "Set to 'true' to use MySQL instead of SQLite for data storage.");
-    public static final ConfigSetting MYSQL_HOSTNAME = new ConfigSetting(config, "MySQL.Hostname", "localhost");
-    public static final ConfigSetting MYSQL_PORT = new ConfigSetting(config, "MySQL.Port", 3306);
-    public static final ConfigSetting MYSQL_DATABASE = new ConfigSetting(config, "MySQL.Database", "your-database");
-    public static final ConfigSetting MYSQL_USERNAME = new ConfigSetting(config, "MySQL.Username", "user");
-    public static final ConfigSetting MYSQL_PASSWORD = new ConfigSetting(config, "MySQL.Password", "pass");
-    public static final ConfigSetting MYSQL_USE_SSL = new ConfigSetting(config, "MySQL.Use SSL", false);
-    public static final ConfigSetting MYSQL_POOL_SIZE = new ConfigSetting(config, "MySQL.Pool Size", 3, "Determines the number of connections the pool is using. Increase this value if you are getting timeout errors when more players online.");
+    public static final ConfigSetting MYSQL_ENABLED = new ConfigSetting(CONFIG, "MySQL.Enabled", false, "Set to 'true' to use MySQL instead of SQLite for data storage.");
+    public static final ConfigSetting MYSQL_HOSTNAME = new ConfigSetting(CONFIG, "MySQL.Hostname", "localhost");
+    public static final ConfigSetting MYSQL_PORT = new ConfigSetting(CONFIG, "MySQL.Port", 3306);
+    public static final ConfigSetting MYSQL_DATABASE = new ConfigSetting(CONFIG, "MySQL.Database", "your-database");
+    public static final ConfigSetting MYSQL_USERNAME = new ConfigSetting(CONFIG, "MySQL.Username", "user");
+    public static final ConfigSetting MYSQL_PASSWORD = new ConfigSetting(CONFIG, "MySQL.Password", "pass");
+    public static final ConfigSetting MYSQL_USE_SSL = new ConfigSetting(CONFIG, "MySQL.Use SSL", false);
+    public static final ConfigSetting MYSQL_POOL_SIZE = new ConfigSetting(CONFIG, "MySQL.Pool Size", 3, "Determines the number of connections the pool is using. Increase this value if you are getting timeout errors when more players online.");
 
     public static void setupConfig() {
-        config.load();
-        config.setAutoremove(true).setAutosave(true);
+        CONFIG.load();
+        CONFIG.setAutoremove(true).setAutosave(true);
 
         // convert glass pane settings
         int color;
         if ((color = GLASS_TYPE_1.getInt(-1)) != -1) {
-            config.set(GLASS_TYPE_1.getKey(), CompatibleMaterial.getGlassPaneColor(color).name());
+            CONFIG.set(GLASS_TYPE_1.getKey(), CompatibleMaterial.getGlassPaneColor(color).name());
         }
         if ((color = GLASS_TYPE_2.getInt(-1)) != -1) {
-            config.set(GLASS_TYPE_2.getKey(), CompatibleMaterial.getGlassPaneColor(color).name());
+            CONFIG.set(GLASS_TYPE_2.getKey(), CompatibleMaterial.getGlassPaneColor(color).name());
         }
         if ((color = GLASS_TYPE_3.getInt(-1)) != -1) {
-            config.set(GLASS_TYPE_3.getKey(), CompatibleMaterial.getGlassPaneColor(color).name());
+            CONFIG.set(GLASS_TYPE_3.getKey(), CompatibleMaterial.getGlassPaneColor(color).name());
         }
 
-        config.saveChanges();
+        CONFIG.saveChanges();
     }
 }

@@ -1,9 +1,9 @@
 package com.songoda.ultimatemoderation.commands;
 
 import com.songoda.core.commands.AbstractCommand;
+import com.songoda.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandSlowMode extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandSlowMode(UltimateModeration plugin) {
@@ -24,18 +23,19 @@ public class CommandSlowMode extends AbstractCommand {
     protected ReturnType runCommand(CommandSender sender, String... args) {
         if (args.length == 0) {
             ChatListener.setSlowModeOverride(0);
-            plugin.getLocale().getMessage("event.slowmode.disabled").sendPrefixedMessage(sender);
+            this.plugin.getLocale().getMessage("event.slowmode.disabled").sendPrefixedMessage(sender);
             return ReturnType.SUCCESS;
-        } else if (args.length != 1)
+        } else if (args.length != 1) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
-        long delay = Methods.parseTime(args[0]);
+        long delay = TimeUtils.parseTime(args[0]);
 
         ChatListener.setSlowModeOverride(delay);
 
         Bukkit.getOnlinePlayers().forEach(player ->
-                plugin.getLocale().getMessage("event.slowmode.enabled")
-                        .processPlaceholder("delay", Methods.makeReadable(delay)).sendPrefixedMessage(player));
+                this.plugin.getLocale().getMessage("event.slowmode.enabled")
+                        .processPlaceholder("delay", TimeUtils.makeReadable(delay)).sendPrefixedMessage(player));
 
         return ReturnType.SUCCESS;
     }

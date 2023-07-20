@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class CommandTicket extends AbstractCommand {
-
     private final UltimateModeration plugin;
     private final GuiManager guiManager;
 
@@ -23,7 +22,7 @@ public class CommandTicket extends AbstractCommand {
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
         Player senderP = ((Player) sender);
-        guiManager.showGUI(senderP, new TicketManagerGui(plugin, senderP, senderP));
+        this.guiManager.showGUI(senderP, new TicketManagerGui(this.plugin, senderP, senderP));
         return ReturnType.SUCCESS;
     }
 
@@ -46,5 +45,4 @@ public class CommandTicket extends AbstractCommand {
     public String getDescription() {
         return "Opens the ticket interface.";
     }
-
 }

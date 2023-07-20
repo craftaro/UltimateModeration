@@ -8,8 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class InventoryListener implements Listener {
-
-    private UltimateModeration plugin;
+    private final UltimateModeration plugin;
 
     public InventoryListener(UltimateModeration ultimateModeration) {
         this.plugin = ultimateModeration;
@@ -17,11 +16,14 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onMove(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+
         Player player = (Player) event.getWhoClicked();
         if (FreezeModeration.isFrozen(player)) {
             event.setCancelled(true);
-            plugin.getLocale().getMessage("command.freeze.nope").sendPrefixedMessage(player);
+            this.plugin.getLocale().getMessage("command.freeze.nope").sendPrefixedMessage(player);
         }
     }
 }

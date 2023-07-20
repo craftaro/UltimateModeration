@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerGui extends Gui {
-
     public PlayerGui(UltimateModeration plugin, OfflinePlayer toModerate, Player player) {
         super(6);
         setDefaultItem(null);
@@ -48,35 +47,40 @@ public class PlayerGui extends Gui {
                         : "&c" + plugin.getLocale().getMessage("gui.players.online.offline").getMessage())));
 
         setButton(8, GuiUtils.createButtonItem(CompatibleMaterial.OAK_DOOR,
-                plugin.getLocale().getMessage("gui.general.back").getMessage()),
-                (event) -> guiManager.showGUI(event.player, new MainGui(plugin, event.player)));
+                        plugin.getLocale().getMessage("gui.general.back").getMessage()),
+                (event) -> this.guiManager.showGUI(event.player, new MainGui(plugin, event.player)));
 
-        if (punish)
+        if (punish) {
             setButton(38, GuiUtils.createButtonItem(CompatibleMaterial.ANVIL,
-                    plugin.getLocale().getMessage("gui.player.punish").getMessage()),
+                            plugin.getLocale().getMessage("gui.player.punish").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player,
                             new PunishGui(plugin, toModerate, null, event.player)));
+        }
 
-        if (tickets)
+        if (tickets) {
             setButton(30, GuiUtils.createButtonItem(CompatibleMaterial.CHEST,
-                    plugin.getLocale().getMessage("gui.player.tickets").getMessage()),
+                            plugin.getLocale().getMessage("gui.player.tickets").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player,
                             new TicketManagerGui(plugin, toModerate, event.player)));
+        }
 
-        if (toModerate.isOnline() && punishments)
+        if (toModerate.isOnline() && punishments) {
             setButton(32, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_SWORD,
-                    plugin.getLocale().getMessage("gui.player.punishments").getMessage()),
+                            plugin.getLocale().getMessage("gui.player.punishments").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player, new PunishmentsGui(plugin, toModerate)));
+        }
 
-        if (notes)
+        if (notes) {
             setButton(42, GuiUtils.createButtonItem(CompatibleMaterial.MAP,
-                    plugin.getLocale().getMessage("gui.player.notes").getMessage()),
+                            plugin.getLocale().getMessage("gui.player.notes").getMessage()),
                     (event) -> plugin.getGuiManager().showGUI(player,
                             new NotesManagerGui(plugin, toModerate, event.player)));
+        }
 
-        if (moderate)
+        if (moderate) {
             setButton(40, GuiUtils.createButtonItem(CompatibleMaterial.DIAMOND_CHESTPLATE,
-                    plugin.getLocale().getMessage("gui.player.moderate").getMessage()),
-                    (event) -> guiManager.showGUI(player, new ModerateGui(plugin, toModerate, event.player)));
+                            plugin.getLocale().getMessage("gui.player.moderate").getMessage()),
+                    (event) -> this.guiManager.showGUI(player, new ModerateGui(plugin, toModerate, event.player)));
+        }
     }
 }

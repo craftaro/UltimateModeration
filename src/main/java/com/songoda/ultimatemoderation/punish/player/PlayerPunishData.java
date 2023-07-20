@@ -12,7 +12,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PlayerPunishData {
-
     private final UUID player;
 
     private final List<AppliedPunishment> activePunishments = new ArrayList<>();
@@ -30,27 +29,27 @@ public class PlayerPunishData {
     }
 
     public UUID getPlayer() {
-        return player;
+        return this.player;
     }
 
     public List<AppliedPunishment> getActivePunishments() {
         audit();
-        return new ArrayList<>(activePunishments);
+        return new ArrayList<>(this.activePunishments);
     }
 
     public List<AppliedPunishment> getActivePunishments(PunishmentType type) {
         audit();
-        return activePunishments.stream().filter(punishment -> punishment.getPunishmentType() == type).collect(Collectors.toList());
+        return this.activePunishments.stream().filter(punishment -> punishment.getPunishmentType() == type).collect(Collectors.toList());
     }
 
     public List<AppliedPunishment> getExpiredPunishments() {
         audit();
-        return new ArrayList<>(expiredPunishments);
+        return new ArrayList<>(this.expiredPunishments);
     }
 
     public List<AppliedPunishment> getExpiredPunishments(PunishmentType type) {
         audit();
-        return expiredPunishments.stream().filter(punishment -> punishment.getPunishmentType() == type).collect(Collectors.toList());
+        return this.expiredPunishments.stream().filter(punishment -> punishment.getPunishmentType() == type).collect(Collectors.toList());
     }
 
     public AppliedPunishment[] addPunishment(AppliedPunishment... appliedPunishments) {
@@ -74,7 +73,7 @@ public class PlayerPunishData {
     }
 
     public List<PunishmentNote> getNotes() {
-        return new ArrayList<>(punishmentNotes);
+        return new ArrayList<>(this.punishmentNotes);
     }
 
     public PunishmentNote[] addNotes(PunishmentNote... notes) {
@@ -92,7 +91,7 @@ public class PlayerPunishData {
     }
 
     private void audit(boolean forced, PunishmentType punishmentType) {
-        List<AppliedPunishment> expired = activePunishments.stream().filter(appliedPunishment ->
+        List<AppliedPunishment> expired = this.activePunishments.stream().filter(appliedPunishment ->
                 (appliedPunishment.getDuration() != -1 || forced || appliedPunishment.getExpiration() == -1)
                         && (appliedPunishment.getPunishmentType() == punishmentType || punishmentType == PunishmentType.ALL)
                         && appliedPunishment.getExpiration() <= System.currentTimeMillis()).collect(Collectors.toList());
@@ -103,7 +102,7 @@ public class PlayerPunishData {
 
     public void expirePunishments(PunishmentType type) {
         List<AppliedPunishment> toAudit = new ArrayList<>();
-        activePunishments.stream().filter(appliedPunishment ->
+        this.activePunishments.stream().filter(appliedPunishment ->
                 type == appliedPunishment.getPunishmentType()).forEach(appliedPunishment -> {
             appliedPunishment.expire();
             UltimateModeration.getInstance().getDataManager().updateAppliedPunishment(appliedPunishment);

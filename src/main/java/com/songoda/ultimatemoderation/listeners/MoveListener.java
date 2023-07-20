@@ -8,8 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class MoveListener implements Listener {
-
-    private UltimateModeration instance;
+    private final UltimateModeration instance;
 
     public MoveListener(UltimateModeration ultimateModeration) {
         this.instance = ultimateModeration;
@@ -20,7 +19,7 @@ public class MoveListener implements Listener {
         Player player = event.getPlayer();
         if (FreezeModeration.isFrozen(player)) {
             event.setCancelled(true);
-            instance.getLocale().getMessage("command.freeze.nope").sendPrefixedMessage(player);
+            this.instance.getLocale().getMessage("command.freeze.nope").sendPrefixedMessage(player);
         }
     }
 }

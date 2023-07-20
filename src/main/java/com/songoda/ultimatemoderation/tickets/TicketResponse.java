@@ -5,7 +5,6 @@ import org.bukkit.OfflinePlayer;
 import java.util.UUID;
 
 public class TicketResponse {
-
     private int ticketId;
 
     private final UUID author;

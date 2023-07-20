@@ -17,21 +17,31 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SpyingDismountListener implements Listener {
+    private static final Map<UUID, GameMode> gamemodes = new HashMap<>();
 
-    private static Map<UUID, GameMode> gamemodes = new HashMap<>();
+    private final UltimateModeration plugin;
+
+    public SpyingDismountListener(UltimateModeration plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDismountEvent(EntityDismountEvent event) {
-        if (!(event.getDismounted() instanceof Player)) return;
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getDismounted() instanceof Player)) {
+            return;
+        }
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+
         if (SpyModeration.isSpying((((Player) event.getEntity()).getPlayer()))) {
             Player player = (Player) event.getEntity();
             gamemodes.put(player.getUniqueId(), player.getGameMode());
             player.setGameMode(GameMode.SPECTATOR);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(UltimateModeration.getInstance(), () -> {
-
-                if (player.getGameMode() == GameMode.SPECTATOR)
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, () -> {
+                if (player.getGameMode() == GameMode.SPECTATOR) {
                     player.setSpectatorTarget(event.getDismounted());
+                }
             }, 5L);
         }
     }
@@ -39,8 +49,10 @@ public class SpyingDismountListener implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         Player player = event.getPlayer();
-        if (player.isSneaking() || !SpyModeration.isSpying(player) || player.getGameMode() != GameMode.SPECTATOR)
+        if (player.isSneaking() || !SpyModeration.isSpying(player) || player.getGameMode() != GameMode.SPECTATOR) {
             return;
+        }
+
         SpyModeration.spy(null, player);
     }
 

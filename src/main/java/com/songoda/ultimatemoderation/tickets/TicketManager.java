@@ -9,7 +9,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class TicketManager {
-
     private final TreeMap<Integer, Ticket> registeredTickets = new TreeMap<>();
 
     public Ticket addTicket(Ticket ticket) {

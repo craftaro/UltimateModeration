@@ -1,10 +1,10 @@
 package com.songoda.ultimatemoderation.tasks;
 
 import com.songoda.core.compatibility.ServerVersion;
+import com.songoda.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.listeners.ChatListener;
 import com.songoda.ultimatemoderation.settings.Settings;
-import com.songoda.ultimatemoderation.utils.Methods;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SlowModeTask extends BukkitRunnable {
-
     private static SlowModeTask instance;
     private static UltimateModeration plugin;
 
@@ -34,29 +33,33 @@ public class SlowModeTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        long slowmode = ChatListener.getSlowModeOverride() == 0 ? Methods.parseTime(Settings.SLOW_MODE.getString()) : ChatListener.getSlowModeOverride();
+        long slowmode = ChatListener.getSlowModeOverride() == 0 ? TimeUtils.parseTime(Settings.SLOW_MODE.getString()) : ChatListener.getSlowModeOverride();
 
-        if (slowmode == 0) return;
+        if (slowmode == 0) {
+            return;
+        }
 
         List<ChatListener.Log> logs = ChatListener.getLogs();
 
         Bukkit.getOnlinePlayers().forEach(player -> {
-            if (player.hasPermission("um.slowmode.bypass")) return;
+            if (player.hasPermission("um.slowmode.bypass")) {
+                return;
+            }
 
             List<ChatListener.Log> chats = logs.stream().filter(log -> log.getPlayer() == player.getUniqueId()).collect(Collectors.toList());
-            if (chats.size() == 0) return;
+            if (chats.size() == 0) {
+                return;
+            }
             ChatListener.Log last = chats.get(chats.size() - 1);
 
             if ((System.currentTimeMillis() - last.getSent()) < (slowmode + 1000)) {
                 int remaining = (int) ((slowmode / 1000) - (System.currentTimeMillis() - last.getSent()) / 1000);
-                if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9))
+                if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(remaining == 0
                             ? plugin.getLocale().getMessage("event.slowmode.done").getMessage()
                             : plugin.getLocale().getMessage("event.slowmode.wait").processPlaceholder("delay", remaining).getMessage()));
+                }
             }
-
         });
-
     }
-
 }

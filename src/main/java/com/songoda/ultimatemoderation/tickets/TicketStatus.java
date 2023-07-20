@@ -1,7 +1,6 @@
 package com.songoda.ultimatemoderation.tickets;
 
 public enum TicketStatus {
-
     OPEN("Open"),
     CLOSED("Closed");
 

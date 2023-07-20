@@ -8,11 +8,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PunishmentManager {
-
-    private Map<UUID, PlayerPunishData> punishments = new HashMap<>();
+    private final Map<UUID, PlayerPunishData> punishments = new HashMap<>();
 
     public Map<UUID, PlayerPunishData> getPunishments() {
-        return Collections.unmodifiableMap(punishments);
+        return Collections.unmodifiableMap(this.punishments);
     }
 
     public PlayerPunishData getPlayer(OfflinePlayer player) {
@@ -20,6 +19,6 @@ public class PunishmentManager {
     }
 
     public PlayerPunishData getPlayer(UUID player) {
-        return punishments.computeIfAbsent(player, PlayerPunishData::new);
+        return this.punishments.computeIfAbsent(player, PlayerPunishData::new);
     }
 }

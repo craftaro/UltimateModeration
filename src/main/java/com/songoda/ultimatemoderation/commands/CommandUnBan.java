@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandUnBan extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandUnBan(UltimateModeration plugin) {
@@ -23,22 +22,23 @@ public class CommandUnBan extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length != 1)
+        if (args.length != 1) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-        if (!plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
+        if (!this.plugin.getPunishmentManager().getPlayer(player).getActivePunishments()
                 .stream().anyMatch(appliedPunishment -> appliedPunishment.getPunishmentType() == PunishmentType.BAN)) {
-            plugin.getLocale().newMessage("That player isn't banned.").sendPrefixedMessage(sender);
+            this.plugin.getLocale().newMessage("That player isn't banned.").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 
-        PlayerPunishData playerPunishData = plugin.getPunishmentManager().getPlayer(player);
+        PlayerPunishData playerPunishData = this.plugin.getPunishmentManager().getPlayer(player);
 
         playerPunishData.expirePunishments(PunishmentType.BAN);
 
-        plugin.getLocale().getMessage("event.unban.success")
+        this.plugin.getLocale().getMessage("event.unban.success")
                 .processPlaceholder("player", player.getName()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }

@@ -1,11 +1,11 @@
 package com.songoda.ultimatemoderation.listeners;
 
+import com.songoda.core.utils.TimeUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.punish.AppliedPunishment;
 import com.songoda.ultimatemoderation.punish.PunishmentType;
 import com.songoda.ultimatemoderation.settings.Settings;
 import com.songoda.ultimatemoderation.staffchat.StaffChannel;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,7 +18,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ChatListener implements Listener {
-
     private static long slowModeOverride = 0;
 
     private static boolean isChatToggled = true; // true means people can talk, false means muted
@@ -32,7 +31,7 @@ public class ChatListener implements Listener {
         isChatToggled = toggled;
     }
 
-    private static List<Log> chatLog = new ArrayList<>();
+    private static final List<Log> chatLog = new ArrayList<>();
 
     public static long getSlowModeOverride() {
         return slowModeOverride;
@@ -41,14 +40,15 @@ public class ChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if (!onChat(player, event.getMessage()))
+        if (!onChat(player, event.getMessage())) {
             event.setCancelled(true);
+        }
     }
 
     public static boolean onChat(Player player, String message) {
         UltimateModeration instance = UltimateModeration.getInstance();
 
-        long slowmode = slowModeOverride == 0 ? Methods.parseTime(Settings.SLOW_MODE.getString()) : slowModeOverride;
+        long slowmode = slowModeOverride == 0 ? TimeUtils.parseTime(Settings.SLOW_MODE.getString()) : slowModeOverride;
 
         if (!player.hasPermission("um.slowmode.bypass") && slowmode != 0) {
             List<Log> chats = chatLog.stream().filter(log -> log.player == player.getUniqueId()).collect(Collectors.toList());
@@ -63,7 +63,9 @@ public class ChatListener implements Listener {
         boolean isCancelled = false;
 
         for (StaffChannel channel : instance.getStaffChatManager().getChats().values()) {
-            if (!channel.listMembers().contains(player.getUniqueId())) continue;
+            if (!channel.listMembers().contains(player.getUniqueId())) {
+                continue;
+            }
             isCancelled = true;
             channel.processMessage(message, player);
         }
@@ -95,10 +97,9 @@ public class ChatListener implements Listener {
     }
 
     public static class Log {
-
-        private UUID player;
-        private long sent;
-        private String message;
+        private final UUID player;
+        private final long sent;
+        private final String message;
 
         Log(UUID player, long sent, String message) {
             this.player = player;
@@ -107,16 +108,15 @@ public class ChatListener implements Listener {
         }
 
         public UUID getPlayer() {
-            return player;
+            return this.player;
         }
 
         public long getSent() {
-            return sent;
+            return this.sent;
         }
 
         public String getMessage() {
-            return message;
+            return this.message;
         }
     }
-
 }

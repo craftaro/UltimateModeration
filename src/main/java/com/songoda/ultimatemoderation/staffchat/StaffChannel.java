@@ -1,8 +1,8 @@
 package com.songoda.ultimatemoderation.staffchat;
 
+import com.songoda.core.utils.TextUtils;
 import com.songoda.ultimatemoderation.UltimateModeration;
 import com.songoda.ultimatemoderation.settings.Settings;
-import com.songoda.ultimatemoderation.utils.Methods;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class StaffChannel {
-
     private final String channelName;
     private char chatChar = Settings.STAFFCHAT_COLOR_CODE.getChar();
     private final List<UUID> members = new ArrayList<>();
@@ -22,28 +21,35 @@ public class StaffChannel {
     }
 
     public List<UUID> listMembers() {
-        return new ArrayList<>(members);
+        return new ArrayList<>(this.members);
     }
 
     public void addMember(Player player) {
-        if (members.contains(player.getUniqueId())) return;
+        if (this.members.contains(player.getUniqueId())) {
+            return;
+        }
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.alljoin")
                 .processPlaceholder("player", player.getName()).getMessage(), player);
 
-        UltimateModeration.getInstance().getStaffChatManager().getChats().values().stream().forEach(members1 -> {
+        UltimateModeration.getInstance()
+                .getStaffChatManager()
+                .getChats()
+                .values()
+                .stream()
+                .forEach(members1 -> {
             if (members1.listMembers().contains(player.getUniqueId())) {
                 members1.removeMember(player);
             }
         });
-        members.add(player.getUniqueId());
-        if (chatLog.size() > 5) {
-            chatLog.stream().skip(chatLog.size() - 3).forEach(message -> player.sendMessage(Methods.formatText(message)));
+        this.members.add(player.getUniqueId());
+        if (this.chatLog.size() > 5) {
+            this.chatLog.stream().skip(this.chatLog.size() - 3).forEach(message -> player.sendMessage(TextUtils.formatText(message)));
         }
     }
 
     public void removeMember(Player player) {
-        members.remove(player.getUniqueId());
+        this.members.remove(player.getUniqueId());
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.allleave")
                 .processPlaceholder("player", player.getName()).getMessage(), player);
@@ -52,8 +58,8 @@ public class StaffChannel {
     public void processMessage(String message, Player player) {
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.format")
-                .processPlaceholder("color", chatChar)
-                .processPlaceholder("channel", channelName)
+                .processPlaceholder("color", this.chatChar)
+                .processPlaceholder("channel", this.channelName)
                 .processPlaceholder("player", player.getDisplayName())
                 .processPlaceholder("message", message).getMessage());
     }
@@ -63,20 +69,24 @@ public class StaffChannel {
     }
 
     public void messageAll(String message, Player exempt) {
-        chatLog.add(message);
+        this.chatLog.add(message);
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (exempt != null && player == exempt) continue;
-            if (!members.contains(player.getUniqueId()) && !player.hasPermission("um.staffchat.spy")) continue;
-            player.sendMessage(Methods.formatText(message));
+            if (exempt != null && player == exempt) {
+                continue;
+            }
+            if (!this.members.contains(player.getUniqueId()) && !player.hasPermission("um.staffchat.spy")) {
+                continue;
+            }
+            player.sendMessage(TextUtils.formatText(message));
         }
     }
 
     public String getChannelName() {
-        return channelName;
+        return this.channelName;
     }
 
     public char getChatChar() {
-        return chatChar;
+        return this.chatChar;
     }
 
     public void setChatChar(char chatChar) {

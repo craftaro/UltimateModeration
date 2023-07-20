@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GenericModerationCommand extends AbstractCommand {
-
     private final UltimateModeration plugin;
     private final AbstractModeration moderation;
 
@@ -23,17 +22,18 @@ public class GenericModerationCommand extends AbstractCommand {
 
     @Override
     protected ReturnType runCommand(CommandSender sender, String... args) {
-        if (args.length != 1)
+        if (args.length != 1) {
             return ReturnType.SYNTAX_ERROR;
+        }
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
         if (!player.hasPlayedBefore()) {
-            plugin.getLocale().newMessage("&cThis player has never played this server before...");
+            this.plugin.getLocale().newMessage("&cThis player has never played this server before...");
             return ReturnType.FAILURE;
         }
 
-        moderation.runPreModeration(sender, player);
+        this.moderation.runPreModeration(sender, player);
 
         return ReturnType.SUCCESS;
     }
@@ -52,16 +52,16 @@ public class GenericModerationCommand extends AbstractCommand {
 
     @Override
     public String getPermissionNode() {
-        return moderation.getPermission();
+        return this.moderation.getPermission();
     }
 
     @Override
     public String getSyntax() {
-        return "/" + moderation.getProper() + " <player>";
+        return "/" + this.moderation.getProper() + " <player>";
     }
 
     @Override
     public String getDescription() {
-        return moderation.getDescription();
+        return this.moderation.getDescription();
     }
 }

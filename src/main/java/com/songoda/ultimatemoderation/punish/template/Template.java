@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class Template extends Punishment {
-
     private final String templateName;
     private final UUID creator;
 
@@ -30,10 +29,10 @@ public class Template extends Punishment {
     }
 
     public String getName() {
-        return templateName;
+        return this.templateName;
     }
 
     public UUID getCreator() {
-        return creator;
+        return this.creator;
     }
 }

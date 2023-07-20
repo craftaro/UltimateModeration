@@ -16,15 +16,14 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class TicketTypeGui extends Gui {
-
-    private final StaffChatManager chatManager = UltimateModeration.getInstance().getStaffChatManager();
+    private final StaffChatManager chatManager;
 
     public TicketTypeGui(UltimateModeration plugin, OfflinePlayer toModerate, Player player, String subject) {
         super(3);
+        this.chatManager = plugin.getStaffChatManager();
+
         setDefaultItem(null);
-
         setTitle(plugin.getLocale().getMessage("gui.ticket.picktype").getMessage());
-
 
         List<String> types = Settings.TICKET_TYPES.getStringList();
 
@@ -39,13 +38,14 @@ public class TicketTypeGui extends Gui {
                                     plugin.getTicketManager().addTicket(ticket);
 
                                     // Notify staff
-                                    chatManager.getChat("ticket").messageAll(UltimateModeration.getInstance().getLocale().getMessage("notify.ticket.created").getMessage().replace("%tid%", "" + ticket.getId()).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()));
-                                    if (player == toModerate)
+                                    this.chatManager.getChat("ticket").messageAll(plugin.getLocale().getMessage("notify.ticket.created").getMessage().replace("%tid%", String.valueOf(ticket.getId())).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()));
+                                    if (player == toModerate) {
                                         ticket.setLocation(player.getLocation());
+                                    }
                                     ticket.addResponse(new TicketResponse(player, event2.getMessage(), System.currentTimeMillis()));
                                     plugin.getDataManager().createTicket(ticket);
                                 }).setOnClose(() ->
-                                guiManager.showGUI(event.player, new TicketGui(plugin, ticket, toModerate, player)));
+                                this.guiManager.showGUI(event.player, new TicketGui(plugin, ticket, toModerate, player)));
                     });
         }
     }

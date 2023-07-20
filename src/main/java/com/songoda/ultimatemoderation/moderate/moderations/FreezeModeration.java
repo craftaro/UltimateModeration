@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class FreezeModeration extends AbstractModeration {
-
     private static final List<UUID> frozen = new ArrayList<>();
 
     public FreezeModeration(UltimateModeration plugin) {
@@ -44,16 +43,18 @@ public class FreezeModeration extends AbstractModeration {
     protected boolean runModeration(CommandSender runner, OfflinePlayer toModerate) {
         if (frozen.contains(toModerate.getUniqueId())) {
             frozen.remove(toModerate.getUniqueId());
-            plugin.getLocale().getMessage("command.freeze.remove")
+            this.plugin.getLocale().getMessage("command.freeze.remove")
                     .processPlaceholder("player", toModerate.getPlayer().getDisplayName()).sendPrefixedMessage(runner);
-            if (toModerate.isOnline())
-                plugin.getLocale().getMessage("command.freeze.alertremove").sendPrefixedMessage(toModerate.getPlayer());
+            if (toModerate.isOnline()) {
+                this.plugin.getLocale().getMessage("command.freeze.alertremove").sendPrefixedMessage(toModerate.getPlayer());
+            }
         } else {
             frozen.add(toModerate.getUniqueId());
-            plugin.getLocale().getMessage("command.freeze.add")
+            this.plugin.getLocale().getMessage("command.freeze.add")
                     .processPlaceholder("player", toModerate.getPlayer().getDisplayName()).sendPrefixedMessage(runner);
-            if (toModerate.isOnline())
-                plugin.getLocale().getMessage("command.freeze.alertadd").sendPrefixedMessage(toModerate.getPlayer());
+            if (toModerate.isOnline()) {
+                this.plugin.getLocale().getMessage("command.freeze.alertadd").sendPrefixedMessage(toModerate.getPlayer());
+            }
         }
         return true;
     }

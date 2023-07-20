@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandRandomPlayer extends AbstractCommand {
-
     private final UltimateModeration plugin;
 
     public CommandRandomPlayer(UltimateModeration plugin) {
@@ -26,7 +25,7 @@ public class CommandRandomPlayer extends AbstractCommand {
         players.remove(sender);
 
         if (players.size() == 0) {
-            plugin.getLocale().newMessage("&cYou are the only one online!").sendPrefixedMessage(sender);
+            this.plugin.getLocale().newMessage("&cYou are the only one online!").sendPrefixedMessage(sender);
             return ReturnType.FAILURE;
         }
 

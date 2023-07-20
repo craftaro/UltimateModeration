@@ -17,8 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SpyModeration extends AbstractModeration {
-
-    private static Map<UUID, Spy> spying = new HashMap<>();
+    private static final Map<UUID, Spy> spying = new HashMap<>();
 
     public SpyModeration(UltimateModeration plugin) {
         super(plugin, true, false);
@@ -53,10 +52,11 @@ public class SpyModeration extends AbstractModeration {
         if (spying.containsKey(runnerPlayer.getUniqueId())) {
             Spy spyingEntry = spying.remove(runnerPlayer.getUniqueId());
             runnerPlayer.teleport(spyingEntry.getLastLocation());
-            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(runnerPlayer))
+            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(runnerPlayer)) {
                 CommandVanish.vanish(runnerPlayer);
+            }
 
-            plugin.getLocale().getMessage("command.spy.returned").sendPrefixedMessage(runner);
+            this.plugin.getLocale().getMessage("command.spy.returned").sendPrefixedMessage(runner);
             return true;
         }
 
@@ -74,8 +74,9 @@ public class SpyModeration extends AbstractModeration {
         if (spying.containsKey(senderP) && oPlayer == null) {
             Spy spyingEntry = spying.remove(senderP.getUniqueId());
             senderP.teleport(spyingEntry.getLastLocation());
-            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(senderP))
+            if (spyingEntry.isVanishApplied() && CommandVanish.isVanished(senderP)) {
                 CommandVanish.vanish(senderP);
+            }
             senderP.setGameMode(SpyingDismountListener.getGamemodes().get(senderP.getUniqueId()));
 
             UltimateModeration.getInstance().getLocale().getMessage("command.spy.returned").sendPrefixedMessage(senderP);
@@ -114,8 +115,8 @@ public class SpyModeration extends AbstractModeration {
     }
 
     public static class Spy {
-        private Location lastLocation;
-        private boolean vanishApplied;
+        private final Location lastLocation;
+        private final boolean vanishApplied;
 
         public Spy(Location lastLocation, boolean vanishApplied) {
             this.lastLocation = lastLocation;
@@ -123,11 +124,11 @@ public class SpyModeration extends AbstractModeration {
         }
 
         public Location getLastLocation() {
-            return lastLocation;
+            return this.lastLocation;
         }
 
         public boolean isVanishApplied() {
-            return vanishApplied;
+            return this.vanishApplied;
         }
     }
 }
