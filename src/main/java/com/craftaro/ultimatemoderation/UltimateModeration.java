@@ -125,7 +125,7 @@ public class UltimateModeration extends SongodaPlugin {
 
         try {
             initDatabase(Arrays.asList(new _1_InitialMigration(this)));
-
+            this.dataHelper = new DataHelper(getDataManager(), this);
 
         } catch (Exception ex) {
             this.getLogger().severe("Fatal error trying to connect to database. " +
