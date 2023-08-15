@@ -147,7 +147,6 @@ public class TicketGui extends Gui {
 
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
-
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.postedby")
                     .processPlaceholder("player", Bukkit.getOfflinePlayer(ticketResponse.getAuthor()).getName()).getMessage());
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.createdon")

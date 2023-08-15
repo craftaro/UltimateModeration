@@ -33,15 +33,14 @@ public class DataHelper {
         this.dataManager = dataManager;
         this.databaseConnector = dataManager.getDatabaseConnector();
         this.plugin = plugin;
-
     }
 
     private void runAsync(Runnable runnable) {
-        dataManager.getAsyncPool().execute(runnable);
+        this.dataManager.getAsyncPool().execute(runnable);
     }
 
     private void sync(Runnable runnable) {
-        Bukkit.getScheduler().runTask(plugin, runnable);
+        Bukkit.getScheduler().runTask(this.plugin, runnable);
     }
 
     private String getTablePrefix() {
@@ -51,7 +50,7 @@ public class DataHelper {
     public void createTemplate(Template template) {
         this.runAsync(() -> {
             try (Connection connection = this.databaseConnector.getConnection()) {
-                int nextId = dataManager.getNextId("templates");
+                int nextId = this.dataManager.getNextId("templates");
 
                 String createTemplate = "INSERT INTO " + this.getTablePrefix() + "templates (punishment_type, duration, reason, name, creator) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement statement = connection.prepareStatement(createTemplate);
@@ -111,7 +110,7 @@ public class DataHelper {
     public void createAppliedPunishment(AppliedPunishment punishment) {
         this.runAsync(() -> {
             try (Connection connection = this.databaseConnector.getConnection()) {
-                int nextId = dataManager.getNextId("punishments");
+                int nextId = this.dataManager.getNextId("punishments");
 
                 String createPunishment = "INSERT INTO " + this.getTablePrefix() + "punishments (type, duration, reason, victim, punisher, expiration) VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement statement = connection.prepareStatement(createPunishment);
@@ -190,7 +189,7 @@ public class DataHelper {
     public void createNote(PunishmentNote note) {
         this.runAsync(() -> {
             try (Connection connection = this.databaseConnector.getConnection()) {
-                int nextId = dataManager.getNextId("notes");
+                int nextId = this.dataManager.getNextId("notes");
 
                 String createNote = "INSERT INTO " + this.getTablePrefix() + "notes (note, author, subject, creation) VALUES (?, ?, ?, ?)";
                 PreparedStatement statement = connection.prepareStatement(createNote);
@@ -246,7 +245,7 @@ public class DataHelper {
     public void createTicket(Ticket ticket) {
         this.runAsync(() -> {
             try (Connection connection = this.databaseConnector.getConnection()) {
-                int nextId = dataManager.getNextId("tickets");
+                int nextId = this.dataManager.getNextId("tickets");
 
                 String createTicket = "INSERT INTO " + this.getTablePrefix() + "tickets (victim, subject, type, status, world, x, y, z, pitch, yaw) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement statement = connection.prepareStatement(createTicket);

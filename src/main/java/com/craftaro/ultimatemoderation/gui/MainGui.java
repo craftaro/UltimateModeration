@@ -87,7 +87,7 @@ public class MainGui extends Gui {
 
                         List<UUID> found = players.stream().filter(uuid -> Bukkit.getOfflinePlayer(uuid).getName().toLowerCase().contains(gui.getInputText().toLowerCase())).collect(Collectors.toList());
 
-                        if (found.size() >= 1) {
+                        if (!found.isEmpty()) {
                             this.players.clear();
                             this.players.addAll(found);
                             showPage();

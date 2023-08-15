@@ -5,10 +5,8 @@ import com.craftaro.core.SongodaPlugin;
 import com.craftaro.core.commands.CommandManager;
 import com.craftaro.core.compatibility.ServerVersion;
 import com.craftaro.core.configuration.Config;
-import com.craftaro.core.database.DatabaseConnector;
 import com.craftaro.core.gui.GuiManager;
 import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
-import com.craftaro.ultimatemoderation.settings.Settings;
 import com.craftaro.ultimatemoderation.commands.CommandBan;
 import com.craftaro.ultimatemoderation.commands.CommandClearChat;
 import com.craftaro.ultimatemoderation.commands.CommandHelp;
@@ -46,6 +44,7 @@ import com.craftaro.ultimatemoderation.punish.PunishmentNote;
 import com.craftaro.ultimatemoderation.punish.player.PunishmentManager;
 import com.craftaro.ultimatemoderation.punish.template.Template;
 import com.craftaro.ultimatemoderation.punish.template.TemplateManager;
+import com.craftaro.ultimatemoderation.settings.Settings;
 import com.craftaro.ultimatemoderation.staffchat.StaffChatManager;
 import com.craftaro.ultimatemoderation.tasks.SlowModeTask;
 import com.craftaro.ultimatemoderation.tickets.Ticket;
@@ -122,9 +121,8 @@ public class UltimateModeration extends SongodaPlugin {
         this.staffChatManager = new StaffChatManager();
         this.moderationManager = new ModerationManager(this);
 
-
         try {
-            initDatabase(Arrays.asList(new _1_InitialMigration(this)));
+            initDatabase(Arrays.asList(new _1_InitialMigration()));
             this.dataHelper = new DataHelper(getDataManager(), this);
 
         } catch (Exception ex) {
@@ -225,6 +223,6 @@ public class UltimateModeration extends SongodaPlugin {
     }
 
     public DataHelper getDataHelper() {
-        return dataHelper;
+        return this.dataHelper;
     }
 }

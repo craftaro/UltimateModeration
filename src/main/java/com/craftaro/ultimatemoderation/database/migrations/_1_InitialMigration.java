@@ -1,8 +1,6 @@
 package com.craftaro.ultimatemoderation.database.migrations;
 
 import com.craftaro.core.database.DataMigration;
-import com.craftaro.core.database.DatabaseConnector;
-import com.craftaro.core.database.MySQLConnector;
 import com.craftaro.ultimatemoderation.UltimateModeration;
 
 import java.sql.Connection;
@@ -10,11 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class _1_InitialMigration extends DataMigration {
-    private final UltimateModeration plugin;
-
-    public _1_InitialMigration(UltimateModeration plugin) {
+    public _1_InitialMigration() {
         super(1);
-        this.plugin = plugin;
     }
 
     @Override
@@ -84,5 +79,4 @@ public class _1_InitialMigration extends DataMigration {
                     ")");
         }
     }
-
 }
