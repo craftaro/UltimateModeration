@@ -6,7 +6,7 @@ import com.craftaro.core.commands.CommandManager;
 import com.craftaro.core.compatibility.ServerVersion;
 import com.craftaro.core.configuration.Config;
 import com.craftaro.core.gui.GuiManager;
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.ultimatemoderation.commands.CommandBan;
 import com.craftaro.ultimatemoderation.commands.CommandClearChat;
 import com.craftaro.ultimatemoderation.commands.CommandHelp;

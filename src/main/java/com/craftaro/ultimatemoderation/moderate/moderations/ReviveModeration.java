@@ -1,7 +1,7 @@
 package com.craftaro.ultimatemoderation.moderate.moderations;
 
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.core.utils.PlayerUtils;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.ultimatemoderation.UltimateModeration;
 import com.craftaro.ultimatemoderation.listeners.DeathListener;
 import com.craftaro.ultimatemoderation.moderate.AbstractModeration;

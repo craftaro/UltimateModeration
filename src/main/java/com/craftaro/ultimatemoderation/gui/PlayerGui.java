@@ -2,9 +2,9 @@ package com.craftaro.ultimatemoderation.gui;
 
 import com.craftaro.core.gui.Gui;
 import com.craftaro.core.gui.GuiUtils;
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.core.utils.ItemUtils;
 import com.craftaro.core.utils.TextUtils;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.ultimatemoderation.UltimateModeration;
 import com.craftaro.ultimatemoderation.settings.Settings;
 import org.bukkit.OfflinePlayer;

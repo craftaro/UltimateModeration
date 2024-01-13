@@ -2,7 +2,7 @@ package com.craftaro.ultimatemoderation.commands;
 
 import com.craftaro.core.commands.AbstractCommand;
 import com.craftaro.core.compatibility.ServerVersion;
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XSound;
+import com.craftaro.third_party.com.cryptomorin.xseries.XSound;
 import com.craftaro.ultimatemoderation.UltimateModeration;
 import com.craftaro.ultimatemoderation.settings.Settings;
 import org.bukkit.Bukkit;

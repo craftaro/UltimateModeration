@@ -1,6 +1,6 @@
 package com.craftaro.ultimatemoderation.moderate;
 
-import com.craftaro.core.third_party.com.cryptomorin.xseries.XMaterial;
+import com.craftaro.third_party.com.cryptomorin.xseries.XMaterial;
 import com.craftaro.ultimatemoderation.UltimateModeration;
 import com.craftaro.ultimatemoderation.utils.VaultPermissions;
 import org.bukkit.OfflinePlayer;
