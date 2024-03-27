@@ -56,14 +56,8 @@ public class Settings {
     public static final ConfigSetting NOTIFY_BLOCK_LIST = new ConfigSetting(CONFIG, "Main.Notify Blocks List", Arrays.asList("DIAMOND_ORE", "EMERALD_ORE"),
             "Blocks that will give a notification when mined.");
 
-    public static final ConfigSetting MYSQL_ENABLED = new ConfigSetting(CONFIG, "MySQL.Enabled", false, "Set to 'true' to use MySQL instead of SQLite for data storage.");
-    public static final ConfigSetting MYSQL_HOSTNAME = new ConfigSetting(CONFIG, "MySQL.Hostname", "localhost");
-    public static final ConfigSetting MYSQL_PORT = new ConfigSetting(CONFIG, "MySQL.Port", 3306);
-    public static final ConfigSetting MYSQL_DATABASE = new ConfigSetting(CONFIG, "MySQL.Database", "your-database");
-    public static final ConfigSetting MYSQL_USERNAME = new ConfigSetting(CONFIG, "MySQL.Username", "user");
-    public static final ConfigSetting MYSQL_PASSWORD = new ConfigSetting(CONFIG, "MySQL.Password", "pass");
-    public static final ConfigSetting MYSQL_USE_SSL = new ConfigSetting(CONFIG, "MySQL.Use SSL", false);
-    public static final ConfigSetting MYSQL_POOL_SIZE = new ConfigSetting(CONFIG, "MySQL.Pool Size", 3, "Determines the number of connections the pool is using. Increase this value if you are getting timeout errors when more players online.");
+    public static final ConfigSetting DATA_UPDATE_INTERVAL = new ConfigSetting(CONFIG, "Main.Data Update Interval", 20,
+            "The amount of time in between updating the data from the database in ticks.");
 
     public static void setupConfig() {
         CONFIG.load();

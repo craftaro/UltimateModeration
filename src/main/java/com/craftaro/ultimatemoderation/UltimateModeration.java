@@ -46,6 +46,7 @@ import com.craftaro.ultimatemoderation.punish.template.Template;
 import com.craftaro.ultimatemoderation.punish.template.TemplateManager;
 import com.craftaro.ultimatemoderation.settings.Settings;
 import com.craftaro.ultimatemoderation.staffchat.StaffChatManager;
+import com.craftaro.ultimatemoderation.tasks.DataTask;
 import com.craftaro.ultimatemoderation.tasks.SlowModeTask;
 import com.craftaro.ultimatemoderation.tickets.Ticket;
 import com.craftaro.ultimatemoderation.tickets.TicketManager;
@@ -65,6 +66,7 @@ public class UltimateModeration extends SongodaPlugin {
     private StaffChatManager staffChatManager;
     private ModerationManager moderationManager;
     private DataHelper dataHelper;
+    private DataTask dataTask;
 
     /**
      * @deprecated Use {@link JavaPlugin#getPlugin(Class)} instead.
@@ -80,6 +82,9 @@ public class UltimateModeration extends SongodaPlugin {
 
     @Override
     public void onPluginDisable() {
+        if (dataTask != null) {
+            dataTask.cancel();
+        }
     }
 
     @Override
@@ -181,6 +186,10 @@ public class UltimateModeration extends SongodaPlugin {
                 }
             });
         });
+        if (dataTask != null) {
+            dataTask.cancel();
+        }
+        dataTask = new DataTask(this.dataHelper);
     }
 
     @Override
