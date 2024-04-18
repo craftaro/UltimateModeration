@@ -502,12 +502,22 @@ public class DataHelper {
 
                 Location location = ticket.getLocation();
 
-                statement.setString(5, location.getWorld().getName());
-                statement.setDouble(6, location.getX());
-                statement.setDouble(7, location.getY());
-                statement.setDouble(8, location.getZ());
-                statement.setFloat(9, location.getPitch());
-                statement.setFloat(10, location.getYaw());
+                if (location != null) {
+                    statement.setString(5, location.getWorld().getName());
+                    statement.setDouble(6, location.getX());
+                    statement.setDouble(7, location.getY());
+                    statement.setDouble(8, location.getZ());
+                    statement.setFloat(9, location.getPitch());
+                    statement.setFloat(10, location.getYaw());
+                } else {
+                    statement.setString(5, "");
+                    statement.setDouble(6, 0);
+                    statement.setDouble(7, 0);
+                    statement.setDouble(8, 0);
+                    statement.setFloat(9, 0);
+                    statement.setFloat(10, 0);
+                }
+
                 statement.setInt(11, ticket.getId());
                 statement.executeUpdate();
             } catch (Exception ex) {
