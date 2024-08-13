@@ -99,7 +99,7 @@ public class MainGui extends Gui {
 
                     ItemStack item = new ItemStack(Material.PAPER);
                     ItemMeta meta = item.getItemMeta();
-                    meta.setDisplayName(this.plugin.getLocale().getMessage("gui.players.name").getMessage());
+                    meta.setDisplayName(this.plugin.getLocale().getMessage("gui.players.name").toText());
                     item.setItemMeta(meta);
 
                     gui.setInput(item);
@@ -149,33 +149,33 @@ public class MainGui extends Gui {
                 PlayerPunishData playerPunishData = this.plugin.getPunishmentManager().getPlayer(pl);
 
                 ArrayList<String> lore = new ArrayList<>();
-                lore.add(this.plugin.getLocale().getMessage("gui.players.click").getMessage());
+                lore.add(this.plugin.getLocale().getMessage("gui.players.click").toText());
                 lore.add("");
 
                 int ticketAmt = (int) this.plugin.getTicketManager().getTicketsAbout(pl).stream()
                         .filter(t -> t.getStatus() == TicketStatus.OPEN).count();
 
                 if (ticketAmt == 0) {
-                    lore.add(this.plugin.getLocale().getMessage("gui.players.notickets").getMessage());
+                    lore.add(this.plugin.getLocale().getMessage("gui.players.notickets").toText());
                 } else {
                     if (ticketAmt == 1) {
-                        lore.add(this.plugin.getLocale().getMessage("gui.players.ticketsone").getMessage());
+                        lore.add(this.plugin.getLocale().getMessage("gui.players.ticketsone").toText());
                     } else {
                         lore.add(this.plugin.getLocale().getMessage("gui.players.tickets")
-                                .processPlaceholder("amount", ticketAmt).getMessage());
+                                .processPlaceholder("amount", ticketAmt).toText());
                     }
                 }
 
                 int warningAmt = playerPunishData.getActivePunishments(PunishmentType.WARNING).size();
 
                 if (warningAmt == 0) {
-                    lore.add(this.plugin.getLocale().getMessage("gui.players.nowarnings").getMessage());
+                    lore.add(this.plugin.getLocale().getMessage("gui.players.nowarnings").toText());
                 } else {
                     if (warningAmt == 1) {
-                        lore.add(this.plugin.getLocale().getMessage("gui.players.warningsone").getMessage());
+                        lore.add(this.plugin.getLocale().getMessage("gui.players.warningsone").toText());
                     } else {
                         lore.add(this.plugin.getLocale().getMessage("gui.players.warnings")
-                                .processPlaceholder("amount", warningAmt).getMessage());
+                                .processPlaceholder("amount", warningAmt).toText());
                     }
                 }
 
@@ -203,7 +203,7 @@ public class MainGui extends Gui {
             return UltimateModeration.getPlugin(UltimateModeration.class)
                     .getLocale()
                     .getMessage("gui.players.online." + this.name().toLowerCase())
-                    .getMessage();
+                    .toText();
         }
     }
 }

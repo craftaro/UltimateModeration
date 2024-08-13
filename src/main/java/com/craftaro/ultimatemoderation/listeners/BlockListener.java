@@ -39,7 +39,7 @@ public class BlockListener implements Listener {
                         + this.instance
                         .getLocale()
                         .getMessage("notify.block.main")
-                        .getMessage()
+                        .toText()
                         .replace("%material%", material.name())
                         + "(" + block.getX() + ", " + block.getY() + ", " + block.getZ() + ")&a!");
             }

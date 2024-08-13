@@ -133,17 +133,17 @@ public class TicketManagerGui extends Gui {
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.status")
-                    .processPlaceholder("status", ticket.getStatus().getStatus()).getMessage());
+                    .processPlaceholder("status", ticket.getStatus().getStatus()).toText());
 
             if (this.toModerate != null) {
                 lore.add(this.plugin.getLocale().getMessage("gui.tickets.player")
-                        .processPlaceholder("player", Bukkit.getOfflinePlayer(ticket.getVictim()).getName()).getMessage());
+                        .processPlaceholder("player", Bukkit.getOfflinePlayer(ticket.getVictim()).getName()).toText());
             }
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.type")
-                    .processPlaceholder("type", ticket.getType()).getMessage());
+                    .processPlaceholder("type", ticket.getType()).toText());
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.createdon")
-                    .processPlaceholder("sent", format.format(new Date(ticket.getCreationDate()))).getMessage());
-            lore.add(this.plugin.getLocale().getMessage("gui.tickets.click").getMessage());
+                    .processPlaceholder("sent", format.format(new Date(ticket.getCreationDate()))).toText());
+            lore.add(this.plugin.getLocale().getMessage("gui.tickets.click").toText());
 
             setButton(num, GuiUtils.createButtonItem(XMaterial.MAP,
                             TextUtils.formatText(name), TextUtils.formatText(lore)),

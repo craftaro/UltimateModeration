@@ -35,7 +35,7 @@ public class LoginListener implements Listener {
 
         event.setKickMessage(this.instance.getLocale().getMessage("event.ban.message")
                 .processPlaceholder("reason", appliedPunishment.getReason() == null ? "" : appliedPunishment.getReason())
-                .processPlaceholder("duration", TimeUtils.makeReadable(appliedPunishment.getTimeRemaining())).getMessage());
+                .processPlaceholder("duration", TimeUtils.makeReadable(appliedPunishment.getTimeRemaining())).toText());
 
         event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);
 

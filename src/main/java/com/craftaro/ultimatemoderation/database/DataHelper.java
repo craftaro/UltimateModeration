@@ -1,5 +1,6 @@
 package com.craftaro.ultimatemoderation.database;
 
+import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.database.DataManager;
 import com.craftaro.core.database.DatabaseConnector;
 import com.craftaro.core.utils.TextUtils;
@@ -111,14 +112,14 @@ public class DataHelper {
                                                 Bukkit.getScheduler().runTask(plugin, () -> offlinePlayer.getPlayer().kickPlayer(plugin.getLocale()
                                                         .getMessage("event.ban.message")
                                                         .processPlaceholder("reason", reason == null ? "" : reason)
-                                                        .processPlaceholder("duration", TimeUtils.makeReadable(duration)).getMessage()));
+                                                        .processPlaceholder("duration", TimeUtils.makeReadable(duration)).toText()));
                                             }
                                             break;
                                         case KICK:
                                             if (offlinePlayer.isOnline()) {
                                                 Bukkit.getScheduler().runTask(plugin, () -> offlinePlayer.getPlayer().kickPlayer(plugin.getLocale()
                                                         .getMessage("event.kick.message")
-                                                        .processPlaceholder("reason", reason == null ? "" : reason).getMessage()));
+                                                        .processPlaceholder("reason", reason == null ? "" : reason).toText()));
                                             }
                                             break;
                                         case MUTE:
@@ -217,8 +218,8 @@ public class DataHelper {
         Player victim = offlineVictim.getPlayer();
         UltimateModeration plugin = UltimateModeration.getInstance();
 
-        String punishSuccess = plugin.getLocale()
-                .getMessage("event." + punishment.getPunishmentType().name().toLowerCase() + ".message").getPrefixedMessage();
+        String punishSuccess = AdventureUtils.toLegacy(plugin.getLocale()
+                .getMessage("event." + punishment.getPunishmentType().name().toLowerCase() + ".message").getPrefixedMessage());
 
         if (punishment.getReason() != null) {
             punishSuccess += plugin.getLocale().getMessage("event.punish.reason")

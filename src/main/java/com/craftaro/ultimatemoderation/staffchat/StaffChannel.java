@@ -30,7 +30,7 @@ public class StaffChannel {
         }
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.alljoin")
-                .processPlaceholder("player", player.getName()).getMessage(), player);
+                .processPlaceholder("player", player.getName()).toText(), player);
 
         UltimateModeration.getInstance()
                 .getStaffChatManager()
@@ -52,7 +52,7 @@ public class StaffChannel {
         this.members.remove(player.getUniqueId());
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.allleave")
-                .processPlaceholder("player", player.getName()).getMessage(), player);
+                .processPlaceholder("player", player.getName()).toText(), player);
     }
 
     public void processMessage(String message, Player player) {
@@ -61,7 +61,7 @@ public class StaffChannel {
                 .processPlaceholder("color", this.chatChar)
                 .processPlaceholder("channel", this.channelName)
                 .processPlaceholder("player", player.getDisplayName())
-                .processPlaceholder("message", message).getMessage());
+                .processPlaceholder("message", message).toText());
     }
 
     public void messageAll(String message) {

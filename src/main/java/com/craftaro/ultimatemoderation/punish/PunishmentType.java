@@ -23,6 +23,6 @@ public enum PunishmentType {
         return UltimateModeration.getPlugin(UltimateModeration.class)
                 .getLocale()
                 .getMessage("gui.punishmenttypes." + this.name().toLowerCase())
-                .getMessage();
+                .toText();
     }
 }

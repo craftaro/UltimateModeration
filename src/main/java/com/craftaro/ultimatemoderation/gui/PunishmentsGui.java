@@ -121,25 +121,25 @@ public class PunishmentsGui extends Gui {
 
             ArrayList<String> lore = new ArrayList<>();
             lore.add("");
-            lore.add(this.plugin.getLocale().getMessage("gui.punishments.reason").getMessage());
+            lore.add(this.plugin.getLocale().getMessage("gui.punishments.reason").toText());
             lore.add("&7" + appliedPunishment.getReason());
             if (appliedPunishment.getPunishmentType() != PunishmentType.KICK) {
                 lore.add("");
-                lore.add(this.plugin.getLocale().getMessage("gui.punishments.duration").getMessage());
+                lore.add(this.plugin.getLocale().getMessage("gui.punishments.duration").toText());
                 lore.add("&7" + (appliedPunishment.getDuration() != -1
                         ? TimeUtils.makeReadable(appliedPunishment.getDuration())
-                        : this.plugin.getLocale().getMessage("gui.general.permanent").getMessage()));
+                        : this.plugin.getLocale().getMessage("gui.general.permanent").toText()));
                 lore.add("");
-                lore.add(this.plugin.getLocale().getMessage("gui.punishments.punisher").getMessage());
+                lore.add(this.plugin.getLocale().getMessage("gui.punishments.punisher").toText());
                 lore.add("&7" + (appliedPunishment.getPunisher() == null ? "Console" : Bukkit.getOfflinePlayer(appliedPunishment.getPunisher()).getName()));
                 if (activity == Activity.ACTIVE) {
                     lore.add("");
                     if (appliedPunishment.getDuration() != -1) {
-                        lore.add(this.plugin.getLocale().getMessage("gui.punishments.remaining").getMessage());
+                        lore.add(this.plugin.getLocale().getMessage("gui.punishments.remaining").toText());
                         lore.add("&7" + TimeUtils.makeReadable(appliedPunishment.getTimeRemaining()));
                         lore.add("");
                     }
-                    lore.add(this.plugin.getLocale().getMessage("gui.punishments.click").getMessage());
+                    lore.add(this.plugin.getLocale().getMessage("gui.punishments.click").toText());
                 }
             }
             lore.add("");
@@ -188,7 +188,7 @@ public class PunishmentsGui extends Gui {
             return UltimateModeration.getPlugin(UltimateModeration.class)
                     .getLocale()
                     .getMessage("gui.punishments.activity." + this.name().toLowerCase())
-                    .getMessage();
+                    .toText();
         }
     }
 }

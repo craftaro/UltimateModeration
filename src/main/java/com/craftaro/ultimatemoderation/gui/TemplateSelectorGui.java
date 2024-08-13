@@ -36,7 +36,7 @@ public class TemplateSelectorGui extends Gui {
         for (int i = 0; i < templates.size(); i++) {
             Template template = templates.get(i);
             setButton(18 + i, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
-                            this.plugin.getLocale().getMessage("gui.templateselector.click").getMessage()),
+                            this.plugin.getLocale().getMessage("gui.templateselector.click").toText()),
                     (event) -> {
                         this.punish.setType(template.getPunishmentType());
                         this.punish.setDuration(template.getDuration());

@@ -79,7 +79,7 @@ public class NotesManagerGui extends Gui {
                             this.plugin.getLocale().getMessage("gui.notes.create").getMessage()),
                     (event) -> {
                         ChatPrompt.showPrompt(this.plugin, event.player,
-                                this.plugin.getLocale().getMessage("gui.notes.type").getMessage(),
+                                this.plugin.getLocale().getMessage("gui.notes.type").toText(),
                                 (response) -> {
                                     PunishmentNote note = new PunishmentNote(response.getMessage(),
                                             event.player.getUniqueId(), this.toModerate.getUniqueId(),
@@ -125,12 +125,12 @@ public class NotesManagerGui extends Gui {
 
             lore.add(this.plugin.getLocale().getMessage("gui.notes.createdby")
                     .processPlaceholder("player", Bukkit.getOfflinePlayer(note.getAuthor()).getName())
-                    .getMessage());
+                    .toText());
             lore.add(this.plugin.getLocale().getMessage("gui.notes.createdon")
                     .processPlaceholder("sent", format.format(new Date(note.getCreationDate())))
-                    .getMessage());
+                    .toText());
             if (this.delete) {
-                lore.add(this.plugin.getLocale().getMessage("gui.notes.remove").getMessage());
+                lore.add(this.plugin.getLocale().getMessage("gui.notes.remove").toText());
             }
 
             setButton(num, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText(name), TextUtils.formatText(lore)),

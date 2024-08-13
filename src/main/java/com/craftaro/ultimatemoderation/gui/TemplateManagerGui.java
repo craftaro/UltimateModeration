@@ -98,8 +98,8 @@ public class TemplateManagerGui extends Gui {
             }
 
             setButton(num, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText("&6&l" + template.getName()),
-                            this.plugin.getLocale().getMessage("gui.templatemanager.leftclick").getMessage(),
-                            this.plugin.getLocale().getMessage("gui.templatemanager.rightclick").getMessage()),
+                            this.plugin.getLocale().getMessage("gui.templatemanager.leftclick").toText(),
+                            this.plugin.getLocale().getMessage("gui.templatemanager.rightclick").toText()),
                     (event) -> {
                         if (event.clickType == ClickType.LEFT) {
                             if (this.player.hasPermission("um.templates.edit"))

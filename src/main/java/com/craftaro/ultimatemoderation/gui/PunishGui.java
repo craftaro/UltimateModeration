@@ -138,10 +138,10 @@ public class PunishGui extends Gui {
                 });
 
         setButton(28, GuiUtils.createButtonItem(XMaterial.ANVIL,
-                        this.plugin.getLocale().getMessage("gui.punish.type.punishment").getMessage(),
+                        this.plugin.getLocale().getMessage("gui.punish.type.punishment").toText(),
                         TextUtils.formatText("&7" + this.type.getTranslation()),
                         "",
-                        this.plugin.getLocale().getMessage("gui.punish.type.punishment.click").getMessage()),
+                        this.plugin.getLocale().getMessage("gui.punish.type.punishment.click").toText()),
                 (event) -> {
                     this.type = this.type.next();
                     this.justSaved = false;
@@ -149,25 +149,25 @@ public class PunishGui extends Gui {
                 });
 
         ItemStack templateItem = this.toModerate != null ? GuiUtils.createButtonItem(XMaterial.MAP,
-                this.plugin.getLocale().getMessage("gui.punish.type.template").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.template").toText(),
                 this.plugin.getLocale().getMessage("gui.punish.type.template.current")
                         .processPlaceholder("template",
                                 this.template == null
-                                        ? this.plugin.getLocale().getMessage("gui.general.none").getMessage()
-                                        : this.template.getName()).getMessage(),
+                                        ? this.plugin.getLocale().getMessage("gui.general.none").toText()
+                                        : this.template.getName()).toText(),
                 "",
                 this.plugin.getLocale().getMessage(this.plugin.getTemplateManager().getTemplates().size() == 0
                         ? "gui.punish.type.template.none"
-                        : "gui.punish.type.template.click").getMessage())
+                        : "gui.punish.type.template.click").toText())
                 : GuiUtils.createButtonItem(XMaterial.MAP,
-                this.plugin.getLocale().getMessage("gui.punish.type.name").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.name").toText(),
                 this.plugin.getLocale().getMessage("gui.punish.type.name.current")
                         .processPlaceholder("name",
                                 this.templateName == null
-                                        ? this.plugin.getLocale().getMessage("gui.punish.type.name.current").getMessage()
-                                        : this.templateName).getMessage(),
+                                        ? this.plugin.getLocale().getMessage("gui.punish.type.name.current").toText()
+                                        : this.templateName).toText(),
                 "",
-                this.plugin.getLocale().getMessage("gui.punish.type.name.current.click").getMessage());
+                this.plugin.getLocale().getMessage("gui.punish.type.name.current.click").toText());
 
         setButton(30, templateItem, (event) -> {
             if (this.toModerate == null) {
@@ -185,12 +185,12 @@ public class PunishGui extends Gui {
 
         if (this.type != PunishmentType.KICK) {
             setButton(32, GuiUtils.createButtonItem(XMaterial.CLOCK,
-                            this.plugin.getLocale().getMessage("gui.punish.type.duration").getMessage(),
-                            this.plugin.getLocale().getMessage("gui.punish.type.duration.leftclick").getMessage(),
-                            this.plugin.getLocale().getMessage("gui.punish.type.duration.rightclick").getMessage(),
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration").toText(),
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration.leftclick").toText(),
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration.rightclick").toText(),
                             "",
-                            this.plugin.getLocale().getMessage("gui.punish.type.duration.current").getMessage(),
-                            TextUtils.formatText("&6" + (this.duration == -1 ? this.plugin.getLocale().getMessage("gui.general.permanent").getMessage()
+                            this.plugin.getLocale().getMessage("gui.punish.type.duration.current").toText(),
+                            TextUtils.formatText("&6" + (this.duration == -1 ? this.plugin.getLocale().getMessage("gui.general.permanent").toText()
                                     : TimeUtils.makeReadable(this.duration)))),
                     (event) -> {
                         if (this.type == PunishmentType.KICK) {
@@ -221,10 +221,10 @@ public class PunishGui extends Gui {
         }
 
         setButton(34, GuiUtils.createButtonItem(XMaterial.PAPER,
-                this.plugin.getLocale().getMessage("gui.punish.type.reason").getMessage(),
-                this.plugin.getLocale().getMessage("gui.punish.type.reason.click").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.reason").toText(),
+                this.plugin.getLocale().getMessage("gui.punish.type.reason.click").toText(),
                 "",
-                this.plugin.getLocale().getMessage("gui.punish.type.reason.current").getMessage(),
+                this.plugin.getLocale().getMessage("gui.punish.type.reason.current").toText(),
                 TextUtils.formatText("&6" + this.reason)), (event) -> {
 
             AnvilGui gui = new AnvilGui(this.player, this);
@@ -236,7 +236,7 @@ public class PunishGui extends Gui {
             });
 
             ItemStack item = GuiUtils.createButtonItem(XMaterial.PAPER,
-                    this.reason == null ? this.plugin.getLocale().getMessage("gui.general.reason").getMessage() : this.reason);
+                    this.reason == null ? this.plugin.getLocale().getMessage("gui.general.reason").toText() : this.reason);
 
             gui.setInput(item);
             this.guiManager.showGUI(this.player, gui);
@@ -250,17 +250,17 @@ public class PunishGui extends Gui {
         }
 
         XMaterial material = XMaterial.WHITE_WOOL;
-        String name = this.plugin.getLocale().getMessage("gui.punish.template.create").getMessage();
+        String name = this.plugin.getLocale().getMessage("gui.punish.template.create").toText();
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(this.plugin.getLocale().getMessage("gui.punish.template.create2").getMessage());
+        lore.add(this.plugin.getLocale().getMessage("gui.punish.template.create2").toText());
 
         if (!this.justSaved && this.template != null) {
-            name = this.plugin.getLocale().getMessage("gui.punish.template.leftclick").getMessage();
+            name = this.plugin.getLocale().getMessage("gui.punish.template.leftclick").toText();
             lore.clear();
             lore.add(this.plugin.getLocale().getMessage("gui.punish.template.leftclick2")
-                    .processPlaceholder("template", this.template.getName()).getMessage());
+                    .processPlaceholder("template", this.template.getName()).toText());
             lore.add("");
-            lore.add(this.plugin.getLocale().getMessage("gui.punish.template.rightclick").getMessage());
+            lore.add(this.plugin.getLocale().getMessage("gui.punish.template.rightclick").toText());
         }
 
         if (getItem(4) != null && XMaterial.WHITE_WOOL.isSimilar(getItem(4))) {
@@ -304,7 +304,7 @@ public class PunishGui extends Gui {
         });
 
         ItemStack item = GuiUtils.createButtonItem(XMaterial.PAPER,
-                this.template == null ? this.plugin.getLocale().getMessage("gui.general.templatename").getMessage() : this.template.getName());
+                this.template == null ? this.plugin.getLocale().getMessage("gui.general.templatename").toText() : this.template.getName());
 
         gui.setInput(item);
         this.guiManager.showGUI(this.player, gui);

@@ -38,7 +38,7 @@ public class CommandUnMute extends AbstractCommand {
         playerPunishData.expirePunishments(PunishmentType.MUTE);
 
         this.plugin.getLocale().newMessage(this.plugin.getLocale().getMessage("event.unmute.success")
-                .processPlaceholder("player", player.getName()).getMessage()).sendPrefixedMessage(sender);
+                .processPlaceholder("player", player.getName()).toText()).sendPrefixedMessage(sender);
         return ReturnType.SUCCESS;
     }
 

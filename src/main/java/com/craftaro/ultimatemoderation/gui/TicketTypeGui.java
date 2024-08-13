@@ -33,12 +33,12 @@ public class TicketTypeGui extends Gui {
                     (event) -> {
                         Ticket ticket = new Ticket(toModerate, subject, types.get(fi));
                         ChatPrompt.showPrompt(plugin,
-                                player, plugin.getLocale().getMessage("gui.tickets.what").getMessage(),
+                                player, plugin.getLocale().getMessage("gui.tickets.what").toText(),
                                 event2 -> {
                                     plugin.getTicketManager().addTicket(ticket);
 
                                     // Notify staff
-                                    this.chatManager.getChat("ticket").messageAll(plugin.getLocale().getMessage("notify.ticket.created").getMessage().replace("%tid%", String.valueOf(ticket.getId())).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()));
+                                    this.chatManager.getChat("ticket").messageAll(plugin.getLocale().getMessage("notify.ticket.created").toText().replace("%tid%", String.valueOf(ticket.getId())).replace("%type%", ticket.getType()).replace("%player%", Bukkit.getPlayer(ticket.getVictim()).getDisplayName()));
                                     if (player == toModerate) {
                                         ticket.setLocation(player.getLocation());
                                     }

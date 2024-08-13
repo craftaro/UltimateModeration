@@ -1,5 +1,6 @@
 package com.craftaro.ultimatemoderation.punish;
 
+import com.craftaro.core.chat.AdventureUtils;
 import com.craftaro.core.utils.TextUtils;
 import com.craftaro.core.utils.TimeUtils;
 import com.craftaro.ultimatemoderation.UltimateModeration;
@@ -60,7 +61,7 @@ public class Punishment {
                     Bukkit.getScheduler().runTask(plugin, () -> victim.getPlayer().kickPlayer(plugin.getLocale()
                             .getMessage("event.ban.message")
                             .processPlaceholder("reason", this.reason == null ? "" : this.reason)
-                            .processPlaceholder("duration", TimeUtils.makeReadable(this.duration)).getMessage()));
+                            .processPlaceholder("duration", TimeUtils.makeReadable(this.duration)).toText()));
                 }
                 break;
             case MUTE:
@@ -74,7 +75,7 @@ public class Punishment {
                 if (victim.isOnline()) {
                     Bukkit.getScheduler().runTask(plugin, () -> victim.getPlayer().kickPlayer(plugin.getLocale()
                             .getMessage("event.kick.message")
-                            .processPlaceholder("reason", this.reason == null ? "" : this.reason).getMessage()));
+                            .processPlaceholder("reason", this.reason == null ? "" : this.reason).toText()));
                 }
                 break;
             case WARNING:
@@ -82,10 +83,10 @@ public class Punishment {
                 break;
         }
 
-        String punishSuccess = plugin.getLocale()
+        String punishSuccess = AdventureUtils.toLegacy(plugin.getLocale()
                 .getMessage("event." + this.punishmentType.name().toLowerCase() + ".success")
                 .processPlaceholder("player", victim.getName())
-                .getPrefixedMessage();
+                .getPrefixedMessage());
 
         if (this.reason != null) {
             punishSuccess += plugin.getLocale().getMessage("event.punish.reason")
@@ -116,8 +117,8 @@ public class Punishment {
         Player victim = offlineVictim.getPlayer();
         UltimateModeration plugin = UltimateModeration.getInstance();
 
-        String punishSuccess = plugin.getLocale()
-                .getMessage("event." + this.punishmentType.name().toLowerCase() + ".message").getPrefixedMessage();
+        String punishSuccess = AdventureUtils.toLegacy(plugin.getLocale()
+                .getMessage("event." + this.punishmentType.name().toLowerCase() + ".message").getPrefixedMessage());
 
         if (this.reason != null) {
             punishSuccess += plugin.getLocale().getMessage("event.punish.reason")

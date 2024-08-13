@@ -84,7 +84,7 @@ public class TicketGui extends Gui {
                         this.ticket.setStatus(this.ticket.getStatus() == TicketStatus.OPEN ? TicketStatus.CLOSED : TicketStatus.OPEN);
                         this.plugin.getDataHelper().updateTicket(this.ticket);
                         // Notify staff of ticket status
-                        this.chatManager.getChat("ticket").messageAll(this.plugin.getLocale().getMessage("notify.ticket.status").getMessage().replace("%tid%", String.valueOf(this.ticket.getId())).replace("%type%", this.ticket.getType()).replace("%player%", Bukkit.getPlayer(this.ticket.getVictim()).getDisplayName()).replace("%status%", this.ticket.getStatus().toString()));
+                        this.chatManager.getChat("ticket").messageAll(this.plugin.getLocale().getMessage("notify.ticket.status").toText().replace("%tid%", String.valueOf(this.ticket.getId())).replace("%type%", this.ticket.getType()).replace("%player%", Bukkit.getPlayer(this.ticket.getVictim()).getDisplayName()).replace("%status%", this.ticket.getStatus().toString()));
                         showPage();
                     });
         }
@@ -104,11 +104,11 @@ public class TicketGui extends Gui {
         if (this.player.hasPermission("um.tickets.respond")) {
             setButton(5, 4, GuiUtils.createButtonItem(XMaterial.WRITABLE_BOOK, this.plugin.getLocale().getMessage("gui.ticket.respond").getMessage()),
                     (event) -> {
-                        ChatPrompt.showPrompt(this.plugin, this.player, this.plugin.getLocale().getMessage("gui.ticket.what").getMessage(), (evnt) -> {
+                        ChatPrompt.showPrompt(this.plugin, this.player, this.plugin.getLocale().getMessage("gui.ticket.what").toText(), (evnt) -> {
                             TicketResponse response = this.ticket.addResponse(new TicketResponse(this.player, evnt.getMessage(), System.currentTimeMillis()));
                             this.plugin.getDataHelper().createTicketResponse(response);
                             // Notify staff of ticket response.
-                            this.chatManager.getChat("ticket").messageAll(this.plugin.getLocale().getMessage("notify.ticket.response").getMessage().replace("%tid%", "" + this.ticket.getId()).replace("%type%", this.ticket.getType()).replace("%player%", Bukkit.getPlayer(this.ticket.getVictim()).getDisplayName()));
+                            this.chatManager.getChat("ticket").messageAll(this.plugin.getLocale().getMessage("notify.ticket.response").toText().replace("%tid%", "" + this.ticket.getId()).replace("%type%", this.ticket.getType()).replace("%player%", Bukkit.getPlayer(this.ticket.getVictim()).getDisplayName()));
                             showPage();
                         }).setOnClose(() -> this.guiManager.showGUI(event.player, this));
                     });
@@ -148,9 +148,9 @@ public class TicketGui extends Gui {
             SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.postedby")
-                    .processPlaceholder("player", Bukkit.getOfflinePlayer(ticketResponse.getAuthor()).getName()).getMessage());
+                    .processPlaceholder("player", Bukkit.getOfflinePlayer(ticketResponse.getAuthor()).getName()).toText());
             lore.add(this.plugin.getLocale().getMessage("gui.ticket.createdon")
-                    .processPlaceholder("sent", format.format(new Date(ticketResponse.getPostedDate()))).getMessage());
+                    .processPlaceholder("sent", format.format(new Date(ticketResponse.getPostedDate()))).toText());
 
             setItem(num, GuiUtils.createButtonItem(XMaterial.MAP, TextUtils.formatText(name), lore));
             num++;
