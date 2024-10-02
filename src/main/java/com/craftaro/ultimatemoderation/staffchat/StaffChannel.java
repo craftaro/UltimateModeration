@@ -58,7 +58,7 @@ public class StaffChannel {
     public void processMessage(String message, Player player) {
         messageAll(UltimateModeration.getInstance().getLocale()
                 .getMessage("event.staffchat.format")
-                .processPlaceholder("color", this.chatChar)
+                .processPlaceholder("color", String.valueOf(this.chatChar))
                 .processPlaceholder("channel", this.channelName)
                 .processPlaceholder("player", player.getDisplayName())
                 .processPlaceholder("message", message).toText());
