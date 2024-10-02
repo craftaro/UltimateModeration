@@ -1,96 +1,121 @@
-name: UltimateModeration
-description: UltimateModeration
-main: com.songoda.ultimatemoderation.UltimateModeration
-version: maven-version-number
-author: Songoda
+name: ${project.name}
+description: ${project.description}
+version: ${project.version}
 api-version: 1.13
-softdepend: [Vault, FabledSkyBlock]
+
+main: com.craftaro.ultimatemoderation.UltimateModeration
+softdepend:
+  - Vault
+  - FabledSkyBlock
+
+author: Craftaro
+website: ${project.url}
+
 commands:
   UltimateModeration:
     description: View information on this plugin.
     default: true
-    aliases: [um, p]
+    aliases: [ um, p ]
     usage: /um
+
   ClearChat:
     description: Clear the chat
     default: false
-    aliases: [cc]
+    aliases: [ cc ]
     usage: /cc
+
   ToggleChat:
     description: Toggle chat
     default: false
-    aliases: [tc]
+    aliases: [ tc ]
     usage: /tc
+
   RandomPlayer:
     description: Random Player
     default: false
-    aliases: [rp]
+    aliases: [ rp ]
     usage: /rp
+
   Vanish:
     description: Vanish
     default: false
-    aliases: [v]
+    aliases: [ v ]
     usage: /v
+
   Spy:
     description: Spy
     default: false
     usage: /spy
+
   Revive:
     description: Revive
     default: false
     usage: /revive
+
   InvSee:
     description: InvSee
     default: false
     usage: /invsee
+
   Freeze:
     description: Freeze
     default: false
     usage: /freeze
+
   ViewEnderChest:
     description: ViewEnderChest
     default: false
     usage: /ViewEnderChest
+
   Ban:
     description: Ban
     default: false
     usage: /ban
+
   Unban:
     description: Unban
     default: false
     usage: /unban
+
   Kick:
     description: Kick
     default: false
     usage: /kick
+
   Mute:
     description: Mute
     default: false
     usage: /mute
+
   Unmute:
     description: Unmute
     default: false
     usage: /unmute
+
   Warn:
     description: Warn
     default: false
     usage: /warn
+
   RunTemplate:
     description: RunTemplate
     default: false
     usage: /runtemplate
+
   Ticket:
     description: Ticket
     default: false
-    aliases: [tickets]
+    aliases: [ tickets ]
     usage: /ticket
+
   StaffChat:
     description: StaffChat
     default: false
-    aliases: [sc]
+    aliases: [ sc ]
     usage: /staffchat
+
   SlowMode:
     description: SlowMode
     default: false
-    aliases: [sm]
+    aliases: [ sm ]
     ussage: /slowmode
