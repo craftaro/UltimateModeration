@@ -3,7 +3,7 @@
 
     <groupId>com.songoda</groupId>
     <artifactId>UltimateModeration</artifactId>
-    <version>4.6.0</version>
+    <version>4.7.0</version>
 
     <name>UltimateModeration</name>
     <description>Take complete control over your server with punishment templates via a simplified yet powerful moderation system</description>
